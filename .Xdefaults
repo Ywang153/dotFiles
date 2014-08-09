@@ -1,0 +1,40 @@
+xterm*background:                           DarkSlateGrey
+xterm*foreground:                           WhiteSmoke
+
+xterm*savelines:                            16384
+
+xterm*faceSize:                             10
+
+XTerm.cjkWidth:                             true
+xterm*locale:                               true
+xterm.utf8:                                 true
+xterm*utf8Title:                            true
+
+XTerm*fontMenu*fontdefault*Label:           Default
+!XTerm*faceName:                             Bitstream Vera Sans Mono:antialias=True:pixelsize=12
+!XTerm*faceNameDoublesize:                   Microsoft YaHei: antialias=True: pixelsize=12
+XTerm*faceSize:                             12
+XTerm*faceSize1:                            12
+XTerm*faceSize2:                            12
+XTerm*faceSize3:                            12
+XTerm*faceSize4:                            12
+XTerm*faceSize5:                            12
+XTerm*faceSize6:                            12
+
+xterm*loginshell:                           true
+
+xterm*ScrollBar:                            true
+xterm*rightScrollBar:                       true
+
+xterm*scrollTtyOutput:                      false
+
+xterm.borderLess:                           true
+xterm.cursorBlink:                          true
+
+!fix alt key input
+xterm*eightBitInput:                        false
+xterm*altSendsEscape:                       true
+
+XTerm*font:                                -misc-fixed-medium-r-normal-\*-18-120-100-100-c-90-iso10646-1
+XTerm*wideFont:                            -misc-fixed-medium-r-normal-\*-18-120-100-100-c-180-iso10646-1
+

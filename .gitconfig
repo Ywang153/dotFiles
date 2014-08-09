@@ -1,0 +1,128 @@
+[include]
+	path = ~/.gitconfig.d/.gitconfig
+[core]
+	autocrlf = input
+	safecrlf = false
+	editor = vim
+	quotepath = false
+	filemode = false
+	whitespace = trailing-space,space-before-tab,indent-with-non-tab
+	trustctime = false
+	compression = -1
+[color]
+	ui = always
+	branch = always
+	diff = always
+	interactive = always
+	status = always
+[pretty]
+	better-oneline = format:%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset
+[alias]
+	ack = log --all --no-merges --pretty=fuller -S
+	st = status -uno --ignore-submodules=untracked
+	cam = commit --amend -m
+	cm = commit -m
+	ci = commit -a -m 
+	co = checkout
+	co-recurse = !sh -c 'git checkout $1 && git submodule update --recursive' -
+	br = branch --sort=-committerdate
+	br-rm = !sh -c 'git branch -D $1 && git push origin :$1' -
+	br-has = !sh -c 'git branch --all --contains $1'
+	lg = log --color --graph --pretty=better-oneline --abbrev-commit --decorate
+	la = "!git config -l | grep alias | cut -c 7-"
+	sm-init = submodule update --init --recursive 
+	sm-up = submodule update --rebase --recursive --remote
+	sm-pull = push --recurse-submodules
+	sm-push = push --recurse-submodules=on-demand
+	sm-st = submodule status --recursive
+	sm-ls = "!git config --file .gitmodules --get-regexp path | awk '{ print $2 }'"
+	set-url = remote set-url
+	untrack = rm --cache --
+	rv = remote -v
+	cp = cherry-pick
+	sl = stash list
+	sp = stash pop
+	ss = stash save
+	di = diff --ignore-submodules=untracked --src-prefix='before/' --dst-prefix='after/'
+	di-v = difftool -t vimdiff
+	di-meld = difftool -t meld
+	clean-up = clean -f -d -x
+	rh = reset --hard
+	rh2 = reset HEAD^^ --hard
+	clo = clone -v --progress --recursive
+	p = show --pretty=fuller
+	p-stat = show --pretty=fuller --stat
+	g = log --all --no-merges --pretty=fuller --grep
+	m = mergetool
+	m-meld = mergetool -t meld
+	nff = merge --no-ff --no-commit --squash
+	tt = describe --tags --abbrev=0
+	tag-up = push --follow-tags
+	tag-down = fetch --tags
+	fetch = fetch --all
+	pr = pull --rebase
+	rb = rebase
+	rb-root = rebase -i --root
+	fixup = !sh -c 'git commit -a --fixup $1 && GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash --no-fork-point $1~' -
+	lc = log --pretty=full ORIG_HEAD.. --stat --no-merges
+	undo = reset --soft HEAD^
+	new = !sh -c 'git log --pretty=full $1@{1}..$1@{0} "$@"'
+	who = shortlog -sne --
+	whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+	assume = update-index --assume-unchanged
+	unassume = update-index --no-assume-unchanged
+[credential]
+	helper = store
+[push]
+	default = current
+	followTags = true
+[global]
+	pager = less -r
+[branch]
+	autosetupmerge = always
+	autosetuprebase = always
+[mergetool]
+	keepbackup = false
+	prompt = false
+	trustexitcode = true
+[clean]
+	requireforce = false
+[gui]
+	encoding = utf-8
+	pruneduringfetch = true
+[i18n]
+	commitencoding = utf-8
+	logoutputencoding = gbk
+[http]
+	sslVerify = false
+[diff]
+	algorithm = patience
+	tool = vimdiff
+	guitool = meld
+[difftool]
+	prompt = false
+	trustexitcode = true
+[difftool "meld"]
+	cmd = meld "$LOCAL" "$REMOTE"
+[merge]
+	tool = vimdiff
+	commit = no
+	ff = no
+	conflictstyle = diff3
+	trustexitcode = false
+	keepbackup = false
+[mergetool "meld"]
+	cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+[fetch]
+	prune = true
+	prunetags = true
+[rebase]
+	autosquash = true
+[help]
+	autocorrect = 20
+[remote "origin"]
+	prune = true
+[submodule]
+	recurse = true
+[log]
+	decorate = auto

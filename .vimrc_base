@@ -1,0 +1,114 @@
+
+" sets how many lines of history vim has to remember
+set history=2048
+
+" with a map leader it's possible to do extra key combinations
+let g:mapleader=","
+let mapleader=","
+
+" quick swith back to normal mode
+inoremap <leader><leader> <ESC>`^
+vnoremap <leader><leader> <C-c>
+xnoremap <leader><leader> <C-c>
+snoremap <leader><leader> <C-c>
+cnoremap <leader><leader> <C-c>
+
+" leave the cursor after the pasted text
+noremap p gp
+noremap p gp
+noremap gP P
+noremap gP P
+
+nmap <silent> <leader>w :wq!<cr>
+imap <silent> <leader>w <C-o>:wq!<cr>
+vmap <silent> <leader>w <C-c>:wq!<cr>
+nmap <silent> <leader>W :wqa!<cr>
+imap <silent> <leader>W <C-o>:confirm wqa!<cr>
+vmap <silent> <leader>W <C-c>:confirm wqa!<cr>
+
+nmap <silent> <leader>z :confirm cq<cr>
+imap <silent> <leader>z <C-o>:cq<cr>
+vmap <silent> <leader>z <C-c>:cq<cr>
+nmap <silent> <leader>Z :confirm cq!<cr>
+imap <silent> <leader>Z <C-o>:confirm cq!<cr>
+vmap <silent> <leader>Z <C-c>:confirm cq!<cr>
+
+" remap comma to \
+noremap \ ,
+
+" map to copy all
+nmap <silent> <leader>ya gg"+yG
+
+" ignore case when searching
+set ignorecase
+
+" when searching try to be smart about cases
+set smartcase
+
+" highlight search results
+set hlsearch
+
+" makes search act like search in modern browsers
+set incsearch
+
+" for regular expressions turn magic on
+set magic
+
+" key map timeouts
+set timeout timeoutlen=3000 ttimeoutlen=100
+
+" use spaces instead of tabs
+set expandtab
+
+"highlight current line
+set cursorline
+
+" highlight currentcolumn
+map <silent> <leader>col :set cursorcolumn!<CR>
+
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
+set nojoinspaces
+
+set ai "auto indent
+set wrap "wrap lines
+
+nmap <silent> <S-w> :set wrap!<cr>
+
+" treat long lines as break lines (useful when moving around in them)
+map j gj
+map k gk
+
+" map <space> to / (search) and <leader>-<space> to ? (backwards search)
+map <space> /
+map <leader><space> ?
+
+" disable highlight when <leader><cr> is pressed
+map <silent> <leader><cr> :noh<cr>
+
+" press enter in normal mode to insert an empty line
+nmap <CR> _i<Enter><Esc>
+
+" scrolling horizontally
+nmap <S-u> 4zh
+nmap <S-d> 4zl
+
+" moving lines up or down
+nnoremap <silent> <C-Down> :m .+1<CR>==
+nnoremap <silent> <C-Up> :m .-2<CR>==
+inoremap <silent> <C-Down> <Esc>:m .+1<CR>==gi
+inoremap <silent> <C-Up> <Esc>:m .-2<CR>==gi
+vnoremap <silent> <C-Down> :m '>+1<CR>gv=gv
+vnoremap <silent> <C-Up> :m '<-2<CR>gv=gv
+
+" scroll up/down without leaving insert mode
+inoremap <C-y> <C-x><C-y>
+inoremap <C-e> <C-x><C-e>
+
+" replace a word with yanked text
+xnoremap <silent> <leader>p "_dP
+
+" sort file, and removing duplicate lines
+map <silent> <leader>su :sort u<CR>
+

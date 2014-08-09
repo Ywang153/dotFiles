@@ -1,0 +1,21 @@
+[Desktop Entry]
+DefaultProfile=Konsole.profile
+
+[DownloadDialog Settings]
+Height 1080=496
+Width 1920=700
+
+[Favorite Profiles]
+Favorites=Konsole.profile
+
+[MainWindow]
+Height 1080=1006
+State=AAAA/wAAAAD9AAAAAAAAB4AAAAPQAAAABAAAAAQAAAAIAAAACPwAAAAA
+Width 1920=960
+Window-Maximized 1080x1920=true
+
+[Notification Messages]
+CloseAllEmptyTabs=false
+
+[SearchSettings]
+SearchCaseSensitive=true

@@ -1,0 +1,101 @@
+# Load .shell_define
+if [ -f "$HOME/.shell_define" ]; then
+	  source "$HOME/.shell_define"
+fi
+
+# Load .shell_aliases
+if [ -f "$HOME/.shell_aliases" ]; then
+	  source "$HOME/.shell_aliases"
+fi
+
+# Load .shell_tools
+if [ -f "$HOME/.shell_tools" ]; then
+      source "$HOME/.shell_tools"
+fi
+
+# Load .shell_build
+if [ -f "$HOME/.shell_build" ]; then
+      source "$HOME/.shell_build"
+fi
+
+# Try setting 256 colors explicitly
+case "$TERM" in
+    xterm*)
+        export TERM=xterm-256color
+        
+        if [ -x /usr/bin/dircolors ]; then
+            test -r ~/.dircolors.ansi-dark && eval "$(dircolors -b ~/.dircolors.256dark)"
+        fi
+        ;;
+    linux)
+        if [ -x /usr/bin/dircolors ]; then
+            test -r ~/.dircolors.ansi-light && eval "$(dircolors -b ~/.dircolors.ansi-light)"
+        fi
+        ;;
+esac
+
+# To remove all backgroud colors
+eval "$(dircolors -p | \
+    sed 's/ 4[0-9];/ 01;/; s/;4[0-9];/;01;/g; s/;4[0-9] /;01 /' | \
+    dircolors /dev/stdin)"
+
+# Set the default editor to vim
+export EDITOR=vim
+
+# History setting
+export HISTCONTROL=ignoreboth
+export HISTSIZE=8192
+export HISTFILESIZE=8192
+export HISTIGNORE='ls:ll:pwd'
+export HISTTIMEFORMAT='%F %T '
+
+# Telling ncurses to always use unicode box drawing characters when a utf-8 locale is selected.
+export NCURSES_NO_UTF8_ACS=1
+
+if [ ${SHELL: -4} = 'bash' ]; then
+    # Set bash prompt
+    if [[ ${TERM} != 'fbterm' ]]; then
+        export PS1="\[\e]0;\u@\h: \w\a\]\n\[$White\][[\[$Purple\]\j\[$White\]]] \[$Cyan\]\t \[$Blue\]{ \[$Red\]\W \[$Blue\]} \[$Yellow\]\$ \[$Color_Off\]"
+    fi
+
+    # Bash safe settings   
+    set -o ignoreeof
+    set -o notify
+    
+    stty cs8 -istrip
+    stty pass8
+    
+    # Auto complete insensitive
+    shopt -s nocaseglob
+    shopt -s histappend
+    shopt -s cdspell
+    shopt -s cdable_vars
+    shopt -s checkhash
+    shopt -s checkwinsize
+    shopt -s sourcepath
+    shopt -s no_empty_cmd_completion
+    shopt -s cmdhist
+    shopt -s histappend histreedit histverify
+    shopt -s extglob 
+    shopt -s dotglob 
+
+    # Activate bash autocomplete feature
+    if [ -f "/usr/share/bash-completion/bash_completion" ]; then
+          source "/usr/share/bash-completion/bash_completion"
+    fi
+
+elif [ ${SHELL: -3} = 'zsh' ]; then
+    setopt prompt_subst
+    setopt no_nomatch
+    setopt hist_ignore_all_dups
+    setopt hist_ignore_space
+    setopt autocd
+    setopt extendedglob
+
+    autoload -U colors && colors
+    autoload -U compinit && compinit
+fi
+
+# Generate core dump file
+ulimit -S -c unlimited > /dev/null 2>&1  
+

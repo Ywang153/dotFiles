@@ -1,0 +1,16 @@
+[$Version]
+update_info=kwin.upd:replace-scalein-with-scale,kwin.upd:port-minimizeanimation-effect-to-js,kwin.upd:port-scale-effect-to-js,kwin.upd:port-dimscreen-effect-to-js,kwin.upd:auto-bordersize,kwin.upd:animation-speed
+
+[Compositing]
+OpenGLIsUnsafe=false
+
+[Desktops]
+Id_1=057259dc-6fd1-4b08-980f-e945903245e0
+Id_2=d2c45ded-ca1f-4fd4-a38f-7053cfd4dc4d
+Rows=2
+
+[NightColor]
+Active=true
+LatitudeAuto=22.5333
+LongitudeAuto=114.1333
+NightTemperature=5000

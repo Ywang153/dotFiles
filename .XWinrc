@@ -1,0 +1,43 @@
+// Make some menus...
+menu apps {
+	xterm	exec	"xterm"
+	gvim	exec	"gvim"
+	xload	exec	"xload -display %display%"  # Comment
+	notepad	exec	notepad
+}
+
+menu root {
+	"Apps"	menu	apps
+
+	SEPARATOR
+	"User's Guide"      EXEC "cygstart http://x.cygwin.com/docs/ug/cygwin-x-ug.html"
+	"FAQ"               EXEC "cygstart http://x.cygwin.com/docs/faq/cygwin-x-faq.html"
+	SEPARATOR
+	"View logfile"      EXEC "xterm -title $XWINLOGFILE -e less +F $XWINLOGFILE"
+	SEPARATOR
+
+	"Reload .XWinrc"	RELOAD
+	SEParATOR
+}
+
+menu aot {
+	Separator
+	"Always on Top"	alwaysontop
+}
+
+menu xtermspecial {
+	"Emacs"		exec	"emacs"
+	"Always on Top"	alwaysontop
+	SepArAtor
+}
+
+RootMenu root
+
+DefaultSysMenu aot atend
+
+SysMenu {
+    "xterm"	xtermspecial atstart
+}
+
+SilentExit
+

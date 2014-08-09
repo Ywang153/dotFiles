@@ -1,0 +1,10 @@
+[Desktop Entry]
+DefaultProfile=Yakuake.profile
+
+[Favorite Profiles]
+Favorites=Yakuake.profile
+
+[Window]
+Height=45
+KeepOpenAfterLastSessionCloses=true
+Width=95

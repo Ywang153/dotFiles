@@ -1,0 +1,43 @@
+[Desktop Action Capture]
+Exec=flameshot gui --delay 500
+Name[zh_CN]=进行截图
+Name=Take screenshot
+Name[fr]=Prendre une capture d'écran
+Name[pl]=Zrzut ekranu
+
+[Desktop Action Configure]
+Exec=flameshot config
+Name[zh_CN]=配置
+Name=Configure
+Name[fr]=Configurer
+Name[pl]=Konfiguruj
+
+[Desktop Entry]
+Actions=Configure;Capture;
+Categories=Graphics;
+Comment[zh_CN]=强大又易用的屏幕截图软件
+Comment=强大又易用的屏幕截图软件
+Comment[fr]=Logiciel de capture d'écran puissant et simple d'utilisation.
+Comment[pl]=Proste w użyciu narzędzie do zrzutów ekranu
+Exec=flameshot
+GenericName[zh_CN]=屏幕截图工具
+GenericName=屏幕截图工具
+GenericName[fr]=Outil de capture d'écran
+GenericName[pl]=Zrzuty ekranu
+Icon=flameshot
+Keywords[zh_CN]=flameshot;screenshot;capture;shutter;截图;屏幕;
+Keywords=flameshot;screenshot;capture;shutter;
+Keywords[fr]=flameshot;capture d'écran;capter;shutter;
+MimeType=
+Name[zh_CN]=火焰截图
+Name=火焰截图
+OnlyShowIn=
+Path=
+StartupNotify=false
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
