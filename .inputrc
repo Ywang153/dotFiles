@@ -1,0 +1,15 @@
+set completion-ignore-case                                  on
+set enable-keypad                                           on
+set enable-meta-key                                         on
+set meta-flag                                               on
+set input-meta                                              on  # to accept 8-bit characters
+set output-meta                                             on  # to show 8-bit characters
+set page-completions                                        on
+set show-all-if-ambiguous                                   on
+set convert-meta                                            on 
+
+set match-hidden-files                                      off
+
+set bell-style                                              none
+set history-size                                            8192
+

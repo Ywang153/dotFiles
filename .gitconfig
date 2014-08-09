@@ -1,0 +1,144 @@
+[include]
+	path = ~/.gitconfig_local
+[core]
+	autocrlf = input
+	safecrlf = false
+	editor = vim
+	quotepath = false
+	filemode = false
+	whitespace = trailing-space,space-before-tab,indent-with-non-tab
+	trustctime = false
+	compression = -1
+	excludesfile = ~/.gitignore_global
+[color]
+	ui = always
+	branch = always
+	diff = always
+	interactive = always
+	status = always
+[pretty]
+	better-oneline = format:%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset
+[alias]
+	ack = log --all --no-merges --pretty=fuller -S
+	st = status -uno --ignore-submodules=untracked
+	ci = commit
+	ci-a = commit -a
+	ci-m = commit -a -m 
+	ci-amend = commit -a --amend
+	co = checkout
+	co-r= !sh -c 'git checkout $1 && git submodule update --recursive' -
+	cp = cherry-pick
+	br = branch --sort=-committerdate
+	br-mv = !sh -c 'git branch -m $2 $3 && git push $1 :$2 && git push $1 -u $3' -
+	br-rm = !sh -c 'git branch -D $2 && git push $1 :$2' -
+	br-has = !sh -c 'git branch --all --contains $1'
+	br-clean = "!git branch -vv | grep ': gone]' | grep -v '*' | awk '{print $1}' | xargs -r git branch -D"
+	lg = log --color --graph --pretty=better-oneline --abbrev-commit --decorate
+	submod-init = submodule update --init --recursive 
+	submod-up = submodule update --rebase --recursive --remote
+	submod-push = push --recurse-submodules
+	submod-st = submodule status --recursive
+	submod-ls = "!git config --file .gitmodules --get-regexp path | awk '{ print $2 }'"
+	submod-ls = "!git config --file .gitmodules --get-regexp path | awk '{ print $2 }'"
+	remote-co = "git submodule foreach -q --recursive 'branch=\"$(git config -f $toplevel/.gitmodules submodule.$name.branch)\"; [ \"$branch\" = \"\" ] && git checkout master || git switch $branch' –"
+	remote-v = remote -v
+	stash-ls = stash list
+	stash-pop = stash pop
+	stash-save = stash save
+	di = diff HEAD --ignore-submodules=untracked --src-prefix='before/' --dst-prefix='after/'
+	dv = difftool -t vimdiff
+	di-meld = difftool -t meld
+	clean-up = clean -f -d -x
+	undo = reset --soft HEAD^
+	rh = reset --hard
+	rh2 = reset HEAD^^ --hard
+	clo = clone -v --progress --recursive
+	p = show --pretty=fuller
+	p-stat = show --pretty=fuller --stat
+	g = log --all --no-merges --pretty=fuller --grep
+	m = mergetool
+	m-meld = mergetool -t meld
+	nff = merge --no-ff --no-commit --squash
+	tt = describe --tags --abbrev=0
+	tag-up = push --follow-tags
+	tag-down = fetch --tags
+	fetch = fetch --all
+	pr = pull --rebase
+	fix = !sh -c 'git commit -a --fixup $1 && GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash --no-fork-point $1~' -
+	new = !sh -c 'git log --pretty=full $1@{1}..$1@{0} "$@"'
+	who = shortlog -sne --
+	whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+	stat-lastmonth = "!sh -c 'git shortlog --reverse --all --pretty=format:\"%ci %an - %s\" --author=\"$(git config user.email)\" --after=\"$(date +%Y-%m-01 -d \"-1 month\")\" --before=\"$(date +%Y-%m-01)\"' -"
+	mk-unchanged= update-index --assume-unchanged
+	mk-no-unchanged = update-index --no-assume-unchanged
+[credential]
+	helper = store
+[push]
+	default = current
+	followTags = true
+[global]
+	pager = less -r -q
+[branch]
+	autosetupmerge = always
+	autosetuprebase = always
+[mergetool]
+	keepbackup = false
+	prompt = false
+	trustexitcode = true
+[clean]
+	requireforce = false
+[gui]
+	encoding = utf-8
+	pruneduringfetch = true
+[i18n]
+	commitencoding = utf-8
+	logoutputencoding = utf-8
+[http]
+	sslVerify = false
+	postBuffer = 1048576000
+	lowSpeedLimit = 0
+	lowSpeedTime = 999999
+[diff]
+	algorithm = patience
+	tool = vimdiff
+	guitool = meld
+[difftool]
+	prompt = false
+	trustexitcode = true
+[difftool "meld"]
+	cmd = meld "$LOCAL" "$REMOTE"
+[merge]
+	tool = vimdiff
+	commit = no
+	ff = no
+	conflictstyle = diff3
+	trustexitcode = false
+	keepbackup = false
+[mergetool "meld"]
+	cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+[fetch]
+	prune = true
+	prunetags = true
+[rebase]
+	autosquash = true
+[help]
+	autocorrect = 20
+[remote "origin"]
+	prune = true
+[submodule]
+	recurse = true
+[log]
+	decorate = auto
+	date = iso
+[rerere]
+	enabled = true
+	autoupdate = true
+[ssh]
+	variant = ssh
+[commit]
+	template = ~/.gitmessage.txt
+[credential "https://gitee.com"]
+	provider = generic
+[url "https://github.com/"]
+	insteadOf = git://github.com/
+

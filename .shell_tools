@@ -1,0 +1,336 @@
+# Creates an archive (*.tar.gz) from given directory
+function mktar() {
+    tar pcvzf "${2%}${1%%/}.tar.gz"  "${1%%/}/" --checkpoint=10000 --checkpoint-action="ttyout='%{%Y-%m-%d %H:%M:%S}t (%d sec): #%u, %T%*\r'";
+}
+
+# Create a ZIP archive of a file or folder.
+function mkzip() {
+    zip -9 -dd -r "${2%}${1%%/}.zip" "$1" ;
+}
+
+# Create a 7z archive of a file or folder.
+function mk7z() {
+    7zr -mx=9 a "${2%}${1%%/}.7z" "$1" ;
+}
+
+# Create a 7z archive of a file or folder.
+function mkiso() {
+    mkisofs -J -r -v -o "${2%}${1%%/}.iso" "$1" ;
+}
+
+# Make your directories and files access rights sane
+function nlauth() {
+    chmod --preserve-root -c -R u=rwX,g=rwX,o-w "$@" ;
+}
+
+# Convert gbk to utf-8
+function uo {
+    iconv -c -f gbk -t utf-8 $1
+}
+
+# Convert file encoding from gbk to utf-8
+function uf {
+    iconv -c -f gbk -t utf-8 $1 > $1.utf8
+}
+
+# Quote previous output
+function quo {
+    sed 's/\(["'\''\]\)/\\\1/g;s/^/"/;s/$/"/'
+}
+
+# Kill all by pattern
+function ko {
+    ps -ef | grep $1 | grep -v grep | awk '{print $2}' | xargs -r kill -SIGKILL
+}
+
+# locate file
+function lf {
+    locate -b "\\$1"
+}
+
+# Custom diff output
+function di {
+    colordiff -bsBHrtTuw --tabsize=4 $1 $2 | less -RN
+}
+
+# Watch target processes by Top command
+function wt() {
+    if [[ "$OSTYPE" =~ ^"darwin" ]]; then
+        top -a -pid $(pgrep -i -f $1 | head -20 | tr "\\n" "," | sed 's/,$//')
+    else
+        top -c -p $(pgrep -i -f $1 | head -20 | tr "\\n" "," | sed 's/,$//')
+    fi
+}
+
+# https://www.stefaanlippens.net/pretty-csv.html
+function pretty_csv {
+    column -t -s, -n "$@" | less -FSXKN
+}
+
+# Auto extract every compress type file
+function ex() {                                                          
+    if [ -f "$1" ] ; then 
+        case "$1" in 
+            *.tar.bz2)   tar xvjf       "$1"     ;;
+            *.tar.gz)    tar xvzf       "$1" --checkpoint=10000 --checkpoint-action="ttyout='%{%Y-%m-%d %H:%M:%S}t (%d sec): #%u, %T%*\r'";; 
+            *.bz2)       bunzip2        "$1"     ;; 
+            *.rar)       unrar e        "$1"     ;; 
+            *.gz)        gunzip         "$1"     ;; 
+            *.tar)       tar xvf        "$1"     ;; 
+            *.tbz2)      tar xvjf       "$1"     ;; 
+            *.tgz)       tar xvzf       "$1"     ;; 
+            *.zip)       unzip          "$1"     ;; 
+            *.Z)         uncompress     "$1"     ;; 
+            *.7z)        7za x          "$1"     ;; 
+            *.xz)        xz -ld         "$1"     ;; 
+            *.lzma)      lzma -d        "$1"     ;; 
+            *.lz)        lzip -d        "$1"     ;; 
+            *)     echo "'$1' cannot be extracted via aex command!" ;; 
+        esac 
+    else 
+        echo "'$1' is not a valid file" 
+    fi 
+}
+
+# Wipe the discrepancy of command fg's usage between zsh and bash
+function fg() { 
+    if [[ "$*" =~ ^[0-9]+$ ]]; then 
+        builtin fg %"$*";
+    else 
+        builtin fg "$@";
+    fi 
+}
+
+# Find a file with a pattern in name
+function ff() { 
+    time find . \
+        \( -type d \( -name .git -o -name .svn -o -name .hg -o -name .repo -o -name .vscode \) -prune \) -o \
+        -iname "${1:-*}" -mmin "${2:-+0}" -print0 | xargs -0 -n 10 -P $MAX_JOBS ls -lhdG
+}        
+
+function ff-MRUs() { 
+    local timeoffset=
+
+    case "$2" in 
+        "1day")         timeoffset='-1440'       ;; 
+        "7day")         timeoffset='-10080'      ;; 
+        "30min")        timeoffset='-30'         ;; 
+        *)              timeoffset='-240'        ;; 
+    esac 
+    
+    ff "${1:-*}" "$timeoffset"
+}
+
+function uq() {
+    sort -u $1 -o $1
+}
+
+function sd() {
+    split -a 4 -d -l 50000 $1 $1.part
+}
+
+# Start multi-tmux windows
+function startmux() {   
+    S_WHOST="whost-yh"
+
+    if [[ "$#" -eq 2 ]] ; then
+        PARAM3=""
+    elif [[ "$#" -eq 3 ]] ; then
+        R_ISINT="^[1-9][0-9]*$"
+
+        if ! [[ $3 =~ $R_ISINT ]] ; then
+            printf "Usage: \n\t${FUNCNAME[0]} [user] [remote server] [window size]\n"
+            return
+        fi
+            
+        PARAM3=$3
+    else
+        if [[ "$#" -ne 0 ]] ; then
+            printf "Wrong parameters list.\n"
+            return
+        fi
+    fi
+
+    tmux has-session -t $S_WHOST 2>/dev/null
+
+    if [ "$?" -eq 1 ]; then
+        tmux new-session -d -s $S_WHOST -n 'SHELL'
+
+        tmux new-window -t $S_WHOST -n 'EDIT'
+        tmux new-window -t $S_WHOST -n 'TEST'
+        tmux new-window -t $S_WHOST -n 'VIEW'
+        tmux new-window -t $S_WHOST -n 'MISC'
+
+        for ((i=0; i<${PARAM3:=1}; i++))
+        do
+            tmux new-window -t $S_WHOST -n "WSSH" "ssh $1@$2"
+        done
+    fi
+
+    tmux select-window -t $S_WHOST:1
+    tmux attach-session -t $S_WHOST
+}
+
+# Register cygwin prompt
+function cyg-prompt() {   
+    if [ "$OSTYPE" == "cygwin"  ] ; then
+        local WPATH=$(cygpath -w /Cygwin-Terminal.ico)
+        
+        chere -icf -t mintty -s bash -e "Bash Here"
+
+        regtool -w -s set /HKCU/Software/Classes/Drive/Shell/cygwin64_bash/Icon ${WPATH}
+        regtool -w -s set /HKCU/Software/Classes/Drive/Background/Shell/cygwin64_bash/Icon ${WPATH}
+        regtool -w -s set /HKCU/Software/Classes/Directory/Shell/cygwin64_bash/Icon ${WPATH}
+        regtool -w -s set /HKCU/Software/Classes/Directory/Background/Shell/cygwin64_bash/Icon ${WPATH}
+    fi
+}
+
+# Start cygwin setup
+function cyg-setup() {   
+    if [ "$OSTYPE" == "cygwin"  ] ; then
+		[ -d "/setup" ] || mkdir -p /setup
+		
+		EXE=setup-x86_64.exe
+		
+        (cd /setup && wget -N -t 8 --show-progress https://cygwin.com/$EXE && chmod +x ./$EXE)
+        
+        if [[ "$1" = "update" ]] || [[ "$1" = "upgrade" ]]; then
+            param="-qvng"
+        else
+            param="-nM"
+        fi
+            
+        cygstart --action=runas /setup/$EXE $param
+    fi
+}
+
+# Start the cygwin X server
+function cyg-launch-xserver() {   
+    if [ "$OSTYPE" == "cygwin"  ] ; then
+        run -p /usr/bin XWin -multiwindow -clipboard -silent-dup-error 
+    fi
+}
+
+# Install ssh key to remote machine
+function puts_sshkey() {
+    for var in "$@"
+    do  
+        ssh-copy-id -i "$HOME/.ssh/id_ed25519.pub" "$var" 
+    done
+}
+
+# Copy file to multiple hosts
+function scp2hosts() {
+    OIFS=$IFS
+
+    SRC=$1
+    DEST=$2
+    HOSTS=$3
+    
+    if [ -f $HOSTS ] ; then
+        while IFS=';' read -ra HOST; do
+            for h in "${HOST[@]}"; do
+                printf "\n\033[32mStarting transfer to host [$h]..\n\033[0m"
+                scp -prC $SRC ${h}:$DEST
+            done
+        done <<< "$HOSTS"
+    else
+        IFS=';' read -ra HOST <<< "$HOSTS"
+        
+        for h in "${HOST[@]}"; do
+            printf "\n\033[32mStarting transfer to host [$h]..\n\033[0m"
+            scp -prC $SRC $h:$DEST
+        done
+    fi
+
+    IFS=$OIFS
+}
+
+# Test hard disk speed with dd
+function ddbmk() {
+    dd if=/dev/zero of=/tmp/test.data bs=8k count=131072 conv=fsync
+}
+
+# Generate new GUID
+function gen-guid {
+    uuidgen -r
+}
+
+# Generate password for specify length, default as 14
+function gen-passwd() { 
+    len=14
+
+    if [ $# -eq 1 ] ; then 
+        re='^[0-9]+$'
+        
+        if [[ $1 =~ $re ]] ; then
+            len=$1
+        fi
+    fi
+    
+    strings /dev/urandom | grep -o '[[:alnum:]]' | head -n $len | tr -d '\n'; echo
+}
+
+# Pretty print runtime environment
+function print-rt-env() {
+    echo -e "+++++++++++>> \033[35mPATH\033[0m"
+    echo -e "${PATH//:/\\n}\n"
+
+    echo -e "+++++++++++>> \033[35mPYTHONPATH\033[0m"
+    echo -e "${PYTHONPATH//:/\\n}\n"
+    
+    echo -e "+++++++++++>> \033[35mC_INCLUDE_PATH\033[0m"
+    echo -e "${C_INCLUDE_PATH//:/\\n}\n"
+    
+    echo -e "+++++++++++>> \033[35mCPLUS_INCLUDE_PATH\033[0m"
+    echo -e "${CPLUS_INCLUDE_PATH//:/\\n}\n"
+    
+    echo -e "+++++++++++>> \033[35mLIBRARY_PATH$\033[0m"
+    echo -e "${LIBRARY_PATH//:/\\n}\n"
+    
+    echo -e "+++++++++++>> \033[35mLD_LIBRARY_PATH\033[0m"
+    echo -e "${LD_LIBRARY_PATH//:/\\n}\n"
+    
+    echo -e "+++++++++++>> \033[35mQt5_DIR\033[0m"
+    echo -e "${Qt5_DIR//:/\\n}"
+}
+
+# grep complie errror from file
+function print-error() {
+    grep -aE --color=always ": error: |: fatal error:|undefined reference to" $1 -C 2
+}
+
+# Combine rg and less together
+function rg-cpp() {
+    \rg -Sp -j $MAX_JOBS --color always -g "!{.git,.svn,.hg,.repo,.vscode}" --stats -tc -tcpp -txml -ttxt -twebidl -tobjcpp -g "!{dump,log,obj}" -C 2 "$@" | \less -R
+}
+
+# rename file
+function time-prefix() {
+    cp -fu "$1" `date "+%s"`_"$1"
+}
+
+# Refresh runtime environment
+function reload-rt-env() {
+    if [ -f "$HOME/.shell_settings" ]; then
+        source "$HOME/.shell_settings"
+    fi
+}
+
+# Refresh runtime environment
+function mt() {
+    \tree -atqhfDQCF --dirsfirst --timefmt='%Y-%m-%d %H:%M:%S' -I '.svn' -I '.git' -I '.repo' -I '.vscode' "${1:-.}" | \less -RgIJKNW 
+}
+
+# Loading fzf
+[ -f /usr/share/doc/fzf/examples/key-bindings.bash ] && . /usr/share/doc/fzf/examples/key-bindings.bash
+[ -f /usr/share/fzf/shell/key-bindings.bash ] && . /usr/share/fzf/shell/key-bindings.bash
+[ -f /opt/local/share/fzf/shell/key-bindings.bash ] && . /opt/local/share/fzf/shell/key-bindings.bash
+[ -f ~$HOME/.fzf.bash ] && . $HOME/.fzf.bash
+
+# Loading autojump
+[ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
+[ -f /etc/profile.d/autojump.sh ] && . /etc/profile.d/autojump.sh
+[ -f /opt/local/etc/profile.d/autojump.sh ] && . /opt/local/etc/profile.d/autojump.sh
+[ -s $HOME/.autojump/etc/profile.d/autojump.sh ] && . $HOME/.autojump/etc/profile.d/autojump.sh
+

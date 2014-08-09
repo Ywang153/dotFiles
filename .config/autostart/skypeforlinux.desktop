@@ -1,0 +1,10 @@
+[Desktop Entry]
+Comment=Skype Internet Telephony
+Exec=/usr/bin/skypeforlinux
+Hidden=true
+Icon=skypeforlinux
+Name=Skype for Linux
+StartupNotify=false
+Terminal=false
+Type=Application
+X-GNOME-Autostart-enabled=true

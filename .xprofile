@@ -1,0 +1,13 @@
+dist=$(tr -s ' \011' '\012' < /etc/issue | head -n 1)
+arch=$(uname -m)
+
+if  [[ ${dist} = 'Ubuntu' ]] ; then
+    export GTK_IM_MODULE=ibus
+    export QT_IM_MODULE=ibus
+    export XMODIFIERS="@im=ibus"
+else
+    export GTK_IM_MODULE=fcitx
+    export QT_IM_MODULE=fcitx
+    export XMODIFIERS="@im=fcitx"
+fi
+

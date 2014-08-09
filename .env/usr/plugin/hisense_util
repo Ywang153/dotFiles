@@ -1,0 +1,10 @@
+# Prepare file for ftp transmission on the clound
+function arm-strip() {
+    arm-eabi-strip "$1"
+    time-prefix "$1"
+}
+
+# Quick acces building docker
+alias go-build-docker='docker run -it --rm -h build-docker -u $(id -u):$(id -g) -v $(pwd):$(pwd) -v /data/mirror_cbb:/data/mirror_cbb -w=$(pwd) 192.168.56.14:5000/vidaa/mt9618image /bin/bash'
+alias update-build-docker='sudo docker pull 192.168.56.14:5000/vidaa/mt9618image'
+

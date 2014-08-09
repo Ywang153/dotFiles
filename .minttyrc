@@ -1,0 +1,16 @@
+ThemeFile=flat-ui
+Language=@
+Transparency=low
+OpaqueWhenFocused=yes
+CursorType=block
+Columns=120
+Term=xterm-256color
+Rows=35
+Locale=
+Charset=
+FontHeight=10
+CopyTab=yes
+CopyAsRTF=no
+PgUpDnScroll=yes
+MiddleClickAction=void
+RightClickAction=paste

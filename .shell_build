@@ -1,0 +1,25 @@
+### Set up user personal environment
+# PATH
+NEW_PATH=$MYPREFIX/bin:$MYPREFIX/usr/bin:$PATH
+export PATH=$(echo -n "$NEW_PATH" | awk -v RS=: '!($0 in a) {a[$0]; printf("%s%s", length(a) > 1 ? ":" : "", $0)}')
+
+# C_INCLUDE_PATH
+NEW_C_INCLUDE_PATH=$MYPREFIX/include:$MYPREFIX/usr/include:$C_INCLUDE_PATH
+export C_INCLUDE_PATH=$(echo -n "$NEW_C_INCLUDE_PATH" | awk -v RS=: '!($0 in a) {a[$0]; printf("%s%s", length(a) > 1 ? ":" : "", $0)}')
+
+# CPLUS_INCLUDE_PATH
+NEW_CPLUS_INCLUDE_PATH=$MYPREFIX/include:$MYPREFIX/usr/include:$CPLUS_INCLUDE_PATH
+export CPLUS_INCLUDE_PATH=$(echo -n "$NEW_CPLUS_INCLUDE_PATH" | awk -v RS=: '!($0 in a) {a[$0]; printf("%s%s", length(a) > 1 ? ":" : "", $0)}')
+
+# LIBRARY_PATH
+NEW_LIBRARY_PATH=$MYPREFIX/lib:$MYPREFIX/usr/lib:$MYPREFIX/usr/local/lib:$LIBRARY_PATH
+export LIBRARY_PATH=$(echo -n "$NEW_LIBRARY_PATH" | awk -v RS=: '!($0 in a) {a[$0]; printf("%s%s", length(a) > 1 ? ":" : "", $0)}')
+
+# LD_LIBRARY_PATH
+NEW_LD_LIBRARY_PATH=$MYPREFIX/lib:$MYPREFIX/usr/lib:$MYPREFIX/usr/local/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$(echo -n "$NEW_LD_LIBRARY_PATH" | awk -v RS=: '!($0 in a) {a[$0]; printf("%s%s", length(a) > 1 ? ":" : "", $0)}')
+
+# Other
+export GDBHISTFILE="$HOME/.gdb_history"
+export PYTHONIOENCODING="utf8"
+

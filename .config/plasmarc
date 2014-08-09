@@ -1,0 +1,11 @@
+[OSD]
+Enabled=true
+
+[PlasmaToolTips]
+Delay=0.7
+
+[Theme]
+name=breath2-dark
+
+[Wallpapers]
+usersWallpapers=/home/glennw/.local/usr/res/wallpaper/a3.jpg,/home/glennw/.local/usr/res/wallpaper/a1.jpg

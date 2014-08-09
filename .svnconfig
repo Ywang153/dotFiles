@@ -1,0 +1,15 @@
+# Cleanup all
+alias svn-cleanup='svn cleanup --remove-unversioned --remove-ignored'
+
+# Revert all files
+alias svn-revert='svn revert -R .'
+
+# Revert a file
+alias svrt='svn revert '
+
+# Viewing svn diff result in colors
+function svdi() {
+    svn diff "${@}" | colordiff | less -r
+}
+
+

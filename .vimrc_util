@@ -1,0 +1,456 @@
+"********************************** Utilities **********************************"
+" Check OS type
+silent function! LINUX()
+    return has('unix') && !has('macunix') && !has('win32unix')
+endfunction
+
+silent function! CYGWIN()
+    return has('unix') && has('win32unix')
+endfunction
+
+silent function! OSX()
+    return has('macunix')
+endfunction
+
+silent function! WINDOWS()
+    return  (has ("win16") || has("win95") || has("win32") || has("win64"))
+endfunction
+
+autocmd FileType * let g:ftname = &filetype
+
+" Search for selected text.
+let s:save_cpo = &cpo | set cpo&vim
+let &cpo = s:save_cpo | unlet s:save_cpo
+
+if !exists('g:VeryLiteral')
+    let g:VeryLiteral = 0
+endif
+
+silent function! s:VSetSearch(cmd)
+    let old_reg = getreg('"')
+    let old_regtype = getregtype('"')
+    
+    normal! gvy
+    
+    if @@ =~? '^[0-9a-z,_]*$' || @@ =~? '^[0-9a-z ,_]*$' && g:VeryLiteral
+        let @/ = @@
+    else
+        let pat = escape(@@, a:cmd.'\')
+
+        if g:VeryLiteral
+            let pat = substitute(pat, '\n', '\\n', 'g')
+        else
+            let pat = substitute(pat, '^\_s\+', '\\s\\+', '')
+            let pat = substitute(pat, '\_s\+$', '\\s\\*', '')
+            let pat = substitute(pat, '\_s\+', '\\_s\\+', 'g')
+        endif
+
+        let @/ = '\V'.pat
+    endif
+    
+    normal! gV
+    call setreg('"', old_reg, old_regtype)
+endfunction
+
+vnoremap <silent> * :<C-U>call <SID>VSetSearch('/')<CR>/<C-R>/<CR>
+vnoremap <silent> # :<C-U>call <SID>VSetSearch('?')<CR>?<C-R>/<CR>
+
+" Search only over a visual range
+silent function! RangeSearch(direction)
+    call inputsave()
+    let g:srchstr = input(a:direction)
+    call inputrestore()
+    
+    if strlen(g:srchstr) > 0
+        let g:srchstr = g:srchstr.
+                    \ '\%>'.(line("'<")-1).'l'.
+                    \ '\%<'.(line("'>")+1).'l'
+    else
+        let g:srchstr = ''
+    endif
+endfunction
+
+vnoremap <silent> / :<C-U>call RangeSearch('/')<CR>:if strlen(g:srchstr) > 0\|exec '/'.g:srchstr\|endif<CR>
+vnoremap <silent> ? :<C-U>call RangeSearch('?')<CR>:if strlen(g:srchstr) > 0\|exec '?'.g:srchstr\|endif<CR>
+
+" Search Only In a Visually Selected Range
+let g:sbr = 1
+let g:sbc = 1
+let g:ser = line("G")
+let g:sec = col("G")
+let g:searchstr = "searchfirst"
+let g:sdir = "f"
+
+vmap <kMultiply> *
+nmap <silent> <Plug>VLToggle :let g:VeryLiteral = !g:VeryLiteral
+            \\| echo "VeryLiteral " . (g:VeryLiteral ? "On" : "Off")<CR>
+
+silent function! GetBlockInput()
+    let g:searchstr = input('find what?:')
+    let g:sbr = line("'<")
+    let g:sbc = col("'<")
+    let g:ser = line("'>")
+    let g:sec = col("'>")
+endfunction
+
+silent function! FindFirstRegion()
+    call GetBlockInput()
+    call FindNextRegion()
+endfunction
+
+silent function! FindFirstRegionBack()
+    call GetBlockInput()
+    call FindNextRegionBack()
+endfunction
+
+silent function! FindNextRegionWork()
+    let l:fout = 0
+    let l:fin = 0
+    let l:crw = line(".")
+    let l:ccl = col(".")
+    let l:frw = -1
+    let l:fcl = -1
+
+    if g:sdir == "f"
+        let l:flags = "w"
+    else
+        let l:flags = "wb"
+    endif
+
+    call search(g:searchstr, l:flags)
+
+    let l:srw = line(".")
+    let l:scl = col(".")
+
+    while l:srw != 0 && (l:srw != l:frw || l:scl != l:fcl)
+        if (l:srw == g:sbr && l:scl >= g:sbc) || (l:srw == g:ser && l:scl <= g:sec) || (l:srw > g:sbr && l:srw < g:ser)
+            let l:fin = 1
+            break
+        else
+            if l:fout == 0
+                let l:fout = 1
+                let l:frw = l:srw
+                let l:fcl = l:scl
+            endif
+        endif
+
+        call search(g:searchstr, l:flags)
+
+        let l:srw = line(".")
+        let l:scl = col(".")
+    endwhile
+
+    if l:fout == 1 && l:fin == 0
+        execute "normal " . l:crw . "G"
+        execute "normal " . l:ccl . "|"
+    endif
+endfunction
+
+silent function! FindNextRegion()
+    let g:sdir = "f"
+    call FindNextRegionWork()
+endfunction
+
+silent function! FindNextRegionBack()
+    let g:sdir = "b"
+    call FindNextRegionWork()
+endfunction
+
+vnoremap <silent> v/ <Esc>:call FindFirstRegion()<CR>
+vnoremap <silent> v? <Esc>:call FindFirstRegionBack()<CR>
+nnoremap <silent> vn :call FindNextRegion()<CR>
+nnoremap <silent> vp :call FindNextRegionBack()<CR>
+
+if OSX()
+    nmap <D-j> <M-j>
+    nmap <D-k> <M-k>
+    vmap <D-j> <M-j>
+    vmap <D-k> <M-k>
+endif
+
+" Make views automatic
+let g:skipview_files = [
+            \ '[EXAMPLE PLUGIN BUFFER]'
+            \ ]
+
+silent function! MakeViewCheck()
+    if has('quickfix') && &buftype =~ 'nofile'
+        " Buffer is marked as not a file
+        return 0
+    endif
+    if empty(glob(expand('%:p')))
+        " File does not exist on disk
+        return 0
+    endif
+    if len($TEMP) && expand('%:p:h') == $TEMP
+        " We're in a temp dir
+        return 0
+    endif
+    if len($TMP) && expand('%:p:h') == $TMP
+        " Also in temp dir
+        return 0
+    endif
+    if index(g:skipview_files, expand('%')) >= 0
+        " File is in skip list
+        return 0
+    endif
+
+    return 1
+endfunction
+
+" make view
+silent function! MakeView()
+    if MakeViewCheck()
+        mkview
+    else
+        echo "Cannot Make View For This File."
+	endif
+endfunction
+
+" load view
+silent function! LoadView()
+    if MakeViewCheck()
+        silent loadview
+    else
+        echo "Load View Failure."
+	endif
+endfunction
+
+
+" Usage :Rename[!] {newname}
+command! -nargs=* -complete=file -bang Rename call Rename(<q-args>, '<bang>')
+
+" Change between backslash and forward slash
+silent function! ToggleSlash(independent) range
+    let from = ''
+    
+    for lnum in range(a:firstline, a:lastline)
+        let line = getline(lnum)
+        let first = matchstr(line, '[/\\]')
+        if !empty(first)
+            if a:independent || empty(from)
+                let from = first
+            endif
+            
+            let opposite = (from == '/' ? '\' : '/')
+            call setline(lnum, substitute(line, from, opposite, 'g'))
+        endif
+    endfor
+endfunction
+
+command! -bang -range ToggleSlash <line1>,<line2>call ToggleSlash(<bang>1)
+noremap <silent> <leader>sl :ToggleSlash<CR>
+
+" returns true if paste mode is enabled
+silent function! HasPaste()
+    if &paste
+        return "[PASTE MODE]"
+    else
+		return ""
+	endif
+endfunction
+
+" don't close window, when deleting a buffer
+silent function! <SID>BufcloseCloseIt()
+    let l:currentBufNum=bufnr("%")
+    let l:alternateBufNum=bufnr("#")
+
+    if buflisted(l:alternateBufNum)
+        buffer #
+    else
+        bnext
+    endif
+
+    if bufnr("%") == l:currentBufNum
+        new
+    endif
+
+    if buflisted(l:currentBufNum)
+        execute("bdelete! ".l:currentBufNum)
+    endif
+endfunction
+
+" show/hide fold column
+silent function! SetFoldColumn()
+    if &fdc > 0
+        set fdc=0
+    else
+        set fdc=12
+	endif
+endfunction
+
+" rename file
+silent function! Rename(name, bang)
+    let l:name    = a:name
+    let l:oldfile = expand('%:p')
+
+    if bufexists(fnamemodify(l:name, ':p'))
+        if (a:bang ==# '!')
+            silent exe bufnr(fnamemodify(l:name, ':p')) . 'bwipe!'
+        else
+            echohl ErrorMsg
+            echomsg 'A buffer with that name already exists (use ! to override).'
+            echohl None
+            return 0
+        endif
+    endif
+
+    let l:status = 1
+
+    let v:errmsg = ''
+    silent! exe 'saveas' . a:bang . ' ' . l:name
+
+    if v:errmsg =~# '^$\|^E329'
+        let l:lastbufnr = bufnr('$')
+
+        if expand('%:p') !=# l:oldfile && filewritable(expand('%:p'))
+            if fnamemodify(bufname(l:lastbufnr), ':p') ==# l:oldfile
+                silent exe l:lastbufnr . 'bwipe!'
+            else
+                echohl ErrorMsg
+                echomsg 'Could not wipe out the old buffer for some reason.'
+                echohl None
+                let l:status = 0
+            endif
+
+            if delete(l:oldfile) != 0
+                echohl ErrorMsg
+                echomsg 'Could not delete the old file: ' . l:oldfile
+                echohl None
+                let l:status = 0
+            endif
+        else
+            echohl ErrorMsg
+            echomsg 'Rename failed for some reason.'
+            echohl None
+            let l:status = 0
+        endif
+    else
+        echoerr v:errmsg
+        let l:status = 0
+    endif
+
+    return l:status
+endfunction
+
+" Without any arguments the current buffer is kept.  With an argument the
+" buffer name/number supplied is kept.
+
+command! -nargs=? -complete=buffer -bang Bonly
+            \ :call BufOnly('<args>', '<bang>')
+command! -nargs=? -complete=buffer -bang BOnly
+            \ :call BufOnly('<args>', '<bang>')
+command! -nargs=? -complete=buffer -bang Bufonly
+            \ :call BufOnly('<args>', '<bang>')
+command! -nargs=? -complete=buffer -bang BufOnly
+            \ :call BufOnly('<args>', '<bang>')
+
+silent function! BufOnly(buffer, bang)
+	if a:buffer == ''
+		" No buffer provided, use the current buffer.
+		let buffer = bufnr('%')
+	elseif (a:buffer + 0) > 0
+		" A buffer number was provided.
+		let buffer = bufnr(a:buffer + 0)
+	else
+		" A buffer name was provided.
+		let buffer = bufnr(a:buffer)
+	endif
+
+	if buffer == -1
+		echohl ErrorMsg
+		echomsg "No matching buffer for" a:buffer
+		echohl None
+		return
+	endif
+
+	let last_buffer = bufnr('$')
+
+	let delete_count = 0
+	let n = 1
+	while n <= last_buffer
+		if n != buffer && buflisted(n)
+			if a:bang == '' && getbufvar(n, '&modified')
+				echohl ErrorMsg
+				echomsg 'No write since last change for buffer'
+							\ n '(add ! to override)'
+				echohl None
+			else
+				silent exe 'bdel' . a:bang . ' ' . n
+				if ! buflisted(n)
+					let delete_count = delete_count+1
+				endif
+			endif
+		endif
+		let n = n+1
+	endwhile
+
+	if delete_count == 1
+		echomsg delete_count "buffer deleted"
+	elseif delete_count > 1
+		echomsg delete_count "buffers deleted"
+	endif
+endfunction
+
+silent function! DeleteTrailingWS()
+    exe "normal mz"
+    %s/\s\+$//ge
+    exe "normal `z"
+endfunc
+
+" Allow to trigger background
+silent function! ToggleBG()
+    let s:tbg = &background
+    " Inversion
+    if s:tbg == "dark"
+        set background=light
+    else
+        set background=dark
+    endif
+endfunction
+
+if exists("+showtabline")
+    silent function! MyTabLine()
+        let s = ''
+        let t = tabpagenr()
+        let i = 1
+        
+        while i <= tabpagenr('$')
+            let buflist = tabpagebuflist(i)
+            let winnr = tabpagewinnr(i)
+            let s .= '%' . i . 'T'
+            let s .= (i == t ? '%1*' : '%2*')
+            let s .= ' '
+            let s .= i . ':'
+            let s .= winnr . '/' . tabpagewinnr(i,'$')
+            let s .= ' %*'
+            let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
+            let bufnr = buflist[winnr - 1]
+            let file = bufname(bufnr)
+            let buftype = getbufvar(bufnr, 'buftype')
+            
+            if buftype == 'nofile'
+                if file =~ '\/.'
+                    let file = substitute(file, '.*\/\ze.', '', '')
+                endif
+            else
+                let file = fnamemodify(file, ':p:t')
+            endif
+            
+            if file == ''
+                let file = '[No Name]'
+            endif
+            
+            let s .= file
+            let i = i + 1
+        endwhile
+        
+        let s .= '%T%#TabLineFill#%='
+        let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
+        
+        return s
+    endfunction
+endif
+
+set tabline=%!MyTabLine()
+

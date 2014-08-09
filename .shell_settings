@@ -1,0 +1,104 @@
+# Load .shell_define
+if [ -f "$HOME/.shell_define" ]; then
+    source "$HOME/.shell_define"
+fi
+
+# Load .local_setting
+if [ -f "$HOME/.local_setting" ]; then
+    source "$HOME/.local_setting"
+fi
+
+# Load .shell_aliases
+if [ -f "$HOME/.shell_aliases" ]; then
+    source "$HOME/.shell_aliases"
+fi
+
+# Load .shell_tools
+if [ -f "$HOME/.shell_tools" ]; then
+    source "$HOME/.shell_tools"
+fi
+
+# Load .local_setting
+if [ -f "$HOME/.local_setting" ]; then
+    source "$HOME/.local_setting"
+fi
+
+# Load .shell_build
+if [ -f "$HOME/.shell_build" ]; then
+    source "$HOME/.shell_build"
+fi
+
+# Load .repo-wrapper
+if [ -f "$HOME/.repo-wrapper" ]; then
+  source "$HOME/.repo-wrapper"
+fi
+
+# Try setting 256 colors explicitly
+case "$TERM" in
+    xterm*)
+        export TERM=xterm-256color
+        
+        if [ -x /usr/bin/dircolors ]; then
+            test -r ~/.dircolors.ansi-dark && eval "$(dircolors -b ~/.dircolors.256dark)"
+        fi
+        ;;
+    linux)
+        if [ -x /usr/bin/dircolors ]; then
+            test -r ~/.dircolors.ansi-light && eval "$(dircolors -b ~/.dircolors.ansi-light)"
+        fi
+        ;;
+esac
+
+# Set the default editor to vim
+export EDITOR=vim
+ 
+# History setting
+export HISTCONTROL=ignoreboth:erasedups
+export HISTSIZE=1000000
+export HISTFILESIZE=1000000
+export HISTIGNORE='ls:ll:pwd'
+export HISTTIMEFORMAT='%F %T '
+
+# After each command, append to the history file and reread it
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+
+# Telling ncurses to always use unicode box drawing characters when a utf-8 locale is selected.
+export NCURSES_NO_UTF8_ACS=1
+
+# Other
+export LESSCHARSET=UTF-8
+export LS_COLORS=$LS_COLORS:'ow=1;34:'
+
+# Set bash prompt
+if [[ ${TERM} != 'fbterm' ]]; then
+    export PS1="\[\e]0;\a\]\n\[\033[37m\][[\[\033[35m\]\j\[\033[37m\]]] \[\033[36m\]\h \[\033[34m\]{ \[\033[31m\]\W \[\033[34m\]} \[\033[33m\]\$ \[\033[0m\]"
+fi
+
+# Bash safe settings   
+set -o ignoreeof
+set -o notify
+
+stty cs8 -istrip
+stty pass8
+
+# Auto complete insensitive
+shopt -s nocaseglob
+shopt -s cdspell
+shopt -s cdable_vars
+shopt -s checkhash
+shopt -s checkwinsize
+shopt -s sourcepath
+shopt -s no_empty_cmd_completion
+shopt -s cmdhist
+shopt -s histappend histreedit histverify
+shopt -s extglob 
+shopt -s dotglob 
+
+# Activate bash autocomplete feature
+if [ -f "/usr/share/bash-completion/bash_completion" ]; then
+    source "/usr/share/bash-completion/bash_completion"
+fi
+
+# Generate core dump file
+ulimit -S -c unlimited > /dev/null 2>&1  
+
