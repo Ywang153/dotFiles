@@ -1,0 +1,428 @@
+"********************************** Plugins **********************************"
+if has("gui_running")
+    if filereadable(expand("$VIMRUNTIME/delmenu.vim"))
+        source $VIMRUNTIME/delmenu.vim
+    endif
+    
+    if filereadable(expand("$VIMRUNTIME/menu.vim"))
+        source $VIMRUNTIME/menu.vim
+    endif
+endif
+
+
+" **  vim-plug configure
+call plug#begin('~/.vim/plugged')
+Plug 'Chiel92/vim-autoformat', { 'for': ['cpp', 'c', 'go', 'cs', 'python', 'javascript', 'java', 'xhtml', 'html', 'sql'] }
+Plug 'preservim/Tagbar', { 'on':  'TagbarToggle' }
+Plug 'preservim/nerdcommenter', { 'for': '*' }
+Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'vim-scripts/a.vim', { 'for': ['cpp', 'c'] }
+Plug 's3rvac/AutoFenc'
+Plug 'mhinz/vim-startify'
+Plug 'jkeylu/mark2666'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'ervandew/Supertab'
+Plug 'tpope/vim-surround'
+Plug 'kien/ctrlp.vim'
+Plug 'iamcco/markdown-preview.vim'
+Plug 'vim-scripts/Align'
+Plug 'nathanaelkane/vim-indent-guides'
+call plug#end()
+
+
+" ** ctags configure
+if executable('ctags')
+    set tags=./tags,tags;
+
+    let g:tagbar_autoclose = 1
+    let g:tagbar_autofocus = 1
+    let g:tagbar_sort = 0
+    let g:tagbar_case_insensitive = 1
+    let g:tagbar_compact = 1
+    let g:tagbar_show_linenumbers = 1
+    let g:tagbar_autopreview = 1
+    
+    let g:tagbar_width = 45
+
+    let g:tagbar_previewwin_pos = "rightbelow"
+    let g:tagbar_map_showproto = "t"
+    
+    let g:tagbar_type_armasm = {
+        \ 'ctagsbin'  : 'ctags',
+        \ 'ctagsargs' : '-f- --format=2 --excmd=pattern --fields=nksSa --extra= --sort=no --language-force=asm',
+        \ 'kinds' : [
+            \ 'm:macros:0:1',
+            \ 't:types:0:1',
+            \ 'd:defines:0:1',
+            \ 'l:labels:0:1'
+        \ ]
+    \}
+
+    let g:tagbar_type_go = {
+        \ 'ctagstype': 'go',
+        \ 'kinds' : [
+            \'p:package',
+            \'f:function',
+            \'v:variables',
+            \'t:type',
+            \'c:const'
+        \]
+    \}
+
+    let g:tagbar_type_make = {
+        \ 'kinds':[
+            \ 'm:macros',
+            \ 't:targets'
+        \ ]
+    \}
+
+    let g:tagbar_type_markdown = {
+        \ 'ctagstype' : 'markdown',
+        \ 'kinds' : [
+            \ 'h:Heading_L1',
+            \ 'i:Heading_L2',
+            \ 'k:Heading_L3'
+        \ ]
+    \ }
+
+    let g:tagbar_type_xquery = {
+        \ 'ctagstype' : 'xquery',
+        \ 'kinds'     : [
+            \ 'f:function',
+            \ 'v:variable',
+            \ 'm:module',
+        \ ]
+    \ }
+
+    let g:tagbar_type_xsd = {
+        \ 'ctagstype' : 'XSD',
+        \ 'kinds'     : [
+            \ 'e:elements',
+            \ 'c:complexTypes',
+            \ 's:simpleTypes'
+        \ ]
+    \ }
+
+    let g:tagbar_type_xslt = {
+        \ 'ctagstype' : 'xslt',
+        \ 'kinds' : [
+          \ 'v:variables',
+          \ 't:templates'
+        \ ]
+    \}
+endif
+
+
+nnoremap <silent> \ :TagbarToggle<CR>
+
+" Sometimes cscope cannot jump correctly
+nmap <silent> <C-]> :tj <C-R>=expand("<cword>")<CR><CR>
+
+
+" **  NERD tree configure
+let NERDTreeIgnore=['\.exe','\.cc','\.d','\.a','\.so','\.dll','\.obj','\.o','\.pyc','\~$','\.swp']
+
+let NERDTreeShowBookmarks=1
+let NERDChristmasTree=1
+let NERDTreeAutoCenter=1
+let NERDTreeMouseMode=2
+let NERDTreeQuitOnOpen=1
+let NERDTreeWinSize=32
+let NERDTreeShowFiles=1
+let NERDTreeShowHidden=1
+let NERDTreeHightCursorline=1
+let NERDTreeShowLineNumbers=1
+
+nmap <silent> <F2> :NERDTreeToggle <cr>
+
+
+" **  Cscope configure
+if executable('cscope')
+    " use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
+    set cscopetag
+
+    " check cscope for definition of a symbol before checking ctags: set to 0
+    " if you want the reverse search order.
+    set csto=0
+
+    " show msg when any other cscope db added
+    set cscopeverbose 
+
+    " use quickfix window to show cscope results 
+    "set cscopequickfix=s-,c-,d-,i-,t-,e-  
+
+
+    " The following maps all invoke one of the following cscope search types:
+    "
+    "   's'   symbol: find all references to the token under cursor
+    "   'g'   global: find global definition(s) of the token under cursor
+    "   'c'   calls:  find all calls to the function name under cursor
+    "   't'   text:   find all instances of the text under cursor
+    "   'e'   egrep:  egrep search for the word under cursor
+    "   'f'   file:   open the filename under cursor
+    "   'i'   includes: find files that include the filename under cursor
+    "   'd'   called: find functions that function under cursor calls
+
+    " To do the first type of search, hit 'CTRL-\', followed by one of the
+    " cscope search types above (s,g,c,t,e,f,i,d).  The result of your cscope
+    " search will be displayed in the current window.  You can use CTRL-T to
+    " go back to where you were before the search.  
+    "
+
+    nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>  
+    nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>  
+    nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>  
+    nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>  
+    nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>  
+    nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>  
+    nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>  
+
+    " Using 'CTRL-spacebar' (intepreted as CTRL-@ by vim) then a search type
+    " makes the vim window split horizontally, with search result displayed in
+    " the new window.
+    "
+    " (Note: earlier versions of vim may not have the :scs command, but it
+    " can be simulated roughly via:
+    "    nmap <C-@>s <C-W><C-S> :cs find s <C-R>=expand("<cword>")<CR><CR>  
+
+    nmap <C-@>s :scs find s <C-R>=expand("<cword>")<CR><CR> 
+    nmap <C-@>g :scs find g <C-R>=expand("<cword>")<CR><CR> 
+    nmap <C-@>c :scs find c <C-R>=expand("<cword>")<CR><CR> 
+    nmap <C-@>t :scs find t <C-R>=expand("<cword>")<CR><CR> 
+    nmap <C-@>e :scs find e <C-R>=expand("<cword>")<CR><CR> 
+    nmap <C-@>f :scs find f <C-R>=expand("<cfile>")<CR><CR> 
+    nmap <C-@>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>   
+    nmap <C-@>d :scs find d <C-R>=expand("<cword>")<CR><CR> 
+
+    " Hitting CTRL-space *twice* before the search type does a vertical 
+    " split instead of a horizontal one (vim 6 and up only)
+    "
+    " (Note: you may wish to put a 'set splitright' in your .vimrc
+    " if you prefer the new window on the right instead of the left
+
+    nmap <C-@><C-@>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@><C-@>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@><C-@>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@><C-@>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@><C-@>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@><C-@>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>   
+    nmap <C-@><C-@>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR> 
+    nmap <C-@><C-@>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+endif
+
+function! LoadCscope()
+    let db = findfile("cscope.out", ".;")
+
+    if (!empty(db))
+        set nocscopeverbose " suppress 'duplicate connection' error
+
+        let path = strpart(db, 0, match(db, "/cscope.out$"))
+        exe "cs add " . db . " " . path
+    endif
+endfunction
+
+autocmd FileType cpp,c,python,cs,javascript,java
+            \ call LoadCscope()
+
+" recommended key-mappings. <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return pumvisible() ? "\<C-y>" : "\<CR>"  
+endfunction
+
+" **  AutoFenc configure
+let g:autofenc_enc_blacklist = ''
+let g:autofenc_enable = 1
+let g:autofenc_emit_messages = 0
+let g:autofenc_max_file_size = 10485760
+let g:autofenc_autodetect_num_of_lines = 5
+let g:autofenc_autodetect_bom = 0
+let g:autofenc_autodetect_html = 1
+let g:autofenc_autodetect_xml = 1
+let g:autofenc_autodetect_css = 1
+let g:autofenc_autodetect_comment = 1
+
+
+" **  Supertab
+let g:SuperTabDefaultCompletionType = "<c-n>"
+let g:SuperTabContextDefaultCompletionType = "<c-n>"
+
+
+" **  Ctrlp configure
+let g:ctrlp_map = '<C-p>'
+let g:ctrlp_cmd = 'CtrlPMixed'
+
+let g:ctrlp_max_height = 16
+let g:ctrlp_mruf_max = 512
+
+let g:ctrlp_follow_symlinks = 1
+let g:ctrlp_by_filename = 1
+let g:ctrlp_show_hidden = 1
+let g:ctrlp_lazy_update = 1
+let g:ctrlp_clear_cache_on_exit = 1
+  
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:16,results:16'
+  
+let g:ctrlp_switch_buffer = 'Et'
+let g:ctrlp_working_path_mode = 'ra'
+
+let g:ctrlp_custom_ignore = {
+            \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+            \ 'file': '\v\.(cc|obj|exe|o|a|so|dll|d)$',
+            \ 'link': 'some_bad_symbolic_links',
+            \ }
+
+if WINDOWS() " Windows
+    set wildignore+=*\\tmp\\*,*\\vendor\\*
+endif
+
+if ( CYGWIN() || LINUX() || OSX() ) " MacOSX/Linux
+    set wildignore+=*/tmp/*,*/.DS_Store,*/vendor
+endif
+
+
+" **  Mark configure
+let g:mwDefaultHighlightingPalette = 'maximum' 
+let g:mwHistAdd = '/@'
+let g:mwAutoLoadMarks = 1
+let g:mwAutoSaveMarks = 1
+let g:mwIgnoreCase = 0
+let g:mwDirectGroupJumpMappingNum = 20 
+
+nmap <silent> <leader>M :MarkClear<CR>
+
+
+
+" **  netrw configure
+let g:netrw_silent = 1
+let g:netrw_liststyle = 3
+let g:netrw_winsize = 32
+
+if CYGWIN()
+    let g:netrw_cygwin= 1
+endif
+
+
+" **  vim-autoformat configure
+noremap <silent> <leader>ff :Autoformat<CR>
+
+if (executable('astyle') || executable('autopep8') || executable('xmllint') || executable('gofmt') || executable('js-beautify') || executable('tidy'))
+    let g:autoformat_verbosemode = 0
+    let g:autoformat_autoindent = 0
+
+    if (executable('autopep8'))
+        let g:formatdef_autopep8 = '"python2 -m autopep8 - --aggressive --aggressive --max-line-length=256"'
+        let g:formatters_python = ['autopep8']
+    endif
+
+    if (executable('xmllint'))
+        let g:formatdef_xmllint = '"xmllint --format -"'
+        let g:formatters_xml  = ['xmllint']
+        let g:formatters_xslt = ['xmllint']
+    endif
+
+    if (executable('astyle'))
+        let g:astyle_flag = "-L -w -xw -Y -m2 -M40 -p -H -U -E -k3 -W3 -c -q -Z --suffix=none"
+
+        let g:formatdef_c_style = '"astyle --style=allman --mode=c " . g:astyle_flag'
+        let g:formatters_c   = ['c_style']
+        let g:formatters_cpp = ['c_style']
+
+        let g:formatdef_my_custom_java = '"astyle --style=java --mode=java " . g:astyle_flag'
+        let g:formatters_java = ['my_custom_java']
+
+        let g:formatdef_my_custom_cs = '"astyle --style=kr --mode=cs " . g:astyle_flag'
+        let g:formatters_cs = ['my_custom_cs']
+    endif
+
+    if (executable('js-beautify'))
+        let g:formatdef_my_custom_javascript = '"js-beautify -i -a --brace-style=collapse"'
+        let g:formatters_javascript = ['my_custom_javascript']
+    endif
+
+    if (executable('tidy'))
+        let g:formatdef_my_custom_html = '"tidy --indent yes --indent-spaces 2 -utf8 --wrap 256 --force-output true -quiet --output-xml yes --numeric-entities yes --new-inline-tags cfif,cfelse,math,mroot,mrow,mi,mn,mo,msqrt,mfrac,msubsup,munderover,munder,mover,mmultiscripts,msup,msub,mtext,mprescripts,mtable,mtr,mtd,mth --new-blocklevel-tags cfoutput,cfquery --new-empty-tags cfelse --break-before-br no --quote-marks yes --quote-nbsp yes --quote-ampersand no --markup yes --show-errors 0 --show-warnings 0"'
+        let g:formatters_html = ['my_custom_html']
+    endif
+endif
+
+
+" **  vim-startify configure
+autocmd FileType startify setlocal buftype=
+
+let g:startify_enable_special         = 0
+let g:startify_files_number           = 16
+let g:startify_relative_path          = 1
+let g:startify_change_to_dir          = 1
+
+let g:startify_session_dir            = $VIMHOME.'/.vim/session'
+let g:startify_session_autoload       = 1
+let g:startify_session_persistence    = 1
+let g:startify_session_delete_buffers = 1
+
+let g:startify_skiplist = [
+            \ 'COMMIT_EDITMSG',
+            \ $VIMRUNTIME .'/doc',
+            \ 'bundle/.*/doc',
+            \ '\.DS_Store'
+            \ ]
+
+let g:startify_bookmarks = [
+            \ $VIMHOME.'/vimrc',
+            \ "/data/vim/golfing",
+            \ ]
+
+let g:startify_custom_header = [
+            \ '',
+            \ '     ((                                                                      ',
+            \ '     \\``.                                                                   ',
+            \ '     \_`.``-.                                                                ',
+            \ '     ( `.`.` `._                                                             ',
+            \ '      `._`-.    `._                                                          ',
+            \ '        \`--.   ,` `.                                                        ',
+            \ '         `--._  `.  .`.                                                      ',
+            \ '          `--.--- `. ` `.                                                    ',
+            \ '              `.--  `;  .`._                                                 ',
+            \ '                :-   :   ;. `.__,.,__ __                                     ',
+            \ '                 `\  :       ,-(     `;o`>.                                  ',
+            \ '                   `-.`:   ,`   `._ .:  (,-`,                                ',
+            \ '                      \    ;      ;.  ,:                                     ',
+            \ '                  ,"`-._>-:        ;,`  `---.,---.                           ',
+            \ '                  `>`"  "-`       ,`   "":::::".. `-.                        ',
+            \ '                   `;"`_,  (\`\ _ `:::::::::::`"     `---.                   ',
+            \ '           -hrr-    `-(_,` -`),)\`.       _      .::::"`  `----._,-"")       ',
+            \ '                        \_,`: `.-` `-----` `--;-.   `.   ``.`--.____/        ',
+            \ '                          `-^--`                \(-.  `.``-.`-=:-.__)        ',
+            \ '                                                 `  `.`.`._`.-._`--.)        ',
+            \ '                                                      `-^---^--.`--          ',
+            \ '',
+            \ ]
+
+let g:startify_custom_footer = [
+            \ '',
+            \ '                     ___                          (_)                            ',
+            \ '                   _/XXX\                                                        ',
+            \ '    _             /XXXXXX\_                                    __                ',
+            \ '    X\__    __   /X XXXX XX\                          _       /XX\__      ___    ',
+            \ '        \__/  \_/__       \ \                       _/X\__   /XX XXX\____/XXX\   ',
+            \ '      \  ___   \/  \_      \ \               __   _/      \_/  _/  -   __  -  \  ',
+            \ '     ___/   \__/   \ \__     \\__           /  \_//  _ _ \  \     __  /  \____/  ',
+            \ '    /  __    \  /     \ \_   _//_\___    __/    //           \___/  \/     __/   ',
+            \ '    __/_______\________\__\_/________\__/_/____/_____________/_______\____/____  ',
+            \ '',
+            \]
+
+let g:startify_custom_indices = map(range(1,128), 'string(v:val)')
+
+
+
+" **  pylint
+if executable('pylint')
+    function! EnaPylint()
+        set makeprg=pylint\ --reports=n\ --msg-template=\"{path}:{line}:\ {msg_id}\ {symbol},\ {obj}\ {msg}\"\ %:p
+        set errorformat=%f:%l:\ %m
+    endfunction
+endif
+
+autocmd FileType python silent call EnaPylint()

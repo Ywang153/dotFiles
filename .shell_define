@@ -1,0 +1,10 @@
+## Define colors for prompt and commands
+ARCH=$(uname -m)
+OS=$(uname -s)
+VER=$(uname -r)
+CORES=$(nproc)
+MAX_JOBS=$((${CORES:-1} * 2))
+
+# For personal 
+export MYPREFIX=$HOME/.env
+

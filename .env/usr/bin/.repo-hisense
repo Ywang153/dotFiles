@@ -1,0 +1,216 @@
+# repo-clone [CBB] <branch> [manifest file]
+function repo-clone() {
+    echo -e "==>> \E[1;35mStart to init gerrit Repo......\033[0m" | ts "%F %T" | tee repo-clone.log
+    
+    if [ "$#" -gt "3" -o "$#" -lt "1" ] ; then
+      echo -e "### USAGE: repo-clone [CBB] <branch name>" | ts "%F %T" | tee -a repo-clone.log
+      return
+    fi
+    
+    start=$(date +%s.%N)
+    
+    local manifests_url=ssh://dmtgerrit2.hisense.com:29418/MTK5658DB/tv/manifest
+    local repo_url=ssh://dmtgerrit2.hisense.com:29418/git-repo
+    local branch=
+    local manifest=
+    local reference=
+
+    case $1 in
+    "CBB")
+        manifests_url=ssh://192.168.101.80:29418/CBB/frameworks/minos/manifest
+        repo_url=ssh://192.168.101.80:29418/git-repo
+        branch=$2
+        manifest=$3
+        reference=/data/mirror_cbb
+        ;;
+    *)
+        branch=$1
+        manifest=$2
+        ;;
+    esac
+    
+    echo -e "==>> \E[1;35mStart to clone branch \E[1;32m[$branch]\033[0m." | ts "%F %T" | tee -a repo-clone.log
+    
+    repo init -q -u $manifests_url -b $branch --repo-url=$repo_url -m ${manifest:-default.xml} --reference=$reference | ts "%F %T" | tee -a repo-clone.log
+    
+    cd .repo/repo;git pull -q --rebase;cd - >/dev/null
+    cd .repo/manifests;git pull -q --rebase;cd - >/dev/null
+    
+    echo -e "==>> \E[1;35mRepo sync......\033[0m." | ts "%F %T" | tee -a repo-clone.log
+    repo sync -c -q -j $MAX_JOBS | ts "%F %T" | tee -a repo-clone.log
+    
+    echo -e "==>> \E[1;35mRepo start \E[1;32m$branch\033[0m\E[1;38m......\033[0m" | ts "%F %T" | tee -a repo-clone.log
+    repo start --all $branch | ts "%F %T" | tee -a repo-clone.log
+    
+    duration=$(echo "$(date +%s.%N) - $start" | bc)
+    execution_time=`printf "%.2f" $duration`
+
+    echo -e "==>> \E[1;35mTotal cost: \E[1;35m$execution_time \033[0m\E[1;38m seconds.\033[0m" | ts "%F %T" | tee -a repo-clone.log | ts "%F %T" | tee -a repo-clone.log
+}
+
+# repo-status <platform code>
+function repo-status() {
+    case $1 in
+    "9618"|"72690"|"9603")
+        repo status -j $MAX_JOBS CBB/services/ui-engine \
+            CBB/services/chassis/tv/stbspplugin \
+            CBB/services/chassis/tv/ics \
+            CBB/services/chassis/tv/dock \
+            CBB/services/chassis/media/stbspplugin \
+            CBB/services/tv/base/tvcommon \
+            CBB/services/tv/base/tvbiz \
+            CBB/services/tv/base/servicecommon \
+            CBB/services/tv/base/tvmain \
+            CBB/services/tv/base/dtv/dvb \
+            CBB/services/tv/base/dtv/common \
+            CBB/services/tv/base/dtv/sbtvd_atsc \
+            CBB/frameworks/biz/values \
+            CBB/frameworks/pluginbase/utilities/bizplugin 
+        ;;
+    *)
+        repo status -j $MAX_JOBS 
+        ;;
+    esac
+}
+
+# repo-branch
+function repo-branch() {
+    repo branch
+}
+
+# repo-list [str]
+function repo-list() {
+    if [ "$#" -ge "1" ] ; then
+        repo list | grep -a -i --color=auto $1
+    else
+        repo list 
+    fi
+}
+
+# repo-push [branch name]
+function repo-push() {
+    if [ "$#" -gt "1" ] ; then
+      echo -e "### USAGE: repo-push [branch name]"
+      return
+    fi
+    
+    local branch=`git symbolic-ref --short -q HEAD`
+    repo upload --br ${1:-$branch} --re="huanghongxun@hisense.com,huangjun10@hisense.com,linshunwen@hisense.com,meixiaotao@hisense.com,zhaoxianfen@hisense.com"
+}
+
+# repo-patch <project> <patchset>
+function repo-patch() {
+    if [ "$#" -lt "2" ] ; then
+      echo -e "### USAGE: repo-patch <project> <patchset>"
+      return
+    fi
+    
+    repo download -c $@
+}
+
+# repo-make MTK_DEV_EU_4K-all-debug BROWSER=ODIN VIDAA_VER=U6
+function repo-make() {
+    if [ "$#" -lt "1" ] ; then
+      echo -e "### USAGE: repo-make <branch name> [arg1] [arg2] ..."
+      return
+    fi
+    
+    start=$(date +%s.%N)
+    \make -j $MAX_JOBS $@ 2>&1 | ts "%F %T" | tee make.log
+    duration=$(echo "$(date +%s.%N) - $start" | bc)
+    execution_time=`printf "%.2f" $duration`
+
+    echo -e "\n==>> \E[1;35mTotal cost: \E[1;35m$execution_time \033[0m\E[1;38m seconds.\033[0m" | ts "%F %T" | tee -a make.log
+}
+
+# repo-checkout <branch name>
+function repo-checkout() {
+    if [ "$#" -ne "1" ] ; then
+      echo -e "### USAGE: repo-checkout <branch name>"
+      return
+    fi
+    
+    echo -e "==>> \E[1;35mRepo switch to \E[1;32m$1\033[0m\E[1;38m......\033[0m"
+    
+    repo checkout ${1:-default}
+    #repo forall -c "git branch --set-upstream-to=hisense/${1:-default} ${1:-default}"
+}
+
+function __repo-fetch() {
+    PROJECT_ROOT=`pwd`
+    
+    if [ ! -d .repo ]; then
+      echo -e "*** ERROR: Not found [.repo] directory in [$PROJECT_ROOT]."
+      return
+    fi
+    
+    echo -e "\n==>> \E[1;35mSync current branch......\033[0m"
+
+    rm -rf !(.|..|.repo|*.log);rm -rf .repo/projects
+    repo sync -j $MAX_JOBS -c -q $@
+    
+    while [ $? == 1 ]; do
+        echo -e "\n==>> \E[1;35mFailed, Will try again in 15 seconds......\033[0m"
+        
+        sleep 15
+        
+        rm -rf !(.|..|.repo|*.log);rm -rf .repo/projects
+        repo sync -j $MAX_JOBS -c -q $@
+    done
+}
+
+# repo-update <platform code>
+function repo-update() {
+    cd .repo/repo;git pull -q --rebase;cd - >/dev/null
+    cd .repo/manifests;git pull -q --rebase;cd - >/dev/null
+
+    case $1 in
+    "9618"|"72690"|"9603")
+        repo forall CBB/services/ui-engine \
+            CBB/frameworks/biz/values \
+            CBB/services/tv/base/tvcommon \
+            CBB/services/tv/base/tvbiz \
+            CBB/services/tv/base/dtv/dvb \
+            CBB/services/tv/base/servicecommon \
+            CBB/services/tv/base/tvmain \
+            CBB/services/tv/base/dtv/isdb \
+            CBB/services/chassis/tv/stbspplugin \
+            CBB/frameworks/pluginbase/utilities/bizplugin \
+            CBB/services/tv/base/dtv/sbtvd_atsc \
+            \
+            -pv -j $MAX_JOBS -c "git pull --rebase"
+        ;;
+    *)
+        rm -rf .repo/projects
+        repo forall -pv -j $MAX_JOBS -c "git reset HEAD^ --hard; git clean -f -d -x; git pull --rebase"
+        ;;
+    esac
+}
+
+# repo-get <branch name> <manifest file>
+function repo-get() {
+    echo -e "==>> \E[1;38mStart to get branch \E[1;32m${1:-default}\033[0m\E[1;38m......\033[0m" | ts "%F %T" | tee repo-get.log
+    start=$(date +%s.%N)
+
+    if [ "$#" -lt "1" -o "$#" -gt "2" ] ; then
+      echo -e "### USAGE: repo-tag <branch name> [manifest file]"
+      return
+    fi
+    
+    echo -e "==>> \E[1;38mSwitch branch \E[1;32m${1:-default}\033[0m\E[1;38m.\033[0m" | ts "%F %T" | tee repo-get.log
+    repo init -b $1 | ts "%F %T" | tee -a repo-get.log
+    
+    cd .repo/repo;git pull -q --rebase;cd - >/dev/null
+    cd .repo/manifests;git pull -q --rebase;cd - >/dev/null
+    
+    __repo-fetch -m ${2:-default.xml} 2>&1 | ts "%F %T" | tee -a repo-get.log
+    
+    echo -e "==>> \E[1;38mCheckout branch \E[1;32m${1:-default}\033[0m\E[1;38m......\033[0m" | ts "%F %T" | tee -a repo-get.log
+    repo start --all $1 2>&1 | ts "%F %T" | tee -a repo-get.log
+
+    duration=$(echo "$(date +%s.%N) - $start" | bc)
+    execution_time=`printf "%.2f" $duration`
+
+    echo -e "\n==>> \E[1;35mTotal cost: \E[1;35m$execution_time \033[0m\E[1;38m seconds.\033[0m" | ts "%F %T" | tee -a repo-get.log
+}
+

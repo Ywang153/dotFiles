@@ -1,0 +1,90 @@
+# -- General Configure -------------------------------------------------------------------
+set  -g   status                       on
+set  -g   monitor-activity             on  								                            # activity
+set  -g   visual-activity              off								                            		
+set  -g   renumber-windows             on  								                            # renumber windows when a window is closed
+set  -g   set-titles                   on                        		                            # set terminal title
+setw -g   automatic-rename             on 							                                # rename window to reflect current program
+
+set  -g   status-interval              90
+set  -g   escape-time                  0
+set  -g   history-limit                8192
+set  -sg  repeat-time                  600
+set  -g   base-index                   1         						                            # start windows numbering at 1
+set  -g   display-panes-time           800 								                            # slightly longer pane indicators display time
+set  -g   display-time                 1000      						                            # slightly longer status messages display time
+set  -g   status-left-length           60
+set  -g   status-right-length          90
+setw -g   pane-base-index              1   							                                # make pane numbering consistent with windows
+setw -g   clock-mode-style             24  							                                # 24 hour clock
+
+set  -g   mouse                        on
+setw -g   mode-keys                    vi
+
+set  -g   prefix2                      C-a                        							        # compatible prefix
+
+set  -g   set-titles-string            "#h # #S ~ #I #W"
+set  -g   status-justify               "centre"
+set  -g   default-terminal             "screen-256color" 							                # colors!
+set  -ga  terminal-overrides           ',*:enacs@:smacs@:rmacs@:acsc@'
+
+set  -g   status-bg                    default
+set  -g   status-fg                    white
+set  -g   status-attr                  bright
+set  -g   status-left                  '#[fg=colour63]Session: #S #[fg=colour23]#I #[fg=colour26]#P  '
+set  -g   status-right                 '#[fg=colour223]#(cut -d " " -f 1-4 /proc/loadavg)#[default]'
+
+set  -g   message-fg                   colour189
+set  -g   message-attr                 bright
+set  -g   message-bg                   default
+
+set  -g   pane-border-fg               magenta
+set  -g   pane-active-border-fg        green
+set  -g   pane-active-border-bg        default
+
+set  -g   window-status-last-fg        colour125
+set  -g   window-status-last-bg        colour195
+set  -g   window-status-last-attr      bright
+setw -g   window-status-fg             colour103
+setw -g   window-status-bg             colour108
+setw -g   window-status-attr           dim
+setw -g   window-status-current-fg     red
+setw -g   window-status-current-bg     yellow
+setw -g   window-status-current-attr   bright
+
+# -- Key Binding -------------------------------------------------------------------
+bind     C-a 	                       send-prefix -2
+
+bind     | 		                       split-window -h
+bind     - 		                       split-window -v
+
+bind     C-c 	                       confirm kill-session
+bind     C-x 	                       confirm kill-server
+bind     -n C-l                        send-keys C-l \; run 'tmux clear-history'  	                # clear both screen and history
+bind     C-f 	                       command-prompt -p find-session 'switch-client -t %%'  		# find session
+
+bind     -r h 	                       select-pane -L  												# move left
+bind     -r j 	                       select-pane -D  												# move down
+bind     -r k 	                       select-pane -U  												# move up
+bind     -r l 	                       select-pane -R  												# move right
+bind     -r left                       resize-pane -L 2
+bind     -r down                       resize-pane -D 2
+bind     -r up 	                       resize-pane -U 2
+bind     -r right                      resize-pane -R 2
+bind     y 		                       swap-pane -D       											# swap current pane with the next one
+bind     u 		                       swap-pane -U       											# swap current pane with the previous one
+bind     -r C-p                        previous-window 												# select previous window
+bind     -r C-n                        next-window     												# select next window
+bind     Tab                           last-window                                                  # move to last active window
+bind     C-v  	                       select-layout even-vertical
+bind     C-h  	                       select-layout even-horizontal
+bind     C-g  	                       select-layout main-vertical
+bind     C-r  	                       select-layout main-horizontal
+bind     b 						       list-buffers  									            # list paster buffers
+bind     p 						       paste-buffer  									            # paste from the top pate buffer
+bind     C-b					       choose-buffer 									            # choose which buffer to paste from
+
+bind     c                             new-window   -c      "#{pane_current_path}"
+bind     %                             split-window -h -c   "#{pane_current_path}"
+bind     '"'                           split-window -c      "#{pane_current_path}"
+

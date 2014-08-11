@@ -1,0 +1,11 @@
+" This file is for vsvim
+
+" vsvim indicator
+let g:is_vsvim=1
+
+" load base config
+source $HOME/.vimrc_base
+
+" set 'selection', 'selectmode', 'mousemodel' and 'keymodel' for MS-Windows
+behave mswin
+
