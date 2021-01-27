@@ -28,6 +28,7 @@
 	br = branch --sort=-committerdate
 	br-rm = !sh -c 'git branch -D $1 && git push origin :$1' -
 	br-has = !sh -c 'git branch --all --contains $1'
+	br-clean = "!git branch -vv | grep ': gone]' | grep -v '*' | awk '{print $1}' | xargs -r git branch -D"
 	lg = log --color --graph --pretty=better-oneline --abbrev-commit --decorate
 	la = "!git config -l | grep alias | cut -c 7-"
 	sm-init = submodule update --init --recursive 
