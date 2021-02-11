@@ -52,48 +52,35 @@ export HISTTIMEFORMAT='%F %T '
 # Telling ncurses to always use unicode box drawing characters when a utf-8 locale is selected.
 export NCURSES_NO_UTF8_ACS=1
 
-if [ ${SHELL: -4} = 'bash' ]; then
-    # Set bash prompt
-    if [[ ${TERM} != 'fbterm' ]]; then
-        export PS1="\[\e]0;\u@\h: \w\a\]\n\[$White\][[\[$Purple\]\j\[$White\]]] \[$Cyan\]\t \[$Blue\]{ \[$Red\]\W \[$Blue\]} \[$Yellow\]\$ \[$Color_Off\]"
-    fi
+# Set bash prompt
+if [[ ${TERM} != 'fbterm' ]]; then
+    export PS1="\[\e]0;\u@\h: \w\a\]\n\[$White\][[\[$Purple\]\j\[$White\]]] \[$Cyan\]\t \[$Blue\]{ \[$Red\]\W \[$Blue\]} \[$Yellow\]\$ \[$Color_Off\]"
+fi
 
-    # Bash safe settings   
-    set -o ignoreeof
-    set -o notify
-    
-    stty cs8 -istrip
-    stty pass8
-    
-    # Auto complete insensitive
-    shopt -s nocaseglob
-    shopt -s histappend
-    shopt -s cdspell
-    shopt -s cdable_vars
-    shopt -s checkhash
-    shopt -s checkwinsize
-    shopt -s sourcepath
-    shopt -s no_empty_cmd_completion
-    shopt -s cmdhist
-    shopt -s histappend histreedit histverify
-    shopt -s extglob 
-    shopt -s dotglob 
+# Bash safe settings   
+set -o ignoreeof
+set -o notify
 
-    # Activate bash autocomplete feature
-    if [ -f "/usr/share/bash-completion/bash_completion" ]; then
-          source "/usr/share/bash-completion/bash_completion"
-    fi
+stty cs8 -istrip
+stty pass8
 
-elif [ ${SHELL: -3} = 'zsh' ]; then
-    setopt prompt_subst
-    setopt no_nomatch
-    setopt hist_ignore_all_dups
-    setopt hist_ignore_space
-    setopt autocd
-    setopt extendedglob
+# Auto complete insensitive
+shopt -s nocaseglob
+shopt -s histappend
+shopt -s cdspell
+shopt -s cdable_vars
+shopt -s checkhash
+shopt -s checkwinsize
+shopt -s sourcepath
+shopt -s no_empty_cmd_completion
+shopt -s cmdhist
+shopt -s histappend histreedit histverify
+shopt -s extglob 
+shopt -s dotglob 
 
-    autoload -U colors && colors
-    autoload -U compinit && compinit
+# Activate bash autocomplete feature
+if [ -f "/usr/share/bash-completion/bash_completion" ]; then
+    source "/usr/share/bash-completion/bash_completion"
 fi
 
 # Generate core dump file

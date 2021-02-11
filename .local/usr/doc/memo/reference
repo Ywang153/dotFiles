@@ -45,6 +45,7 @@ sudo pacman-mirrors -g // 更新源列表
 sudo pacman-mirrors -i -c China -m rank //选择国内源
 sudo pacman -Syyu --overwrite \*  // 更新pacman数据库并全面更新系统
 
+# /etc/pacman.conf
 [archlinuxcn]
 SigLevel = Optional TrustedOnly
 Server = https://mirrors.sjtug.sjtu.edu.cn/archlinux-cn/$arch

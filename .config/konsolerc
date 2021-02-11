@@ -8,14 +8,24 @@ Width 1920=700
 [Favorite Profiles]
 Favorites=Konsole.profile
 
+[KonsoleWindow]
+SaveGeometryOnExit=false
+ShowWindowTitleOnTitleBar=true
+UseSingleInstance=true
+
 [MainWindow]
-Height 1080=1006
-State=AAAA/wAAAAD9AAAAAAAAB4AAAAPQAAAABAAAAAQAAAAIAAAACPwAAAAA
-Width 1920=960
+State=AAAA/wAAAAD9AAAAAAAAB4AAAAPOAAAABAAAAAQAAAAIAAAACPwAAAAA
+ToolBarsMovable=Disabled
 Window-Maximized 1080x1920=true
+eDP-1 Window-Maximized 1920x1080=true
 
 [Notification Messages]
 CloseAllEmptyTabs=false
 
 [SearchSettings]
 SearchCaseSensitive=true
+SearchReverseSearch=false
+
+[TabBar]
+NewTabButton=true
+TabBarVisibility=AlwaysShowTabBar

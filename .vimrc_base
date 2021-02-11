@@ -19,12 +19,12 @@ noremap p gp
 noremap gP P
 noremap gP P
 
-nmap <silent> <leader>w :wq!<cr>
-imap <silent> <leader>w <C-o>:wq!<cr>
-vmap <silent> <leader>w <C-c>:wq!<cr>
-nmap <silent> <leader>W :wqa!<cr>
-imap <silent> <leader>W <C-o>:confirm wqa!<cr>
-vmap <silent> <leader>W <C-c>:confirm wqa!<cr>
+nmap <silent> <leader>w :w!<cr>
+imap <silent> <leader>w <C-o>:w!<cr>
+vmap <silent> <leader>w <C-c>:w!<cr>
+nmap <silent> <leader>W :wa!<cr>
+imap <silent> <leader>W <C-o>:confirm wa!<cr>
+vmap <silent> <leader>W <C-c>:confirm wa!<cr>
 
 nmap <silent> <leader>z :confirm cq<cr>
 imap <silent> <leader>z <C-o>:cq<cr>

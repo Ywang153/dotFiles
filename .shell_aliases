@@ -60,6 +60,14 @@ alias hstg='history | grep'                                     # search history
 alias mount='mount | column -t'
 alias freem='free -mlth -s 2'                                   # show momory info
 
+# Package management
+alias apt-update='sudo apt update -y && sudo apt upgrade -y'
+alias dnf-update='sudo dnf update -y'
+alias pacman-update='sudo pacman -Syyu --overwrite \*'
+
+# Anaconda
+alias enable-conda='source /opt/anaconda/bin/activate root'
+
 alias tree="tree -A -I '.svn' -I '.git'" 
 alias mtree="\tree -actqhfDQCF --dirsfirst --charset ASCII -I '.svn' -I '.git' | less -gIJKNW" 
 

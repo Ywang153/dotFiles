@@ -68,13 +68,6 @@ fun! SetupVAM()
 
     let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
 
-    " Tell VAM which plugins to fetch & load:
-    if ( WINDOWS() || CYGWIN() )
-        silent call vam#ActivateAddons(['neocomplete'], {'auto_install' : 1})
-    else
-        silent call vam#ActivateAddons(['YouCompleteMe'], {'auto_install' : 1})
-    endif
-
     silent call vam#install#Install(['vim-autoformat', 'Tagbar', 'DoxygenToolkit', 'The_NERD_Commenter'], {'auto_install' : 1})
     silent call vam#install#Install(['a'], {'auto_install' : 1})
 
@@ -85,6 +78,7 @@ fun! SetupVAM()
                 \ 'ingo-library',
                 \ 'bufexplorer.zip',
                 \ 'Supertab',
+                \ 'neocomplete',
                 \ 'surround',
                 \ 'repeat',
                 \ 'ctrlp',
@@ -324,76 +318,59 @@ autocmd FileType cpp,c,python,cs,javascript,java
             \ call LoadCscope()
 
 
-if ( WINDOWS() || CYGWIN() )
-    " **  neocomplete configure, just for Cygwin
-    let g:neocomplete#enable_at_startup = 1 " use neocomplete.
-    let g:acp_enableAtStartup = 0  " disable AutoComplPop.
-    let g:neocomplete#enable_smart_case = 1  " use smartcase.
-    let g:neocomplete#sources#syntax#min_keyword_length = 2  " set minimum syntax keyword length.
-    let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-    
-    " define dictionary.
-    let g:neocomplete#sources#dictionary#dictionaries = {
-        \ 'default' : '',
-        \ 'vimshell' : $VIMHOME.'/.vimshell_hist',
-        \ 'scheme' : $VIMHOME.'/.gosh_completions'
-            \ }
-    
-    " define keyword.
-    if !exists('g:neocomplete#keyword_patterns')
-        let g:neocomplete#keyword_patterns = {}
-    endif
-    
-    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-    
-    " plugin key-mappings.
-    inoremap <expr><C-g>     neocomplete#undo_completion()
-    inoremap <expr><C-l>     neocomplete#complete_common_string()
-    
-    " recommended key-mappings. <CR>: close popup and save indent.
-    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-    function! s:my_cr_function()
-      return pumvisible() ? "\<C-y>" : "\<CR>"  
-    endfunction
-    
-    " <C-h>, <BS>: close popup and delete backword char.
-    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-    
-    " enable omni completion.
-    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-    
-    " enable heavy omni completion.
-    if !exists('g:neocomplete#sources#omni#input_patterns')
-      let g:neocomplete#sources#omni#input_patterns = {}
-    endif
-    
-    let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-    let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-    
-    " for perlomni.vim setting. https://github.com/c9s/perlomni.vim
-    let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-else
-    " **  YouCompleteMe
-    let g:ycm_key_list_select_completion = ['<Down>']
-    let g:ycm_key_list_previous_completion = ['<Up>']
-    
-    let g:ycm_collect_identifiers_from_comments_and_strings = 0
-    let g:ycm_cache_omnifunc=0
-    let g:ycm_confirm_extra_conf=0
-    let g:ycm_collect_identifiers_from_tags_files=1
-    let g:ycm_complete_in_comments = 1
-    let g:ycm_complete_in_strings = 1
-    let g:ycm_seed_identifiers_with_syntax=1
-    let g:ycm_min_num_of_chars_for_completion=2
+" **  neocomplete configure
+let g:neocomplete#enable_at_startup = 1 " use neocomplete.
+let g:acp_enableAtStartup = 0  " disable AutoComplPop.
+let g:neocomplete#enable_smart_case = 1  " use smartcase.
+let g:neocomplete#sources#syntax#min_keyword_length = 2  " set minimum syntax keyword length.
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
-    let g:ycm_global_ycm_extra_conf = $VIMHOME.'/.ycm_extra_conf.py'
+" define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $VIMHOME.'/.vimshell_hist',
+    \ 'scheme' : $VIMHOME.'/.gosh_completions'
+        \ }
+
+" define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
 endif
+
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" recommended key-mappings. <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return pumvisible() ? "\<C-y>" : "\<CR>"  
+endfunction
+
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+
+" enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+
+let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" for perlomni.vim setting. https://github.com/c9s/perlomni.vim
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 
 " **  AutoFenc configure

@@ -66,22 +66,6 @@ case "$1" in
         echo -e "\033[32m\nDone\033[0m"
         ;;
     
-    "update-hosts")
-        ## install or update hosts
-        echo -e "\033[34m\nStart to install hosts...\033[0m"
-
-        HOSTS=hosts
-
-        if [ ! -d "$DIRTEMP/$HOSTS" ]; then
-            git clone --progress https://github.com/googlehosts/${HOSTS}.git $DIRTEMP/$HOSTS
-        fi
-
-        cd $DIRTEMP/$HOSTS
-        sudo \cp -f hosts-files/hosts /etc/
-
-        echo -e "\033[34m\nDone\033[0m"
-        ;;
-    
     "install-debain-based-pkg")
         ## install common packages on debian base destro
         echo -e "\033[33m\nStart to install packages...\n\033[0m"
@@ -128,7 +112,7 @@ case "$1" in
         ;;
 
     *)       
-        echo -e "\033[37mUsage: \n\t$(basename -- $0) <init|install-tools|update-hosts|install-debain-based-pkg|install-arch-with-kde-pkg|git-workflow>\n\033[0m"
+        echo -e "\033[37mUsage: \n\t$(basename -- $0) <init|install-tools|install-debain-based-pkg|install-arch-with-kde-pkg|git-workflow>\n\033[0m"
         ;;
 esac
    
