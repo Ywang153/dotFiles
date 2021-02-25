@@ -497,7 +497,7 @@ endfunction
 " Usage :Compto[!] {other file}
 command! -nargs=* -complete=file Compto call Compare(<q-args>)
 
-if &diff
+function! VimdiffMode()
     " ignore white space in vimdiff
     set diffexpr=""
 
@@ -508,7 +508,7 @@ if &diff
 
     set diffopt+=context:3
     set diffopt+=iwhite
-    set diffopt+=indent-heuristic
+    "set diffopt+=indent-heuristic
     set nu
     set scrollbind
 
@@ -523,7 +523,7 @@ if &diff
     noremap [ [c
     
     colorscheme evening
-    
+
     hi DiffChange   cterm=italic    ctermfg=50    ctermbg=53        gui=italic   guifg=#00ffdf       guibg=#5f005f
     hi DiffAdd      cterm=italic    ctermfg=9     ctermbg=2         gui=italic   guifg=#ff0000       guibg=#008000
     hi DiffText     cterm=bold      ctermfg=193   ctermbg=160       gui=bold     guifg=#dfffaf       guibg=#df0000
@@ -531,8 +531,10 @@ if &diff
 
     hi statusline   cterm=NONE    ctermfg=96    ctermbg=DarkCyan  gui=bold     guifg=LightMagenta  guibg=DarkCyan
     hi statuslinenc cterm=italic  ctermfg=96    ctermbg=DarkCyan  gui=italic   guifg=LightMagenta  guibg=DarkCyan
-endif
+endfunction
 
+if &diff | call VimdiffMode() | endif
+au FilterWritePre * if &diff | call VimdiffMode() | endif
 
 "********************************** Status line **********************************"
 " always show the status line
