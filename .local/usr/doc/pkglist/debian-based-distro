@@ -23,7 +23,6 @@ erlang
 exuberant-ctags
 figlet
 filezilla
-flameshot
 g++
 gcc
 gdb
@@ -58,7 +57,6 @@ mpg123
 multitail
 mycli
 ncdu
-neofetch
 nethogs
 nload
 nmap
@@ -73,7 +71,6 @@ pi
 pv
 pylint
 python3-pip
-python3-yapf
 qt5-default
 qtcreator
 rustc

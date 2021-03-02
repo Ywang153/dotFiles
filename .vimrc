@@ -509,6 +509,7 @@ function! VimdiffMode()
     set diffopt+=context:3
     set diffopt+=iwhite
     "set diffopt+=indent-heuristic
+    set diffexpr=""
     set nu
     set scrollbind
 

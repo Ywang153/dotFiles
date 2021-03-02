@@ -63,6 +63,8 @@
 	fetch = fetch --all
 	pr = pull --rebase
 	rb = rebase
+	rb-a = rebase --abort
+	rb-c = rebase --continue
 	rb-root = rebase -i --root
 	fixup = !sh -c 'git commit -a --fixup $1 && GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash --no-fork-point $1~' -
 	lc = log --pretty=full ORIG_HEAD.. --stat --no-merges
