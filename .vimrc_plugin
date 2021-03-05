@@ -484,7 +484,7 @@ if (executable('astyle') || executable('autopep8') || executable('xmllint') || e
     endif
 endif
 
-autocmd FileType cpp,c,go,cs,python,javascript,java,xhtml,html
+autocmd FileType cpp,c,go,cs,python,javascript,java,xhtml,html,sql
             \ silent call vam#ActivateAddons(['vim-autoformat'], {'force_loading_plugins_now' : 1})
 
 
