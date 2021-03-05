@@ -28,7 +28,7 @@ alias debug='set -o nounset; set -o xtrace'
 alias rm='rm -R -I'
 alias cp='cp -R -i'
 alias mv='mv -i'
-alias cv="cat -nA"
+alias ca="cat -A"
 
 alias df='df -kh'
 alias du='du -kh --max-depth=1'

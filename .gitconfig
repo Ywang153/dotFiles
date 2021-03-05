@@ -26,7 +26,8 @@
 	co = checkout
 	co-recurse = !sh -c 'git checkout $1 && git submodule update --recursive' -
 	br = branch --sort=-committerdate
-	br-rm = !sh -c 'git branch -D $1 && git push origin :$1' -
+	br-mv = !sh -c 'git branch -m $2 $3 && git push $1 :$2 && git push $1 -u $3' -
+	br-rm = !sh -c 'git branch -D $2 && git push $1 :$2' -
 	br-has = !sh -c 'git branch --all --contains $1'
 	br-clean = "!git branch -vv | grep ': gone]' | grep -v '*' | awk '{print $1}' | xargs -r git branch -D"
 	lg = log --color --graph --pretty=better-oneline --abbrev-commit --decorate
