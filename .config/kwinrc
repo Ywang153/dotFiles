@@ -1,5 +1,5 @@
 [$Version]
-update_info=kwin.upd:replace-scalein-with-scale,kwin.upd:port-minimizeanimation-effect-to-js,kwin.upd:port-scale-effect-to-js,kwin.upd:port-dimscreen-effect-to-js,kwin.upd:auto-bordersize,kwin.upd:animation-speed
+update_info=kwin.upd:replace-scalein-with-scale,kwin.upd:port-minimizeanimation-effect-to-js,kwin.upd:port-scale-effect-to-js,kwin.upd:port-dimscreen-effect-to-js,kwin.upd:auto-bordersize,kwin.upd:animation-speed,kwin.upd:desktop-grid-click-behavior,kwin.upd:no-swap-encourage
 
 [Compositing]
 OpenGLIsUnsafe=false
@@ -14,3 +14,18 @@ Active=true
 LatitudeAuto=22.5333
 LongitudeAuto=114.1333
 NightTemperature=5000
+
+[Plugins]
+contrastEnabled=true
+cubeEnabled=true
+cubeslideEnabled=true
+diminactiveEnabled=true
+fallapartEnabled=true
+flipswitchEnabled=true
+kwin4_effect_squashEnabled=false
+magiclampEnabled=true
+sheetEnabled=true
+slideEnabled=false
+slidebackEnabled=true
+thumbnailasideEnabled=true
+wobblywindowsEnabled=true
