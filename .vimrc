@@ -520,8 +520,8 @@ function! VimdiffMode()
     " use yours when merge
     noremap <silent> <leader>lo :diffget LO<CR>:diffupdate<CR>
 
-    noremap ] ]c
-    noremap [ [c
+    noremap = ]c
+    noremap - [c
     
     colorscheme evening
 
@@ -530,8 +530,8 @@ function! VimdiffMode()
     hi DiffText     cterm=bold      ctermfg=193   ctermbg=160       gui=bold     guifg=#dfffaf       guibg=#df0000
     hi DiffDelete   cterm=italic    ctermfg=48    ctermbg=95        gui=italic   guifg=#00ff87       guibg=#875f5f
 
-    hi statusline   cterm=NONE    ctermfg=96    ctermbg=DarkCyan  gui=bold     guifg=LightMagenta  guibg=DarkCyan
-    hi statuslinenc cterm=italic  ctermfg=96    ctermbg=DarkCyan  gui=italic   guifg=LightMagenta  guibg=DarkCyan
+    hi statusline   cterm=NONE      ctermfg=96    ctermbg=DarkCyan  gui=bold     guifg=LightMagenta  guibg=DarkCyan
+    hi statuslinenc cterm=italic    ctermfg=96    ctermbg=DarkCyan  gui=italic   guifg=LightMagenta  guibg=DarkCyan
 endfunction
 
 if &diff | call VimdiffMode() | endif
