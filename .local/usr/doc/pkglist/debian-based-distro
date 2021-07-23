@@ -17,6 +17,7 @@ cmatrix
 colordiff
 cppcheck
 cppman
+obs-studio
 cscope
 curl
 default-jdk
