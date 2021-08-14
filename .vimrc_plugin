@@ -23,7 +23,7 @@ fun! EnsureVamIsOnDisk(plugin_root_dir)
                         \"the info you're looking for in reasonable ".
                         \"time ask maintainers to improve documentation")
             call mkdir(a:plugin_root_dir, 'p')
-            execute '!git clone --depth=1 https://github.com/MarcWeber/vim-addon-manager '.
+            execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '.
                         \ shellescape(a:plugin_root_dir, 1).'/vim-addon-manager'
             " VAM runs helptags automatically when you install or update
             " plugins
@@ -35,7 +35,7 @@ fun! EnsureVamIsOnDisk(plugin_root_dir)
 endf
 
 fun! GitCheckout(repository, targetDir)
-	let a:repository.url = substitute(a:repository.url, '^git://github', 'https://github', '')
+	let a:repository.url = substitute(a:repository.url, '^https://github', 'git://github', '')
 	return vam#utils#RunShell('git clone --depth=1 $.url $p', a:repository, a:targetDir)
 endf
 

@@ -36,7 +36,7 @@ case "$1" in
         AUTOJUMP=autojump
 
         if [ ! -d "$DIRTEMP/$AUTOJUMP" ]; then
-            git clone --progress https://github.com/wting/${AUTOJUMP}.git $DIRTEMP/$AUTOJUMP
+            git clone --progress git://github.com/wting/${AUTOJUMP}.git $DIRTEMP/$AUTOJUMP
         fi
 
         cd $DIRTEMP/$AUTOJUMP
@@ -50,7 +50,7 @@ case "$1" in
             FZF=fzf
 
             if [ ! -d "$DIRTEMP/$FZF" ]; then
-                git clone --progress https://github.com/junegunn/${FZF}.git $DIRTEMP/$FZF
+                git clone --progress git://github.com/junegunn/${FZF}.git $DIRTEMP/$FZF
             fi
 
             cd $DIRTEMP/$FZF

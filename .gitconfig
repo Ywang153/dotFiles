@@ -8,7 +8,7 @@
 	filemode = false
 	whitespace = trailing-space,space-before-tab,indent-with-non-tab
 	trustctime = false
-	compression = -1
+	compression = 0
 [color]
 	ui = always
 	branch = always
@@ -99,6 +99,7 @@
 	logoutputencoding = gbk
 [http]
 	sslVerify = false
+	postBuffer = 524288000
 [diff]
 	algorithm = patience
 	tool = vimdiff
