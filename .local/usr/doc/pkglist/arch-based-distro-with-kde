@@ -8,6 +8,8 @@ bzip2
 clang
 cmake
 colordiff
+language-pack-zh-hans
+manpages-zh
 coreutils
 cppcheck
 crow-translate
