@@ -49,10 +49,11 @@ alias mkpath='mkdir -pv'										# prevents accidentally clobbering files
 alias less='less -R'                                            # raw control characters
 alias whence='type -a'                                          # where, of a sort
 
-alias fgrep='fgrep --color=auto'                                # show differences in colour
-alias grep='grep --color=auto'                                  # show differences in colour
-alias egrep='egrep --color=auto'                                # show differences in colour
-alias tailf='tail -F -n 200'                                    # show differences in colour
+alias fgrep='fgrep --color=auto'                                
+alias grep='grep --color=auto'                                  
+alias g='grep -ina --color=auto'                                
+alias egrep='egrep --color=auto'                                
+alias tailf='tail -F -n 200'                                    
 
 alias hstg='history | grep'                                     # search history quickly
 
