@@ -12,7 +12,7 @@ You should clone this repository into you unik-like environment **HOME** directo
   5. git submodule update --init --recursive
 
 ###### Quick Command
-    git init && git remote add origin git://github.com/Ywang153/dotFiles.git && git fetch -f && git checkout -t -f origin/trunk && git remote set-url --push origin git@github.com:Ywang153/dotFiles.git
+    git init -b trunk && git remote add -f -t trunk -m trunk origin git://github.com/Ywang153/dotFiles.git && git remote set-url --push origin git@github.com:Ywang153/dotFiles.git && git checkout trunk
 
 -------- 
 ### B), Add the below scripts into your shell config file, Such as .bashrc;
