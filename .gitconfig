@@ -131,6 +131,3 @@
 	recurse = true
 [log]
 	decorate = auto
-[user]
-	email = wyhbetter@outlook.com
-	name = Glenn WANG
