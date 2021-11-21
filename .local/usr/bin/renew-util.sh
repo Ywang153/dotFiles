@@ -13,12 +13,19 @@ DIRORIG=$(pwd)
 
 case "$1" in
     "init")
-        echo -e "\033[33mBegain to initialize personal environment..\n\033[0m"
+        echo -e "\033[33mBegain to initialize personal setting..\n\033[0m"
+
+        chmod 700 ~/.ssh/ && chmod -R 600 ~/.ssh/*
+        
+        echo -e "\033[32m\nDone\033[0m"
+        ;;
+        
+    "init-dir")
+        echo -e "\033[33mBegain to create directory tree..\n\033[0m"
 
         sudo mkdir -p /data/{Apps,Temp,CodeZone/{3rdparty,GITROOT},Packages,VMs}
         sudo chown -R "$(whoami)": /data/*
         
-        chmod 700 ~/.ssh/ && chmod -R 600 ~/.ssh/*
         cd
         
         [ -L "tmp" ] || ln -s /data/Temp tmp
@@ -112,7 +119,7 @@ case "$1" in
         ;;
 
     *)       
-        echo -e "\033[37mUsage: \n\t$(basename -- $0) <init|install-tools|install-debain-based-pkg|install-arch-with-kde-pkg|git-workflow>\n\033[0m"
+        echo -e "\033[37mUsage: \n\t$(basename -- $0) <init|install-dir|install-tools|install-debain-based-pkg|install-arch-with-kde-pkg|git-workflow>\n\033[0m"
         ;;
 esac
    
