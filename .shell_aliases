@@ -66,9 +66,6 @@ alias apt-update='sudo apt update -y && sudo apt upgrade -y && sudo apt autoremo
 alias dnf-update='sudo dnf update -y'
 alias pacman-update='sudo pacman -Syyu --noconfirm --overwrite \* && yay -Syu'
 
-# Anaconda
-alias enable-conda='source /opt/anaconda/bin/activate root'
-
 alias tree="tree -A -I '.svn' -I '.git'" 
 alias mtree="\tree -actqhfDQCF --dirsfirst --charset ASCII -I '.svn' -I '.git' | less -gIJKNW" 
 
@@ -97,9 +94,13 @@ if  [[ ${OSTYPE:0:6} != 'cygwin' ]] && [[ ${OSTYPE:0:4} != 'msys' ]]; then
 
     alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 sudo pip install -U --no-cache-dir"
 
+    # Anaconda
+    alias enable-conda='source /opt/anaconda/bin/activate root'
+
 else
     alias tcpdump='windump'
     alias open='cygstart'
+    alias e.='explorer.exe .'
     
     alias k='/bin/kill -f -s KILL'
     alias ka='/bin/killall -I -s KILL'

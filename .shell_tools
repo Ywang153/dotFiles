@@ -53,7 +53,7 @@ function ko {
 }
 
 # locate header file
-function fheader {
+function lf {
     locate -b '\$1'
 }
 
@@ -136,7 +136,7 @@ function fg() {
 
 # Find a file with a pattern in name
 function ff() { 
-    find . \( -type d \( -name .git -o -name .svn -o -name .hg \) -prune \) -o -type f -iname '*'"$*"'*' -ls ;
+    find . \( -type d \( -name .git -o -name .svn -o -name .hg \) -prune \) -o -type f -iname '*'"$*"'*' -exec ls -lhQ --color=auto {} \;
 }        
 
 # Find a file with pattern $1 in name and execute $2 on it:
@@ -212,9 +212,9 @@ function startmux() {
 }
 
 # Register cygwin prompt
-function reg-cygprompt() {   
+function cyg-reg-rmenu() {   
     if [ "$OSTYPE" = "cygwin"  ] ; then
-        chere -icf -t mintty -o "-i $HOME/.local/usr/res/shell.ico" -s bash -e "Bash Prompt Here"
+        chere -icf -t mintty -o "-i /Cygwin-Terminal.ico" -s bash -e "Cygwin Prompt"
     fi
 }
 
@@ -238,7 +238,7 @@ function cyg-setup() {
 }
 
 # Start the cygwin X server
-function launch_cygxserver() {   
+function cyg-launch-xserver() {   
     if [ "$OSTYPE" = "cygwin"  ] ; then
         run -p /usr/bin XWin -multiwindow -clipboard -silent-dup-error 
     fi
@@ -281,22 +281,8 @@ function scp2hosts() {
 
 # Bulk rename files
 # eg. renames './*.txt' 'txt' 'log'
-function renames() {
+function rn() {
     for i in $1; do mv $i ${i/$2/$3}; done
-}
-
-# Find anything in current git repository
-function gfind() {
-    git rev-list --all | ( 
-        while read revision; do 
-            git grep -F "$1" $revision 
-        done 
-    ) 
-}
-
-# Check out git repository on not empty directory
-function gclone() {
-    git init && git remote add origin "$1" && git fetch -f && git checkout -t -f origin/master
 }
 
 # Test hard disk speed with dd
@@ -320,7 +306,7 @@ function genpasswd() {
 }
 
 # Pretty print debugging environment
-function print-dbg-env() {
+function print-env() {
     echo -e "+++++++++++>> ${BRed}PATH${Color_Off}"
     echo -e "${PATH//:/\\n}\n"
 
