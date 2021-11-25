@@ -161,6 +161,13 @@ vnoremap <silent> v? <Esc>:call FindFirstRegionBack()<CR>
 nnoremap <silent> vn :call FindNextRegion()<CR>
 nnoremap <silent> vp :call FindNextRegionBack()<CR>
 
+if OSX()
+    nmap <D-j> <M-j>
+    nmap <D-k> <M-k>
+    vmap <D-j> <M-j>
+    vmap <D-k> <M-k>
+endif
+
 " Make views automatic
 let g:skipview_files = [
             \ '[EXAMPLE PLUGIN BUFFER]'
@@ -232,6 +239,7 @@ silent function! ToggleSlash(independent) range
 endfunction
 
 command! -bang -range ToggleSlash <line1>,<line2>call ToggleSlash(<bang>1)
+noremap <silent> <leader>sl :ToggleSlash<CR>
 
 " returns true if paste mode is enabled
 silent function! HasPaste()
@@ -443,4 +451,6 @@ if exists("+showtabline")
         return s
     endfunction
 endif
+
+set tabline=%!MyTabLine()
 

@@ -1,88 +1,25 @@
-# Set up user personal environment
-function build_envar() {
-    local _result=$1
-    local result=''
-
-    OIFS=$IFS
-    IFS=';:'
-    
-    eval local OENVAR="\$$2"
-    read -ra ovars <<< "$OENVAR"
-
-    for ov in "${ovars[@]}"; do
-        local existed=0
-        read -ra var <<< "$result"
-         
-        for v in "${var[@]}"; do
-            if [[ "$ov" == "$v" ]]; then
-                existed=1
-                break
-            fi
-        done
-        
-        if [[ $existed -eq 0 ]] ; then
-            result="${result}${ov}:"
-        fi
-    done
-
-    eval local ENVAR="\$$3"
-    read -ra vars <<< "$ENVAR"
-    
-    for ov in "${vars[@]}"; do
-        local existed=0
-        read -ra var <<< "$result"
-        
-        for v in "${var[@]}"; do
-            if [[ "$ov" == "$v" ]]; then
-                existed=1
-                break
-            fi
-        done
-        
-        if [[ $existed -eq 0 ]] ; then
-            result="${result}${ov}:"
-        fi
-    done
-
-    IFS=$OIFS
-    eval $_result="'${result%:}'"
-}
-
+### Set up user personal environment
 # PATH
-TEMP_PATH=$MYPREFIX/bin:$MYPREFIX/usr/bin
-build_envar NEW_PATH TEMP_PATH PATH 
-export PATH=$NEW_PATH
-
+NEW_PATH=$MYPREFIX/bin:$MYPREFIX/usr/bin:$PATH
+export PATH=$(echo -n "$NEW_PATH" | awk -v RS=: '!($0 in a) {a[$0]; printf("%s%s", length(a) > 1 ? ":" : "", $0)}')
 
 # C_INCLUDE_PATH
-TEMP_C_INCLUDE_PATH=$MYPREFIX/include:$MYPREFIX/usr/include
-build_envar NEW_C_INCLUDE_PATH C_INCLUDE_PATH TEMP_C_INCLUDE_PATH
-export C_INCLUDE_PATH=$NEW_C_INCLUDE_PATH
-
+NEW_C_INCLUDE_PATH=$MYPREFIX/include:$MYPREFIX/usr/include:$C_INCLUDE_PATH
+export C_INCLUDE_PATH=$(echo -n "$NEW_C_INCLUDE_PATH" | awk -v RS=: '!($0 in a) {a[$0]; printf("%s%s", length(a) > 1 ? ":" : "", $0)}')
 
 # CPLUS_INCLUDE_PATH
-TEMP_CPLUS_INCLUDE_PATH=$MYPREFIX/include:$MYPREFIX/usr/include
-build_envar NEW_CPLUS_INCLUDE_PATH CPLUS_INCLUDE_PATH TEMP_CPLUS_INCLUDE_PATH
-export CPLUS_INCLUDE_PATH=$NEW_CPLUS_INCLUDE_PATH
-
+NEW_CPLUS_INCLUDE_PATH=$MYPREFIX/include:$MYPREFIX/usr/include:$CPLUS_INCLUDE_PATH
+export CPLUS_INCLUDE_PATH=$(echo -n "$NEW_CPLUS_INCLUDE_PATH" | awk -v RS=: '!($0 in a) {a[$0]; printf("%s%s", length(a) > 1 ? ":" : "", $0)}')
 
 # LIBRARY_PATH
-TEMP_LIBRARY_PATH=$MYPREFIX/lib:$MYPREFIX/usr/lib:$MYPREFIX/usr/local/lib
-build_envar NEW_LIBRARY_PATH LIBRARY_PATH TEMP_LIBRARY_PATH
-export LIBRARY_PATH=$NEW_LIBRARY_PATH
-
+NEW_LIBRARY_PATH=$MYPREFIX/lib:$MYPREFIX/usr/lib:$MYPREFIX/usr/local/lib:$LIBRARY_PATH
+export LIBRARY_PATH=$(echo -n "$NEW_LIBRARY_PATH" | awk -v RS=: '!($0 in a) {a[$0]; printf("%s%s", length(a) > 1 ? ":" : "", $0)}')
 
 # LD_LIBRARY_PATH
-TEMP_LD_LIBRARY_PATH=$MYPREFIX/lib:$MYPREFIX/usr/lib:$MYPREFIX/usr/local/lib
-build_envar NEW_LD_LIBRARY_PATH LD_LIBRARY_PATH TEMP_LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=$NEW_LD_LIBRARY_PATH
+NEW_LD_LIBRARY_PATH=$MYPREFIX/lib:$MYPREFIX/usr/lib:$MYPREFIX/usr/local/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$(echo -n "$NEW_LD_LIBRARY_PATH" | awk -v RS=: '!($0 in a) {a[$0]; printf("%s%s", length(a) > 1 ? ":" : "", $0)}')
 
 # Other
 export GDBHISTFILE="$HOME/.gdb_history"
 export PYTHONIOENCODING="utf8"
-
-# Load .custom_build
-if [ -f "$HOME/.custom_build" ]; then
-  source "$HOME/.custom_build"
-fi
 

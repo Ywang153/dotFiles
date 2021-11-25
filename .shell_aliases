@@ -1,27 +1,29 @@
 # Productivity
-if  [ ${OSTYPE:0:7} = 'freebsd' ] || [ ${OSTYPE:0:6} = 'darwin' ] ; then
-    alias ls='ls -hFBG'                                         # classify files in colour
-    alias l='ls -CF'                                            #
-else
-    alias ls='ls -hvF --show-control-chars --color=always'      # classify files in colour
-    alias l='ls -CF --group-directories-first'                  #
-fi
-
-alias ll='ls -l'                                                # long list
-alias la='ll -A'                                                # all but . and ..
-alias lm='ll | more'       										# pipe through 'more'
-alias lr='ll -R | more'    										# recursive ls.
-alias lx='ls -lXB'         										# sort by extension.
-alias lk='ls -lSr'         										# sort by size, biggest last.
-alias lt='ls -ltr'         										# sort by date, most recent last.
-alias lc='ls -ltcr'        										# sort by/show change time,most recent last.
-alias lu='ls -ltur'        										# sort by/show access time,most recent last.
+alias ll='ls -lhvF --show-control-chars --color=always'                                                         
+alias l='ls -CF --group-directories-first'                  
+alias la='ll -A'                                                                                                   
+alias lm='ll | more'       										                                                   
+alias lr='ll -R | more'    										                                                   
+alias lx='ls -lhXB'
+alias lk='ls -lhSr'
+alias lt='ls -lhtr'
+alias lc='ls -lhtcr'
+alias lu='ls -lhtur'
 
 alias J='jobs -l'
 
 alias c='clear'
 alias y='yes'
 alias d='echo */'
+alias mdshow='glow -p <'
+
+alias 'ps?'='ps aux | grep -v "grep" | grep -i'                                                         # find PID by name
+alias pa='ps aux'
+alias px='ps x'
+alias pt='ps -hH -p'
+
+alias k='kill -s KILL'
+alias ka='killall -s KILL'
 
 alias debug='set -o nounset; set -o xtrace'
 
@@ -34,87 +36,110 @@ alias df='df -kh'
 alias du='du -kh --max-depth=1'
 
 alias vi='vim'
-alias scp='scp -prC -l 2000'
+alias scp='scp -prC'
 
 alias vn='vim -u NONE'
 alias vd='vim -d'
 alias svi='sudo vim'
 
-alias rs='rsync -acyhuvizP --delete-excluded --delete --delete-after --force --stats --bwlimit=2000 --exclude-from=exclude.txt --skip-compress=gz/jpg/mp[34]/7z/bz2'
+alias rs='rsync -acyhuvizP --delete-excluded --delete --delete-after --force --stats'
 alias hs='history'
-alias sour='source'
-alias di='diff --color=auto -bsBHrtTuw'
 
-alias mkpath='mkdir -pv'										# prevents accidentally clobbering files
-alias less='less -R'                                            # raw control characters
-alias whence='type -a'                                          # where, of a sort
+alias mkdir='mkdir -pv'	
+alias less='less -RN'   
+alias make="make -j $MAX_JOBS"
 
-alias fgrep='fgrep --color=auto'                                
-alias grep='grep --color=auto'                                  
-alias g='grep -ina --color=auto'                                
-alias egrep='egrep --color=auto'                                
+alias g='grep -ia --color=auto'                                  
+alias eg='egrep -ia --color=auto'                                
+
+alias ag='ag -U --silent --workers $MAX_JOBS --depth=10000 --ignore={.git,.svn,.hg,.repo,.vscode} --stats'
+alias rg='rg -Sp -j $MAX_JOBS --color always -g "!{.git,.svn,.hg,.repo,.vscode}" --stats'
 alias tailf='tail -F -n 200'                                    
 
-alias hstg='history | grep'                                     # search history quickly
+alias hstg='history | grep'                                                                                 # search history quickly
 
-# System info
-alias mount='mount | column -t'
-alias freem='free -mlth -s 2'                                   # show momory info
+alias t="\tree -A -I '.svn' -I '.git' -I '.repo' -I '.vscode'" 
 
-# Package management
-alias apt-update='sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove -y && sudo snap refresh'
-alias dnf-update='sudo dnf update -y'
-alias pacman-update='sudo pacman -Syyu --noconfirm --overwrite \* && yay -Syu'
-
-# Anaconda
-alias enable-conda='source /opt/anaconda/bin/activate root'
-
-alias tree="tree -A -I '.svn' -I '.git'" 
-alias mtree="\tree -actqhfDQCF --dirsfirst --charset ASCII -I '.svn' -I '.git' | less -gIJKNW" 
-
-# Network
-alias wsget='wget --random-wait -r -p -e robots=off -U mozilla' # download entire website
-alias ipinfo='curl ipinfo.io/json'                              # show public ip address
-alias a2c='aria2c -c --log-level=warn'                          # downloader
+alias restart='sudo reboot'
+alias halt='sudo shutdown -h now'
+    
+alias wsget='wget --random-wait -r -p -e robots=off -U mozilla'                                             # download entire website
+alias ipinfo='curl -s ipinfo.io/json | jq'                                                                          # show public ip address
+alias logo='neofetch'
 
 # Special alias by OS type
-if  [[ ${OSTYPE:0:6} != 'cygwin' ]] && [[ ${OSTYPE:0:4} != 'msys' ]]; then
-    alias ping='ping -c 4'
-    
-    alias restart='sudo reboot'
-    alias halt='sudo shutdown -h now'
-
-    alias sysinfo='inxi -Fx'                                        # print all system info
-
-    alias k='kill -s KILL'
-    alias ka='killall -s KILL'
-
-    alias 'ps?'='ps aux | grep -v "grep" | grep -i'                                  # find PID by name
-    alias pa='ps aux'
-    alias px='ps x'
-    alias pt='ps -hH -p'
-    alias m='mocp'
-
-    alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 sudo pip install -U --no-cache-dir"
-
-else
+case ${OSTYPE} in
+  'cygwin'*)
     alias tcpdump='windump'
     alias open='cygstart'
+    alias e.='explorer.exe .'
+    alias battery-status='powercfg /batteryreport'
     
-    alias k='/bin/kill -f -s KILL'
-    alias ka='/bin/killall -I -s KILL'
+    alias k='kill -f -s KILL'
+    alias ka='killall -I -s KILL'
 
-    alias 'ps?'='ps aux -W | grep -v "grep" | grep -i'                               # find PID by name
     alias pa='ps aux -W'
     alias px='ps x -W'
     alias pt='ps -hH -p -W'
-    
-    alias mingw32-gcc='i686-w64-mingw32-gcc'
-    alias mingw32-g++='i686-w64-mingw32-g++'
+    alias 'ps?'='ps aux -W | grep -v "grep" | grep -i'                                                      # find PID by name
 
-    alias mingw-w64-gcc='x86_64-w64-mingw32-gcc'
-    alias mingw-w64-g++='x86_64-w64-mingw32-g++'
+    ;;
+
+  'msys'*)
+    alias pacman-update='pacman -Syyu --noconfirm --overwrite \*'
     
-    alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U --no-cache-dir"
-fi
+    ;;
+
+  'freebsd'*)
+    alias ls='ls -hFBG'                                                                                            
+    alias l='ls -CF'                                            
+    
+    ;;
+
+  'darwin'*)
+    unalias l
+    alias l='ls -CF'                                            
+    
+    unalias du
+    alias du='du -kh -d=1'
+
+    unalias rm
+    alias rm='rm -I -R'
+
+    unalias k
+    alias k='kill -SIGKILL'
+    
+    unalias ka
+    alias ka='killall -SIGKILL'
+    
+    ;;
+
+  *)
+    if [ -x "$(command -v apt)" ]; then
+      alias apt-update='sudo apt clean;sudo apt update -y;sudo apt upgrade -y;sudo apt autoremove -y'
+    fi
+    
+    if [ -x "$(command -v snap)" ]; then
+      alias snap-update='sudo snap refresh'
+    fi
+    
+    if [ -x "$(command -v dnf)" ]; then
+      alias dnf-update='sudo dnf update -y'
+    fi
+    
+    if [ -x "$(command -v pacman)" ]; then
+      alias pacman-update='sudo pacman -Syyu --noconfirm --overwrite \*'
+    fi
+    
+    if [ -x "$(command -v nautilus)" ]; then
+      alias e.='dolphin . &'
+    fi
+    
+    alias mount='mount | column -t'
+    alias free='free -mlth -s 2'                                                                               
+    alias sysinfo='inxi -Fx'                                                                                
+    alias ping='ping -c 4'
+
+    ;;
+esac
 

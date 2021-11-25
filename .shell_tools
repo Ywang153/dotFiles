@@ -1,11 +1,11 @@
 # Creates an archive (*.tar.gz) from given directory
 function mktar() {
-    tar pcvzf "${2%}${1%%/}.tar.gz"  "${1%%/}/";
+    tar pcvzf "${2%}${1%%/}.tar.gz"  "${1%%/}/" --checkpoint=10000 --checkpoint-action="ttyout='%{%Y-%m-%d %H:%M:%S}t (%d sec): #%u, %T%*\r'";
 }
 
 # Create a ZIP archive of a file or folder.
 function mkzip() {
-    zip -9 -r "${2%}${1%%/}.zip" "$1" ;
+    zip -9 -dd -r "${2%}${1%%/}.zip" "$1" ;
 }
 
 # Create a 7z archive of a file or folder.
@@ -23,23 +23,14 @@ function nlauth() {
     chmod --preserve-root -c -R u=rwX,g=rwX,o-w "$@" ;
 }
 
-# Repeat n times command, C-like syntax
-function rpt() {
-    local i max
-    max=$1; shift;
-    for ((i=1; i <= max ; i++)); do  
-        eval "$@";
-    done
-}
-
 # Convert gbk to utf-8
 function uo {
-    iconv -f gbk -t utf-8 $1
+    iconv -c -f gbk -t utf-8 $1
 }
 
-# Recursive search and replace
-function sr {
-    find . \( -type d \( -name .git -o -name .svn -o -name .hg \) -prune \) -o -type f -name "${3:-*}" -exec sed -i "s/$1/$2/g" {} +
+# Convert file encoding from gbk to utf-8
+function uf {
+    iconv -c -f gbk -t utf-8 $1 > $1.utf8
 }
 
 # Quote previous output
@@ -52,70 +43,46 @@ function ko {
     ps -ef | grep $1 | grep -v grep | awk '{print $2}' | xargs -r kill -SIGKILL
 }
 
-# locate header file
-function fheader {
-    locate -b '\$1'
+# locate file
+function lf {
+    locate -b "\\$1"
 }
 
-# Using pmap to List Memory Usage of All the Processes in Kilobytes
-function pm() {
-    printf "%-10s%-15s%-15s%s\n" "PID" "OWNER" "MEMORY" "COMMAND"
-
-    function sysmon_main() {
-        RAWIN=$(ps -o pid,user,%mem,command ax | grep -v PID | awk '/[0-9]*/{print $1 ":" $2 ":" $4}')
-
-        for i in $RAWIN
-        do
-            PID=$(echo $i | cut -d: -f1)
-            OWNER=$(echo $i | cut -d: -f2)
-            COMMAND=$(echo $i | cut -d: -f3)
-            MEMORY=$(pmap $PID | tail -n 1 | awk '/[0-9]K/{print $2}')
-            
-            printf "%-10s%-15s%-15s%s\n" "$PID" "$OWNER" "$MEMORY" "$COMMAND"
-        done
-    }
-
-    sysmon_main | sort -bnr -k3
-}
-
-# Generate new GUID
-function guid {
-    uuidgen -r
-}
-
-# Show top 10 cpu and memory eating processes
-function memcpu() {
-    echo "*** Top 10 cpu eating processes ***"; \ps aux | sort -nr -k 3 | head -10;
-    echo -e "$1"
-    echo "*** Top 10 memory eating processes ***"; \ps aux | sort -nr -k 4 | head -10; 
+# Custom diff output
+function di {
+    colordiff -bsBHrtTuw --tabsize=4 $1 $2 | less -RN
 }
 
 # Watch target processes by Top command
 function wt() {
-    top -c -p $(pgrep -f $1 | head -20 | tr "\\n" "," | sed 's/,$//')
+    if [[ "$OSTYPE" =~ ^"darwin" ]]; then
+        top -a -pid $(pgrep -i -f $1 | head -20 | tr "\\n" "," | sed 's/,$//')
+    else
+        top -c -p $(pgrep -i -f $1 | head -20 | tr "\\n" "," | sed 's/,$//')
+    fi
 }
 
 # https://www.stefaanlippens.net/pretty-csv.html
 function pretty_csv {
-    column -t -s, -n "$@" | less -F -S -X -K
+    column -t -s, -n "$@" | less -FSXKN
 }
 
 # Auto extract every compress type file
-function aex() {                                                          
+function ex() {                                                          
     if [ -f "$1" ] ; then 
         case "$1" in 
-            *.tar.bz2)   tar xjf        "$1"     ;; 
-            *.tar.gz)    tar xzf        "$1"     ;; 
+            *.tar.bz2)   tar xvjf       "$1"     ;;
+            *.tar.gz)    tar xvzf       "$1" --checkpoint=10000 --checkpoint-action="ttyout='%{%Y-%m-%d %H:%M:%S}t (%d sec): #%u, %T%*\r'";; 
             *.bz2)       bunzip2        "$1"     ;; 
             *.rar)       unrar e        "$1"     ;; 
             *.gz)        gunzip         "$1"     ;; 
-            *.tar)       tar xf         "$1"     ;; 
-            *.tbz2)      tar xjf        "$1"     ;; 
-            *.tgz)       tar xzf        "$1"     ;; 
+            *.tar)       tar xvf        "$1"     ;; 
+            *.tbz2)      tar xvjf       "$1"     ;; 
+            *.tgz)       tar xvzf       "$1"     ;; 
             *.zip)       unzip          "$1"     ;; 
             *.Z)         uncompress     "$1"     ;; 
             *.7z)        7za x          "$1"     ;; 
-            *.xz)        xz -d          "$1"     ;; 
+            *.xz)        xz -ld         "$1"     ;; 
             *.lzma)      lzma -d        "$1"     ;; 
             *.lz)        lzip -d        "$1"     ;; 
             *)     echo "'$1' cannot be extracted via aex command!" ;; 
@@ -136,37 +103,30 @@ function fg() {
 
 # Find a file with a pattern in name
 function ff() { 
-    find . \( -type d \( -name .git -o -name .svn -o -name .hg \) -prune \) -o -type f -iname '*'"$*"'*' -ls ;
+    time find . \
+        \( -type d \( -name .git -o -name .svn -o -name .hg -o -name .repo -o -name .vscode \) -prune \) -o \
+        -iname "${1:-*}" -mmin "${2:-+0}" -print0 | xargs -0 -n 10 -P $MAX_JOBS ls -lhdG
 }        
 
-# Find a file with pattern $1 in name and execute $2 on it:
-function fe() {
-    if [ $# -ge 3 ]; then
-        find . \( -type d \( -name .git -o -name .svn -o -name .hg \) -prune \) -o -type f -iname '*'"${1:-}"'*' -exec ${2:-file} {} "$3" \;
-    else
-        find . \( -type d \( -name .git -o -name .svn -o -name .hg \) -prune \) -o -type f -iname '*'"${1:-}"'*' -exec ${2:-file} {} \;
-    fi
+function ff-MRUs() { 
+    local timeoffset=
+
+    case "$2" in 
+        "1day")         timeoffset='-1440'       ;; 
+        "7day")         timeoffset='-10080'      ;; 
+        "30min")        timeoffset='-30'         ;; 
+        *)              timeoffset='-240'        ;; 
+    esac 
+    
+    ff "${1:-*}" "$timeoffset"
 }
-
-# md5sum check
-function md5check() {
-    md5sum "$1" | grep -i "$2";
-}                          
-
-# sum integers, one per line?
-function lsum() {
-    sum=0
-    
-    for num in $(cat $1)
-        do
-            ((sum+=num))
-    done
-    
-    echo $sum
-}                          
 
 function uq() {
     sort -u $1 -o $1
+}
+
+function sd() {
+    split -a 4 -d -l 50000 $1 $1.part
 }
 
 # Start multi-tmux windows
@@ -212,22 +172,29 @@ function startmux() {
 }
 
 # Register cygwin prompt
-function reg-cygprompt() {   
-    if [ "$OSTYPE" = "cygwin"  ] ; then
-        chere -icf -t mintty -o "-i $HOME/.local/usr/res/shell.ico" -s bash -e "Bash Prompt Here"
+function cyg-prompt() {   
+    if [ "$OSTYPE" == "cygwin"  ] ; then
+        local WPATH=$(cygpath -w /Cygwin-Terminal.ico)
+        
+        chere -icf -t mintty -s bash -e "Bash Here"
+
+        regtool -w -s set /HKCU/Software/Classes/Drive/Shell/cygwin64_bash/Icon ${WPATH}
+        regtool -w -s set /HKCU/Software/Classes/Drive/Background/Shell/cygwin64_bash/Icon ${WPATH}
+        regtool -w -s set /HKCU/Software/Classes/Directory/Shell/cygwin64_bash/Icon ${WPATH}
+        regtool -w -s set /HKCU/Software/Classes/Directory/Background/Shell/cygwin64_bash/Icon ${WPATH}
     fi
 }
 
 # Start cygwin setup
 function cyg-setup() {   
-    if [ "$OSTYPE" = "cygwin"  ] ; then
+    if [ "$OSTYPE" == "cygwin"  ] ; then
 		[ -d "/setup" ] || mkdir -p /setup
 		
 		EXE=setup-x86_64.exe
 		
         (cd /setup && wget -N -t 8 --show-progress https://cygwin.com/$EXE && chmod +x ./$EXE)
         
-        if [[ "$1" = "update" ]] || [[ "$1" = "up" ]]; then
+        if [[ "$1" = "update" ]] || [[ "$1" = "upgrade" ]]; then
             param="-qvng"
         else
             param="-nM"
@@ -238,8 +205,8 @@ function cyg-setup() {
 }
 
 # Start the cygwin X server
-function launch_cygxserver() {   
-    if [ "$OSTYPE" = "cygwin"  ] ; then
+function cyg-launch-xserver() {   
+    if [ "$OSTYPE" == "cygwin"  ] ; then
         run -p /usr/bin XWin -multiwindow -clipboard -silent-dup-error 
     fi
 }
@@ -248,7 +215,7 @@ function launch_cygxserver() {
 function puts_sshkey() {
     for var in "$@"
     do  
-        ssh-copy-id -i "$HOME/.ssh/id_rsa.pub" "$var" 
+        ssh-copy-id -i "$HOME/.ssh/id_ed25519.pub" "$var" 
     done
 }
 
@@ -263,7 +230,7 @@ function scp2hosts() {
     if [ -f $HOSTS ] ; then
         while IFS=';' read -ra HOST; do
             for h in "${HOST[@]}"; do
-                printf "\n${Green}Starting transfer to host [$h]..\n${Color_Off}"
+                printf "\n\033[32mStarting transfer to host [$h]..\n\033[0m"
                 scp -prC $SRC ${h}:$DEST
             done
         done <<< "$HOSTS"
@@ -271,7 +238,7 @@ function scp2hosts() {
         IFS=';' read -ra HOST <<< "$HOSTS"
         
         for h in "${HOST[@]}"; do
-            printf "\n${Green}Starting transfer to host [$h]..\n${Color_Off}"
+            printf "\n\033[32mStarting transfer to host [$h]..\n\033[0m"
             scp -prC $SRC $h:$DEST
         done
     fi
@@ -279,33 +246,18 @@ function scp2hosts() {
     IFS=$OIFS
 }
 
-# Bulk rename files
-# eg. renames './*.txt' 'txt' 'log'
-function renames() {
-    for i in $1; do mv $i ${i/$2/$3}; done
-}
-
-# Find anything in current git repository
-function gfind() {
-    git rev-list --all | ( 
-        while read revision; do 
-            git grep -F "$1" $revision 
-        done 
-    ) 
-}
-
-# Check out git repository on not empty directory
-function gclone() {
-    git init && git remote add origin "$1" && git fetch -f && git checkout -t -f origin/master
-}
-
 # Test hard disk speed with dd
 function ddbmk() {
     dd if=/dev/zero of=/tmp/test.data bs=8k count=131072 conv=fsync
 }
 
+# Generate new GUID
+function gen-guid {
+    uuidgen -r
+}
+
 # Generate password for specify length, default as 14
-function genpasswd() { 
+function gen-passwd() { 
     len=14
 
     if [ $# -eq 1 ] ; then 
@@ -319,43 +271,66 @@ function genpasswd() {
     strings /dev/urandom | grep -o '[[:alnum:]]' | head -n $len | tr -d '\n'; echo
 }
 
-# Pretty print debugging environment
-function print-dbg-env() {
-    echo -e "+++++++++++>> ${BRed}PATH${Color_Off}"
+# Pretty print runtime environment
+function print-rt-env() {
+    echo -e "+++++++++++>> \033[35mPATH\033[0m"
     echo -e "${PATH//:/\\n}\n"
 
-    echo -e "+++++++++++>> ${BRed}PYTHONPATH${Color_Off}"
+    echo -e "+++++++++++>> \033[35mPYTHONPATH\033[0m"
     echo -e "${PYTHONPATH//:/\\n}\n"
     
-    echo -e "+++++++++++>> ${BRed}C_INCLUDE_PATH${Color_Off}"
+    echo -e "+++++++++++>> \033[35mC_INCLUDE_PATH\033[0m"
     echo -e "${C_INCLUDE_PATH//:/\\n}\n"
     
-    echo -e "+++++++++++>> ${BRed}CPLUS_INCLUDE_PATH${Color_Off}"
+    echo -e "+++++++++++>> \033[35mCPLUS_INCLUDE_PATH\033[0m"
     echo -e "${CPLUS_INCLUDE_PATH//:/\\n}\n"
     
-    echo -e "+++++++++++>> ${BRed}LIBRARY_PATH${Color_Off}"
+    echo -e "+++++++++++>> \033[35mLIBRARY_PATH$\033[0m"
     echo -e "${LIBRARY_PATH//:/\\n}\n"
     
-    echo -e "+++++++++++>> ${BRed}LD_LIBRARY_PATH${Color_Off}"
-    echo -e "${LD_LIBRARY_PATH//:/\\n}"
+    echo -e "+++++++++++>> \033[35mLD_LIBRARY_PATH\033[0m"
+    echo -e "${LD_LIBRARY_PATH//:/\\n}\n"
+    
+    echo -e "+++++++++++>> \033[35mQt5_DIR\033[0m"
+    echo -e "${Qt5_DIR//:/\\n}"
 }
 
-# 将用户目录下的中文文件夹修改为英文
-function trans-dir-zh-eng() {
-    OLD_LANG=$LANG
-    
-    export LANG=en_US.UTF-8
-    xdg-user-dirs-gtk-update
-    
-    export LANG=$OLD_LANG
+# grep complie errror from file
+function print-error() {
+    grep -aE --color=always ": error: |: fatal error:|undefined reference to" $1 -C 2
 }
 
-# Load .svnconfig
-if [ -f "$HOME/.svnconfig" ]; then
-      source "$HOME/.svnconfig"
-fi
+# Combine rg and less together
+function rg-cpp() {
+    \rg -Sp -j $MAX_JOBS --color always -g "!{.git,.svn,.hg,.repo,.vscode}" --stats -tc -tcpp -txml -ttxt -twebidl -tobjcpp -g "!{dump,log,obj}" -C 2 "$@" | \less -R
+}
 
-# Load autojump
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-[[ -s $HOME/.autojump/etc/profile.d/autojump.sh ]] && source $HOME/.autojump/etc/profile.d/autojump.sh
+# rename file
+function time-prefix() {
+    cp -fu "$1" `date "+%s"`_"$1"
+}
+
+# Refresh runtime environment
+function reload-rt-env() {
+    if [ -f "$HOME/.shell_settings" ]; then
+        source "$HOME/.shell_settings"
+    fi
+}
+
+# Refresh runtime environment
+function mt() {
+    \tree -atqhfDQCF --dirsfirst --timefmt='%Y-%m-%d %H:%M:%S' -I '.svn' -I '.git' -I '.repo' -I '.vscode' "${1:-.}" | \less -RgIJKNW 
+}
+
+# Loading fzf
+[ -f /usr/share/doc/fzf/examples/key-bindings.bash ] && . /usr/share/doc/fzf/examples/key-bindings.bash
+[ -f /usr/share/fzf/shell/key-bindings.bash ] && . /usr/share/fzf/shell/key-bindings.bash
+[ -f /opt/local/share/fzf/shell/key-bindings.bash ] && . /opt/local/share/fzf/shell/key-bindings.bash
+[ -f ~$HOME/.fzf.bash ] && . $HOME/.fzf.bash
+
+# Loading autojump
+[ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
+[ -f /etc/profile.d/autojump.sh ] && . /etc/profile.d/autojump.sh
+[ -f /opt/local/etc/profile.d/autojump.sh ] && . /opt/local/etc/profile.d/autojump.sh
+[ -s $HOME/.autojump/etc/profile.d/autojump.sh ] && . $HOME/.autojump/etc/profile.d/autojump.sh
 

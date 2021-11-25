@@ -21,51 +21,13 @@
 let $VIMHOME = $HOME
 let $VIMFILES = $VIMHOME.'/.vim'
 
-if filereadable(expand("$VIMHOME/.vimrc_base"))
-    source $VIMHOME/.vimrc_base
+if filereadable(expand("$VIMHOME/.vimrc_basic"))
+    source $VIMHOME/.vimrc_basic
 endif
 
 if filereadable(expand("$VIMHOME/.vimrc_util"))
     source $VIMHOME/.vimrc_util
 endif
-
-" change vimrc* with auto reload
-autocmd! BufWritePost .vimrc* source %
-
-" enable filetype plugins
-filetype plugin on
-filetype indent on
-
-" set to auto read when a file is changed from the outside
-set autoread
-
-" the working directory is always the one containing the current file
-set autochdir
-
-" hide splashscreen
-set shortmess+=filmnrxoOtT
-
-" better unix / windows compatibility
-set viewoptions=folds,options,cursor,unix,slash 
-
-" allow for cursor beyond last character
-set virtualedit=onemore
-
-" paste text into vim command line
-cmap <S-Insert>  <C-r><C-o>+
-
-" fast saving
-nmap <silent> <leader>wW :w !sudo tee %<cr>
-
-" show register
-nmap <silent> <leader>di :registers<CR>
-
-" insert current date or timeInsert current date or time
-nnoremap <silent> <leader>dt "=strftime("%c")<CR>P
-inoremap <silent> <leader>dt <C-R>=strftime("%c")<CR>
-
-" search and replace the word under the cursor
-nnoremap <silent> <leader>sr :%s/\<<C-r><C-w>\>//g<Left><Left>
 
 " Open the folder containing the currently open file
 if WINDOWS()
@@ -84,76 +46,6 @@ endif
 
 
 "********************************** Vim user interface **********************************"
-" show line number
-set nu
-map <silent> <leader>nu :set nu!<cr>
-
-" set 7 lines to the cursor - when moving vertically using j/k
-set so=7
-
-"no compatible mode
-set nocompatible
-
-" turn on the wild menu
-set wildmenu
-
-" ignore compiled files
-set wildignore=*.o,*~,*.pyc
-
-"always show current position
-set ruler
-
-" height of the command bar
-set cmdheight=2
-
-" a buffer becomes hidden when it is abandoned
-set hid
-
-" configure backspace so it acts as it should act
-set backspace=eol,start,indent
-set whichwrap+=<,>,h,l
-
-" don't redraw while executing macros (good performance config)
-set lazyredraw
-
-" show matching brackets when text indicator is over them
-set showmatch
-
-" how many tenths of a second to blink when matching brackets
-set mat=2
-
-" jump to last line, but stay in the same column
-set nostartofline
-
-" display an incomplete command
-set showcmd
-
-" set the terminal title
-set title
-
-" opening new buffer below the current
-set splitbelow
-
-" maintain more context around the cursor
-set scrolloff=3
-
-" no annoying sound on errors
-set noerrorbells
-set novisualbell
-set t_vb=
-set tm=500
-
-" Show all characters that aren't whitespace.
-set listchars=eol:$,nbsp:%,tab:>-,trail:~,extends:>,precedes:<
-map <silent> <leader>sc :set list!<CR>
-
-" accessing the system clipboard
-if has('unnamedplus')
-    set clipboard=unnamedplus
-else
-    set clipboard=unnamed
-endif
-
 " Windows gvim maximized
 if WINDOWS()
     au GUIEnter * simalt ~x
@@ -178,9 +70,6 @@ noremap <leader>bg :call ToggleBG()<CR>
 
 
 "********************************** Colors and Fonts **********************************"
-" enable syntax highlighting
-syntax enable
-
 " set extra options when running in gui mode
 if has("gui_running")		
     if WINDOWS()
@@ -200,27 +89,8 @@ else
 	set background=dark
 endif
 
-" set 256 color
-set t_Co=256
-
-" set utf8 as standard encoding and en_us as the standard language
-set encoding=utf-8
-set fileencodings=ucs-bom,utf-8,cp936,gbk,euc-jp,euc-kr,latin1
-
-let &termencoding=&encoding
-
-" use Unix as the standard file type
-set ffs=unix,dos,mac
-
 
 "********************************** Files, backups and undo **********************************"
-" turn backup off, since most stuff is in svn, git et.c anyway...
-set nobackup
-set nowb
-set noswapfile
-
-set isfname+=32
-
 noremap <silent> <leader>fn :let @+ = expand("%:t")<CR>:echo "File Name Copied to Clipboard."<CR>
 noremap <silent> <leader>fd :let @+ = expand("%:p:h")<CR>:echo "Current Directory Copied to Clipboard."<CR>
 noremap <silent> <leader>fp :let @+ = expand("%:p")<CR>:echo "Full File Path Copied to Clipboard."<CR>
@@ -233,40 +103,11 @@ nnoremap <silent> <leader>lv :call LoadView()<CR>
 
 
 "********************************** Text, tab and indent related **********************************"
-" be smart when using tabs ;)
-set smarttab
-
-if has('mouse') " enable mouse
-    set mouse=a
-    set mousehide
-endif
-
-set splitright
-set splitbelow
-
-" linebreak on 512 characters
-set lbr
-set tw=512
-
-set si "smart indent
-
 nmap <silent> <leader>x :%!xxd<cr>
 nmap <silent> <leader>X :%!xxd -r<cr>
 
-nmap <silent> <leader>bl :g/^$/d<cr>
-
-nmap <silent> <leader>utf8 :set fenc=utf-8<cr>
-
-autocmd InsertLeave,TextChanged * if expand('%') != '' | update | endif " auto save file
-
 
 "********************************** Visual mode related **********************************"
-" search and replace selected text
-vnoremap <silent> <leader>sr "hy:%s/<C-r>h//gc<left><left><left>
-
-" make arrow keys work in visual mode under windows
-set keymodel-=stopsel
-
 " type \vl to toggle VeryLiteral to turn whitespace matching off/on
 if !hasmapto("<Plug>VLToggle")
     nmap <unique> <Leader>vl <Plug>VLToggle
@@ -274,34 +115,6 @@ endif
 
 
 "********************************** Moving around, tabs, windows and buffers **********************************"
-" close the current buffer
-let bclose_multiple = 0
-
-" Close all the buffers
-nmap <silent> <leader>bo :BufOnly!<cr>
-
-" useful mappings for managing tabs
-map <silent> <leader>tn :tabnew<cr>
-map <silent> <leader>to :tabonly<cr>
-map <silent> <leader>tc :tabclose<cr>
-map <silent> <leader>tm :tabmove
-
-" opens a new tab with the current buffer's path, super useful when editing files in the same directory
-map <silent> <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
-
-" shift tab pages
-map <silent> <S-t> :tabnext<CR>
-map <silent> <S-y> :tabprev<CR>
-
-set stal=1
-set tabline=%!MyTabLine()
-
-" switch CWD to the directory of the open buffer
-map <silent> <leader>cd :cd %:p:h<cr>:pwd<cr>
-
-" specify the behavior when switching between buffers
-set switchbuf=useopen,usetab,newtab
-
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
             \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -311,12 +124,6 @@ autocmd BufReadPost *
 " Quickfix windows formating, and change.
 au BufWinEnter quickfix  setlocal modifiable
 
-" remember info about open buffers on close
-set viminfo^=%
-
-" set the maxiumu tab page number to 64
-set tabpagemax=64
-  
 " toggles the quickfix window.
 " http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
 function! GetBufferList()
@@ -366,16 +173,7 @@ nmap <silent> <leader>` :QFix<CR>
 "********************************** Enable fold **********************************"
 let g:xml_syntax_folding=1
 
-set foldenable
-set foldmethod=indent
-set foldlevel=1
-set foldlevelstart=99
-set fdo-=search
-
 nmap <silent> <leader>fc :call SetFoldColumn()<CR>
-
-au FileType xml,c,cc,cpp,cxx,h,hpp setlocal foldmethod=syntax
-au BufWinEnter * if &fdm == 'indent' | setlocal fdm=manual | endif
 
 
 "********************************** Editing mappings **********************************"
@@ -387,19 +185,6 @@ map <silent><leader>d "_d
 
 " repeat last colon command
 map <silent>gC @:
-
-" move a line of text using alt+[jk] or comamnd+[jk] on mac
-nmap <M-j> mz:m+<cr>`z
-nmap <M-k> mz:m-2<cr>`z
-vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
-
-if OSX()
-    nmap <D-j> <M-j>
-    nmap <D-k> <M-k>
-    vmap <D-j> <M-j>
-    vmap <D-k> <M-k>
-endif
 
 " delete trailing white space on save, useful for python and coffeescript ;)
 autocmd BufWrite *.py :call DeleteTrailingWS()
@@ -435,8 +220,6 @@ map <leader>s? z=
 
 map <silent> <leader>ds /\(\<\w\+\>\)\_s*\1<cr>
 
-noremap <silent> <leader>sl :ToggleSlash<CR>
-
 
 "********************************** Misc **********************************"
 " remove the windows ^m - when the encodings gets messed up
@@ -444,9 +227,6 @@ noremap <silent> <Leader>D mmHmt:%s/<C-V><CR>//ge<CR>'tzt'm
 
 " quickly open a buffer for scripbble
 map <silent> <leader>nb :new<CR>
-
-" toggle paste mode on and off
-set pastetoggle=<F6>
 
 " format xml using xmllint
 noremap <silent> <leader>fxml :set ft=xml<CR>:%! xmllint --format --recover - 2>/dev/null<CR>
@@ -459,12 +239,6 @@ noremap <silent> <leader>chtm :%TOhtml<CR>
 
 " using tidy for cleaning up html
 noremap <silent> <leader>fhtm :set ft=html<CR>:%! tidy --indent yes --wrap 0 --tidy-mark no --force-output true -quiet --show-errors 0 --show-warnings 0<CR>
-
-" change color scheme
-colorscheme desert
-
-" enable syntax auto complete
-set ofu=syntaxcomplete#Complete
 
 " highlight tabline, popupmenu, and cursorcolumn
 if has("gui_running")
@@ -560,32 +334,4 @@ if filereadable(expand("$VIMHOME/.vimrc_plugin"))
     source $VIMHOME/.vimrc_plugin
 endif
 
-noremap <silent> <Leader>ff :Autoformat<CR>
-
-nmap <silent> <Leader>M :MarkClear<CR>
-
-nnoremap <silent> <C-\> :TagbarToggle<CR>
-
-nmap <silent> <leader>dox :Dox<cr>
-nmap <silent> <leader>db :DoxBlock<cr>
-nmap <silent> <leader>da :DoxAuthor<cr>
-
-nmap <silent> <leader>ct :XtermColorTable<cr>
-
-nmap <silent> <F3> :NERDTreeToggle <cr>
-
-cnoreabbrev Ack Ack!
-nnoremap <leader>a :Ack!<space>
-xnoremap <leader>va y:Ack <C-r>=fnameescape(@")<CR><CR>
-
-" sometimes cscope cannot jump correctly
-nmap <silent> <C-]> :tj <C-R>=expand("<cword>")<CR><CR>
-
-if LINUX()
-    inoremap <silent> <leader>co <C-x><C-o>
-    
-    nnoremap <silent> <leader>yme :YcmToggleLogs stderr<CR>
-    inoremap <silent> <S-F2> :YcmForceCompileAndDiagnostics<CR>
-    nnoremap <silent> <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-endif
 

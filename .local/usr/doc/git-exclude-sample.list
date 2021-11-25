@@ -1,6 +1,0 @@
-.cvs
-.svn
-.git
-.git*
-*.o
-*.log

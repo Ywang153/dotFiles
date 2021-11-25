@@ -1,0 +1,327 @@
+
+" sets how many lines of history vim has to remember
+set history=2048
+
+set isfname+=32
+
+" remember info about open buffers on close
+set viminfo^=%
+
+" specify the behavior when switching between buffers
+set switchbuf=useopen,usetab,newtab
+
+" enable filetype plugins
+filetype plugin on
+filetype indent on
+
+" set to auto read when a file is changed from the outside
+set autoread
+
+" the working directory is always the one containing the current file
+set autochdir
+
+" hide splashscreen
+set shortmess+=filmnrxoOtT
+
+" better unix / windows compatibility
+set viewoptions=folds,options,cursor,unix,slash 
+
+" allow for cursor beyond last character
+set virtualedit=onemore
+
+" with a map leader it's possible to do extra key combinations
+let g:mapleader=","
+let mapleader=","
+
+" quick swith back to normal mode
+inoremap <leader><leader> <ESC>`^
+vnoremap <leader><leader> <C-c>
+xnoremap <leader><leader> <C-c>
+snoremap <leader><leader> <C-c>
+cnoremap <leader><leader> <C-c>
+
+" leave the cursor after the pasted text
+noremap p gp
+noremap p gp
+noremap gP P
+noremap gP P
+
+nmap <silent> <leader>w :wa!<cr>
+imap <silent> <leader>w <C-o>:wa!<cr>
+vmap <silent> <leader>w <C-c>:wa!<cr>
+nmap <silent> <leader>W :confirm wqa!<cr>
+imap <silent> <leader>W <C-o>:confirm wqa!<cr>
+vmap <silent> <leader>W <C-c>:confirm wqa!<cr>
+
+nmap <silent> <leader>z :cq<cr>
+imap <silent> <leader>z <C-o>:cq<cr>
+vmap <silent> <leader>z <C-c>:cq<cr>
+nmap <silent> <leader>Z :confirm cq!<cr>
+imap <silent> <leader>Z <C-o>:confirm cq!<cr>
+vmap <silent> <leader>Z <C-c>:confirm cq!<cr>
+
+" move a line of text using alt+[jk] or comamnd+[jk] on mac
+nmap <M-j> mz:m+<cr>`z
+nmap <M-k> mz:m-2<cr>`z
+vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+au FileType xml,c,cc,cpp,cxx,h,hpp setlocal foldmethod=syntax
+au BufWinEnter * if &fdm == 'indent' | setlocal fdm=manual | endif
+
+" remap comma to \
+noremap \ ,
+
+" map to copy all
+nmap <silent> <leader>ya gg"+yG
+
+" ignore case when searching
+set ignorecase
+
+" when searching try to be smart about cases
+set smartcase
+
+" highlight search results
+set hlsearch
+
+" makes search act like search in modern browsers
+set incsearch
+
+" for regular expressions turn magic on
+set magic
+
+" key map timeouts
+set timeout timeoutlen=3000 ttimeoutlen=100
+
+" use spaces instead of tabs
+set expandtab
+
+"highlight current line
+set cursorline
+
+" highlight currentcolumn
+map <silent> <leader>col :set cursorcolumn!<CR>
+
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
+set nojoinspaces
+
+set ai "auto indent
+set wrap "wrap lines
+
+" change color scheme
+colorscheme desert
+
+nmap <silent> <S-w> :set wrap!<cr>
+
+" treat long lines as break lines (useful when moving around in them)
+map j gj
+map k gk
+
+" map <space> to / (search) and <leader>-<space> to ? (backwards search)
+map <space> /
+map <leader><space> ?
+
+" disable highlight when <leader><cr> is pressed
+map <silent> <leader><cr> :noh<cr>
+
+" press enter in normal mode to insert an empty line
+nmap <CR> _i<Enter><Esc>
+
+" scrolling horizontally
+nmap <S-u> 4zh
+nmap <S-d> 4zl
+
+" moving lines up or down
+nnoremap <silent> <C-Down> :m .+1<CR>==
+nnoremap <silent> <C-Up> :m .-2<CR>==
+inoremap <silent> <C-Down> <Esc>:m .+1<CR>==gi
+inoremap <silent> <C-Up> <Esc>:m .-2<CR>==gi
+vnoremap <silent> <C-Down> :m '>+1<CR>gv=gv
+vnoremap <silent> <C-Up> :m '<-2<CR>gv=gv
+
+" scroll up/down without leaving insert mode
+inoremap <C-y> <C-x><C-y>
+inoremap <C-e> <C-x><C-e>
+
+" replace a word with yanked text
+xnoremap <silent> <leader>p "_dP
+
+" sort file, and removing duplicate lines
+map <silent> <leader>su :sort u<CR>
+
+" paste text into vim command line
+cmap <S-Insert>  <C-r><C-o>+
+
+" fast saving
+nmap <silent> <leader>wW :w !sudo tee %<cr>
+
+" show register
+nmap <silent> <leader>dr :registers<CR>
+
+" insert current date or timeInsert current date or time
+nnoremap <silent> <leader>dt "=strftime("%c")<CR>P
+inoremap <silent> <leader>dt <C-R>=strftime("%c")<CR>
+
+" search and replace the word under the cursor
+nnoremap <silent> <leader>sr :%s/\<<C-r><C-w>\>//g<Left><Left>
+
+" show line number
+set nu
+map <silent> <leader>nu :set nu!<cr>
+
+" set 7 lines to the cursor - when moving vertically using j/k
+set so=7
+
+"no compatible mode
+set nocompatible
+
+" turn on the wild menu
+set wildmenu
+
+" ignore compiled files
+set wildignore=*.o,*~,*.pyc
+
+"always show current position
+set ruler
+
+" height of the command bar
+set cmdheight=2
+
+" a buffer becomes hidden when it is abandoned
+set hid
+
+" configure backspace so it acts as it should act
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
+
+" don't redraw while executing macros (good performance config)
+set lazyredraw
+
+" show matching brackets when text indicator is over them
+set showmatch
+
+" how many tenths of a second to blink when matching brackets
+set mat=2
+
+" jump to last line, but stay in the same column
+set nostartofline
+
+" display an incomplete command
+set showcmd
+
+" set the terminal title
+set title
+
+" opening new buffer below the current
+set splitbelow
+
+" maintain more context around the cursor
+set scrolloff=3
+
+" no annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+" Show all characters that aren't whitespace.
+set listchars=eol:$,nbsp:%,tab:>-,trail:~,extends:>,precedes:<
+map <silent> <leader>sc :set list!<CR>
+
+" accessing the system clipboard
+if has('unnamedplus')
+    set clipboard=unnamedplus
+else
+    set clipboard=unnamed
+endif
+
+" enable syntax highlighting
+syntax enable
+
+" set 256 color
+set t_Co=256
+
+" set utf8 as standard encoding and en_us as the standard language
+set encoding=utf-8
+set fileencodings=ucs-bom,utf-8,cp936,gb18030,gb2312,gbk,big5,euc-jp,utf-16,euc-kr,latin1
+
+let &termencoding=&encoding
+
+" use Unix as the standard file type
+set ffs=unix,dos,mac
+
+" turn backup off, since most stuff is in svn, git et.c anyway...
+set nobackup
+set nowb
+set noswapfile
+
+" be smart when using tabs ;)
+set smarttab
+
+if has('mouse') " enable mouse
+    set mouse=a
+    set mousehide
+endif
+
+set splitright
+set splitbelow
+
+" linebreak on 512 characters
+set lbr
+set tw=512
+
+"smart indent
+set si 
+
+" set the maxiumu tab page number to 256
+set tabpagemax=256
+  
+set foldenable
+set foldmethod=indent
+set foldlevel=1
+set foldlevelstart=99
+set fdo-=search
+
+" toggle paste mode on and off
+set pastetoggle=<F6>
+
+" enable syntax auto complete
+set ofu=syntaxcomplete#Complete
+
+" close the current buffer
+let bclose_multiple = 0
+set stal=1
+
+" Close all the buffers
+nmap <silent> <leader>bo :BufOnly!<cr>
+
+" useful mappings for managing tabs
+map <silent> <leader>tn :tabnew<cr>
+map <silent> <leader>to :tabonly<cr>
+map <silent> <leader>tc :tabclose<cr>
+map <silent> <leader>tm :tabmove
+
+" opens a new tab with the current buffer's path, super useful when editing files in the same directory
+map <silent> <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+
+" shift tab pages
+map <silent> <S-t> :tabnext<CR>
+map <silent> <S-y> :tabprev<CR>
+
+" switch CWD to the directory of the open buffer
+map <silent> <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+" search and replace selected text
+vnoremap <silent> <leader>sr "hy:%s/<C-r>h//gc<left><left><left>
+
+" make arrow keys work in visual mode under windows
+set keymodel-=stopsel
+
+" remove blank line
+nmap <silent> <leader>bl :g/^$/d<cr>
+
+" auto save file
+autocmd InsertLeave,TextChanged * if expand('%') != '' | update | endif 
+
