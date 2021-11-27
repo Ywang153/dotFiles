@@ -47,12 +47,9 @@ alias di='diff --color=auto -bsBHrtTuw'
 
 alias mkpath='mkdir -pv'										# prevents accidentally clobbering files
 alias less='less -R'                                            # raw control characters
-alias whence='type -a'                                          # where, of a sort
 
-alias fgrep='fgrep --color=auto'                                
 alias grep='grep --color=auto'                                  
 alias g='grep -ina --color=auto'                                
-alias egrep='egrep --color=auto'                                
 alias tailf='tail -F -n 200'                                    
 
 alias hstg='history | grep'                                     # search history quickly

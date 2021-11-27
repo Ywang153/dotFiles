@@ -205,7 +205,7 @@ set t_Co=256
 
 " set utf8 as standard encoding and en_us as the standard language
 set encoding=utf-8
-set fileencodings=ucs-bom,utf-8,cp936,gbk,euc-jp,euc-kr,latin1
+set fileencodings=ucs-bom,utf-8,cp936,gb18030,gb2312,gbk,big5,euc-jp,utf-16,euc-kr,latin1
 
 let &termencoding=&encoding
 

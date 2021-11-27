@@ -169,6 +169,10 @@ function uq() {
     sort -u $1 -o $1
 }
 
+function sd() {
+    split -a 4 -d -l 50000 $1 $1.part
+}
+
 # Start multi-tmux windows
 function startmux() {   
     S_WHOST="whost-yh"
