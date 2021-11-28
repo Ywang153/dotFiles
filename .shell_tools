@@ -216,9 +216,9 @@ function startmux() {
 }
 
 # Register cygwin prompt
-function cyg-reg-rmenu() {   
+function cyg-context-menus() {   
     if [ "$OSTYPE" = "cygwin"  ] ; then
-        chere -icf -t mintty -o "-i /Cygwin-Terminal.ico" -s bash -e "Cygwin Prompt"
+        chere -icf -t mintty -o "-i /Cygwin-Terminal.ico" -s bash -e "Cygwin Prompt Here"
     fi
 }
 
