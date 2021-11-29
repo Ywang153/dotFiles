@@ -34,12 +34,12 @@ function rpt() {
 
 # Convert gbk to utf-8
 function uo {
-    iconv -f gbk -t utf-8 $1
+    iconv -f gbk --byte-subst="<0x%x>" --unicode-subst="<U+%04X>" -t utf-8 $1
 }
 
-# Recursive search and replace
-function sr {
-    find . \( -type d \( -name .git -o -name .svn -o -name .hg \) -prune \) -o -type f -name "${3:-*}" -exec sed -i "s/$1/$2/g" {} +
+# Convert file encoding from gbk to utf-8
+function uf {
+    iconv -f gbk --byte-subst="<0x%x>" --unicode-subst="<U+%04X>" -t utf-8 $1 > $1.utf8
 }
 
 # Quote previous output
