@@ -341,11 +341,12 @@ function trans-dir-zh-eng() {
 }
 
 # Load .svnconfig
-if [ -f "$HOME/.svnconfig" ]; then
-      source "$HOME/.svnconfig"
+if [ -f $HOME/.svnconfig ]; then
+      . $HOME/.svnconfig
 fi
 
 # Load autojump
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-[[ -s $HOME/.autojump/etc/profile.d/autojump.sh ]] && source $HOME/.autojump/etc/profile.d/autojump.sh
+if [ -f /usr/share/autojump/autojump.sh ]; then
+    . /usr/share/autojump/autojump.sh
+fi
 

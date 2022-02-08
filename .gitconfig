@@ -21,8 +21,8 @@
 	ack = log --all --no-merges --pretty=fuller -S
 	st = status -uno --ignore-submodules=untracked
 	cam = commit --amend -m
-	cm = commit -m
-	ci = commit -a -m 
+	cm = commit -a -m 
+	ci = commit
 	co = checkout
 	co-recurse = !sh -c 'git checkout $1 && git submodule update --recursive' -
 	br = branch --sort=-committerdate
@@ -131,3 +131,4 @@
 	recurse = true
 [log]
 	decorate = auto
+	date = iso

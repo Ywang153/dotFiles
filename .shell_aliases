@@ -50,6 +50,8 @@ alias less='less -R'                                            # raw control ch
 
 alias g='grep -a --color=auto'                                  
 alias eg='egrep -a --color=auto'                                
+
+alias ag='ag --depth=1000'                                
 alias tailf='tail -F -n 200'                                    
 
 alias hstg='history | grep'                                     # search history quickly
@@ -64,7 +66,7 @@ alias dnf-update='sudo dnf update -y'
 alias pacman-update='sudo pacman -Syyu --noconfirm --overwrite \* && yay -Syu'
 
 alias tree="tree -A -I '.svn' -I '.git'" 
-alias mtree="\tree -actqhfDQCF --dirsfirst --charset ASCII -I '.svn' -I '.git' | less -gIJKNW" 
+alias mtree="\tree -actqhfDQCF --dirsfirst --timefmt='%Y-%m-%d %H:%M:%S' -I '.svn' -I '.git' | less -gIJKNW" 
 
 # Network
 alias wsget='wget --random-wait -r -p -e robots=off -U mozilla' # download entire website

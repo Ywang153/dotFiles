@@ -119,7 +119,7 @@ case "$1" in
         ;;
 
     *)       
-        echo -e "\033[37mUsage: \n\t$(basename -- $0) <init|install-dir|install-tools|install-debain-based-pkg|install-arch-with-kde-pkg|git-workflow>\n\033[0m"
+        echo -e "\033[37mUsage: \n\t$(basename -- $0) <init|init-dir|install-tools|install-debain-based-pkg|install-arch-with-kde-pkg|git-workflow>\n\033[0m"
         ;;
 esac
    
