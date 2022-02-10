@@ -345,8 +345,10 @@ if [ -f $HOME/.svnconfig ]; then
       . $HOME/.svnconfig
 fi
 
+# Enable fzf
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+[ -f ~/.fzf.bash ] && . ~/.fzf.bash
+
 # Load autojump
-if [ -f /usr/share/autojump/autojump.sh ]; then
-    . /usr/share/autojump/autojump.sh
-fi
+[ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
 
