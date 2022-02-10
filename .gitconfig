@@ -132,3 +132,6 @@
 [log]
 	decorate = auto
 	date = iso
+[rerere]
+	enabled = true
+	autoupdate = true

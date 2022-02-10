@@ -347,6 +347,10 @@ fi
 
 # Enable fzf
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+
+[ -f /usr/share/doc/fzf/examples/completion.bash ] && . /usr/share/doc/fzf/examples/completion.bash
+[ -f /usr/share/doc/fzf/examples/key-bindings.bash ] && . /usr/share/doc/fzf/examples/key-bindings.bash
+
 [ -f ~/.fzf.bash ] && . ~/.fzf.bash
 
 # Load autojump

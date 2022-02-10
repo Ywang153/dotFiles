@@ -36,40 +36,6 @@ case "$1" in
         
     "install-tools")
         echo -e "\033[33mBegain to initialize personal environment..\n\033[0m"
-        
-        ## install or update autojump
-        echo -e "\033[34m\nStart to install autojump...\033[0m"
-
-        AUTOJUMP=autojump
-
-        if [ ! -d "$DIRTEMP/$AUTOJUMP" ]; then
-            git clone --progress git://github.com/wting/${AUTOJUMP}.git $DIRTEMP/$AUTOJUMP
-        fi
-
-        cd $DIRTEMP/$AUTOJUMP
-        git pull && ./install.py
-
-
-        if [ ${OSTYPE:0:6} != "cygwin"  ] ; then
-            ## install or update fzf, for fzf not support mintty yet
-            echo -e "\033[34m\nStart to install fzf...\033[0m"
-
-            FZF=fzf
-
-            if [ ! -d "$DIRTEMP/$FZF" ]; then
-                git clone --progress git://github.com/junegunn/${FZF}.git $DIRTEMP/$FZF
-            fi
-
-            cd $DIRTEMP/$FZF
-            git pull && yes | ./install --no-update-rc    
-            
-            ## https://joplinapp.org/terminal/
-            #echo -e "\033[34m\nStart to install Joplin...\033[0m"
-            #NPM_CONFIG_PREFIX=$DIRTEMP/Joplin
-            #sudo npm install -g joplin
-            #ln -s $DIRTEMP/Joplin/bin/joplin $DIRBIN/joplin
-        fi
-        
         echo -e "\033[32m\nDone\033[0m"
         ;;
     
