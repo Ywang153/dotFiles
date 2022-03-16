@@ -52,9 +52,9 @@ function ko {
     ps -ef | grep $1 | grep -v grep | awk '{print $2}' | xargs -r kill -SIGKILL
 }
 
-# locate header file
+# locate file
 function lf {
-    locate -b '\$1'
+    locate -b "\\$1"
 }
 
 # Using pmap to List Memory Usage of All the Processes in Kilobytes
@@ -309,8 +309,8 @@ function genpasswd() {
     strings /dev/urandom | grep -o '[[:alnum:]]' | head -n $len | tr -d '\n'; echo
 }
 
-# Pretty print debugging environment
-function print-env() {
+# Pretty print runtime environment
+function print-rt-env() {
     echo -e "+++++++++++>> ${BRed}PATH${Color_Off}"
     echo -e "${PATH//:/\\n}\n"
 
@@ -340,10 +340,13 @@ function trans-dir-zh-eng() {
     export LANG=$OLD_LANG
 }
 
-# Load .svnconfig
-if [ -f $HOME/.svnconfig ]; then
-      . $HOME/.svnconfig
-fi
+# https://www.jianshu.com/p/80289094d225
+function switch-cn-apt-source() {
+    sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+    
+    sudo sed -i 's/security.ubuntu/mirrors.aliyun/g' /etc/apt/sources.list
+    sudo sed -i 's/archive.ubuntu/mirrors.aliyun/g' /etc/apt/sources.list
+}
 
 # Enable fzf
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'

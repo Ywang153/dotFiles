@@ -22,7 +22,7 @@
 	st = status -uno --ignore-submodules=untracked
 	cam = commit --amend -m
 	cm = commit -a -m 
-	ci = commit
+	ci = commit -a
 	co = checkout
 	co-recurse = !sh -c 'git checkout $1 && git submodule update --recursive' -
 	br = branch --sort=-committerdate
