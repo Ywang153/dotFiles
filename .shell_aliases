@@ -42,7 +42,6 @@ alias svi='sudo vim'
 
 alias rs='rsync -acyhuvizP --delete-excluded --delete --delete-after --force --stats --bwlimit=2000 --exclude-from=exclude.txt --skip-compress=gz/jpg/mp[34]/7z/bz2'
 alias hs='history'
-alias di='diff --color=auto -bsBHrtTuw'
 
 alias mkpath='mkdir -pv'										# prevents accidentally clobbering files
 alias less='less -R'                                            # raw control characters

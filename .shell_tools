@@ -57,6 +57,11 @@ function lf {
     locate -b "\\$1"
 }
 
+# Custom diff output
+function di {
+    colordiff -bsBHrtTuwZ --tabsize=4 $1 $2 | less -R
+}
+
 # Using pmap to List Memory Usage of All the Processes in Kilobytes
 function pm() {
     printf "%-10s%-15s%-15s%s\n" "PID" "OWNER" "MEMORY" "COMMAND"
