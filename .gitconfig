@@ -99,7 +99,7 @@
 	logoutputencoding = gbk
 [http]
 	sslVerify = false
-	postBuffer = 524288000
+	postBuffer = 2000000000
 [diff]
 	algorithm = patience
 	tool = vimdiff
@@ -135,3 +135,7 @@
 [rerere]
 	enabled = true
 	autoupdate = true
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[commit]
+	template = .gitconfig.d/.gitmessage.txt
