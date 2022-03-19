@@ -11,7 +11,7 @@ You should clone this repository into you unik-like environment **HOME** directo
   4. git checkout -t -f origin/trunk
 
 ###### Quick Command
-    git init -b trunk; git remote add -f -t trunk -m trunk origin https://gitee.com/wangyuhuai/dotFiles.git
+    git init; git remote add -f -t trunk -m trunk origin https://gitee.com/wangyuhuai/dotFiles.git; git checkout trunk
 
 -------- 
 ### B), Add the below scripts into your shell config file, Such as .bashrc;
