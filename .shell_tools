@@ -335,24 +335,6 @@ function print-rt-env() {
     echo -e "${LD_LIBRARY_PATH//:/\\n}"
 }
 
-# 将用户目录下的中文文件夹修改为英文
-function trans-dir-zh-eng() {
-    OLD_LANG=$LANG
-    
-    export LANG=en_US.UTF-8
-    xdg-user-dirs-gtk-update
-    
-    export LANG=$OLD_LANG
-}
-
-# https://www.jianshu.com/p/80289094d225
-function switch-cn-apt-source() {
-    sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-    
-    sudo sed -i 's/security.ubuntu/mirrors.aliyun/g' /etc/apt/sources.list
-    sudo sed -i 's/archive.ubuntu/mirrors.aliyun/g' /etc/apt/sources.list
-}
-
 # Enable fzf
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 

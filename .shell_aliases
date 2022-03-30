@@ -34,13 +34,13 @@ alias df='df -kh'
 alias du='du -kh --max-depth=1'
 
 alias vi='vim'
-alias scp='scp -prC -l 2000'
+alias scp='scp -prC'
 
 alias vn='vim -u NONE'
 alias vd='vim -d'
 alias svi='sudo vim'
 
-alias rs='rsync -acyhuvizP --delete-excluded --delete --delete-after --force --stats --bwlimit=2000 --exclude-from=exclude.txt --skip-compress=gz/jpg/mp[34]/7z/bz2'
+alias rs='rsync -acyhuvizP --delete-excluded --delete --delete-after --force --stats'
 alias hs='history'
 
 alias mkpath='mkdir -pv'										# prevents accidentally clobbering files
@@ -59,7 +59,7 @@ alias mount='mount | column -t'
 alias freem='free -mlth -s 2'                                   # show momory info
 
 # Package management
-alias apt-update='sudo apt clean;sudo apt update -y;sudo apt upgrade -y;sudo apt autoremove -y;sudo snap refresh'
+alias apt-update='sudo apt clean;sudo apt update -y;sudo apt upgrade -y;sudo apt-get autoremove -y'
 alias dnf-update='sudo dnf update -y'
 alias pacman-update='sudo pacman -Syyu --noconfirm --overwrite \* && yay -Syu'
 
