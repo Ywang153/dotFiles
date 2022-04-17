@@ -12,10 +12,11 @@ endif
 
 " **  vim-plug configure
 call plug#begin('~/.vim/plugged')
-Plug 'Chiel92/vim-autoformat', { 'for': 'cpp,c,go,cs,python,javascript,java,xhtml,html,sql' }
-Plug 'preservim/Tagbar', { 'for': 'go,cpp,c,cs,javascript,java,python' }
+Plug 'Chiel92/vim-autoformat', { 'for': ['cpp', 'c', 'go', 'cs', 'python', 'javascript', 'java', 'xhtml', 'html', 'sql'] }
+Plug 'preservim/Tagbar', { 'on':  'TagbarToggle' }
 Plug 'preservim/nerdcommenter', { 'for': '*' }
-Plug 'vim-scripts/a.vim', { 'for': 'cpp,c' }
+Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'vim-scripts/a.vim', { 'for': ['cpp', 'c'] }
 Plug 's3rvac/AutoFenc'
 Plug 'mhinz/vim-startify'
 Plug 'jkeylu/mark2666'

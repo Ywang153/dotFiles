@@ -1,5 +1,5 @@
 [include]
-	path = ~/.gitconfig.d/.gitconfig
+	path = ~/.gitconfig.d/.custom
 [core]
 	autocrlf = input
 	safecrlf = false

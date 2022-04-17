@@ -23,15 +23,6 @@ function nlauth() {
     chmod --preserve-root -c -R u=rwX,g=rwX,o-w "$@" ;
 }
 
-# Repeat n times command, C-like syntax
-function rpt() {
-    local i max
-    max=$1; shift;
-    for ((i=1; i <= max ; i++)); do  
-        eval "$@";
-    done
-}
-
 # Convert gbk to utf-8
 function uo {
     iconv -f gbk --byte-subst="<0x%x>" --unicode-subst="<U+%04X>" -t utf-8 $1
@@ -144,31 +135,9 @@ function ff() {
     find . \( -type d \( -name .git -o -name .svn -o -name .hg \) -prune \) -o -type f -iname '*'"$*"'*' -exec ls -lhQ --color=auto {} \;
 }        
 
-# Find a file with pattern $1 in name and execute $2 on it:
-function fe() {
-    if [ $# -ge 3 ]; then
-        find . \( -type d \( -name .git -o -name .svn -o -name .hg \) -prune \) -o -type f -iname '*'"${1:-}"'*' -exec ${2:-file} {} "$3" \;
-    else
-        find . \( -type d \( -name .git -o -name .svn -o -name .hg \) -prune \) -o -type f -iname '*'"${1:-}"'*' -exec ${2:-file} {} \;
-    fi
-}
-
-# md5sum check
-function md5check() {
-    md5sum "$1" | grep -i "$2";
-}                          
-
-# sum integers, one per line?
-function lsum() {
-    sum=0
-    
-    for num in $(cat $1)
-        do
-            ((sum+=num))
-    done
-    
-    echo $sum
-}                          
+function ff-parallel() { 
+    parallel --gnu -k -n `nproc` find {} -iname "$*" ::: ./
+}        
 
 function uq() {
     sort -u $1 -o $1
@@ -288,12 +257,6 @@ function scp2hosts() {
     IFS=$OIFS
 }
 
-# Bulk rename files
-# eg. renames './*.txt' 'txt' 'log'
-function rn() {
-    for i in $1; do mv $i ${i/$2/$3}; done
-}
-
 # Test hard disk speed with dd
 function ddbmk() {
     dd if=/dev/zero of=/tmp/test.data bs=8k count=131072 conv=fsync
@@ -335,14 +298,12 @@ function print-rt-env() {
     echo -e "${LD_LIBRARY_PATH//:/\\n}"
 }
 
-# Enable fzf
-export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
-
+# Active fzf
 [ -f /usr/share/doc/fzf/examples/completion.bash ] && . /usr/share/doc/fzf/examples/completion.bash
 [ -f /usr/share/doc/fzf/examples/key-bindings.bash ] && . /usr/share/doc/fzf/examples/key-bindings.bash
-
 [ -f ~/.fzf.bash ] && . ~/.fzf.bash
 
-# Load autojump
+# Active autojump
 [ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
+[ -s ~/.autojump/etc/profile.d/autojump.sh ] && . ~/.autojump/etc/profile.d/autojump.sh
 

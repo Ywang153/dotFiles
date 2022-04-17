@@ -55,7 +55,7 @@ export NCURSES_NO_UTF8_ACS=1
 
 # Set bash prompt
 if [[ ${TERM} != 'fbterm' ]]; then
-    export PS1="\[\e]0;\u@\h: \w\a\]\n\[$White\][[\[$Purple\]\j\[$White\]]] \[$Cyan\]\t \[$Blue\]{ \[$Red\]\W \[$Blue\]} \[$Yellow\]\$ \[$Color_Off\]"
+    export PS1="\[\e]0;\[$White\][[\[$Purple\]\j\[$White\]]] \[$Cyan\]\h \[$Blue\]{ \[$Red\]\W \[$Blue\]} \[$Yellow\]\$ \[$Color_Off\]"
 fi
 
 # Bash safe settings   

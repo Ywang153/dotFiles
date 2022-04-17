@@ -560,23 +560,12 @@ if filereadable(expand("$VIMHOME/.vimrc_plugin"))
     source $VIMHOME/.vimrc_plugin
 endif
 
-noremap <silent> <Leader>ff :Autoformat<CR>
+noremap <silent> <leader>ff :Autoformat<CR>
 
-nmap <silent> <Leader>M :MarkClear<CR>
+nmap <silent> <leader>M :MarkClear<CR>
 
-nnoremap <silent> <C-\> :TagbarToggle<CR>
-
-nmap <silent> <leader>dox :Dox<cr>
-nmap <silent> <leader>db :DoxBlock<cr>
-nmap <silent> <leader>da :DoxAuthor<cr>
-
-nmap <silent> <leader>ct :XtermColorTable<cr>
-
-nmap <silent> <F3> :NERDTreeToggle <cr>
-
-cnoreabbrev Ack Ack!
-nnoremap <leader>a :Ack!<space>
-xnoremap <leader>va y:Ack <C-r>=fnameescape(@")<CR><CR>
+nmap <silent> <F2> :NERDTreeToggle <cr>
+nnoremap <silent> \ :TagbarToggle<CR>
 
 " sometimes cscope cannot jump correctly
 nmap <silent> <C-]> :tj <C-R>=expand("<cword>")<CR><CR>

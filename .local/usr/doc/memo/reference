@@ -46,5 +46,5 @@ Server = https://mirrors.sjtug.sjtu.edu.cn/archlinux-cn/$arch
 
 # 如何在安装后更改我的Cygwin主文件夹？
 # https://stackoverflow.com/questions/1494658/how-can-i-change-my-cygwin-home-folder-after-installation
-cat "db_home: /cygdrive/c/Users/Ywang153/Documents" >> /etc/nsswitch.conf
+cd ~;echo "db_home: `pwd`" >> /etc/nsswitch.conf
 
