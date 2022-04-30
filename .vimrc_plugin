@@ -113,6 +113,12 @@ if executable('ctags')
 endif
 
 
+nnoremap <silent> \ :TagbarToggle<CR>
+
+" Sometimes cscope cannot jump correctly
+nmap <silent> <C-]> :tj <C-R>=expand("<cword>")<CR><CR>
+
+
 " **  NERD tree configure
 let NERDTreeIgnore=['\.exe','\.cc','\.d','\.a','\.so','\.dll','\.obj','\.o','\.pyc','\~$','\.swp']
 
@@ -126,6 +132,8 @@ let NERDTreeShowFiles=1
 let NERDTreeShowHidden=1
 let NERDTreeHightCursorline=1
 let NERDTreeShowLineNumbers=1
+
+nmap <silent> <F2> :NERDTreeToggle <cr>
 
 
 " **  Cscope configure
@@ -332,6 +340,9 @@ let g:mwAutoSaveMarks = 1
 let g:mwIgnoreCase = 0
 let g:mwDirectGroupJumpMappingNum = 20 
 
+nmap <silent> <leader>M :MarkClear<CR>
+
+
 
 " **  netrw configure
 let g:netrw_silent = 1
@@ -344,6 +355,8 @@ endif
 
 
 " **  vim-autoformat configure
+noremap <silent> <leader>ff :Autoformat<CR>
+
 if (executable('astyle') || executable('autopep8') || executable('xmllint') || executable('gofmt') || executable('js-beautify') || executable('tidy'))
     let g:autoformat_verbosemode = 0
     let g:autoformat_autoindent = 0

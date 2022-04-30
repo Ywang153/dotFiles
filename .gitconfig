@@ -1,5 +1,5 @@
 [include]
-	path = ~/.gitconfig.d/.custom
+	path = ~/.gitconfig.d/.local_setting
 [core]
 	autocrlf = input
 	safecrlf = false
@@ -20,11 +20,13 @@
 [alias]
 	ack = log --all --no-merges --pretty=fuller -S
 	st = status -uno --ignore-submodules=untracked
-	cam = commit --amend -m
-	cm = commit -a -m 
-	ci = commit -a
+	ci = commit
+	ci-a = commit -a
+	ci-m = commit -a -m 
+	ci-amend = commit -a --amend
 	co = checkout
-	co-recurse = !sh -c 'git checkout $1 && git submodule update --recursive' -
+	co-r= !sh -c 'git checkout $1 && git submodule update --recursive' -
+	cp = cherry-pick
 	br = branch --sort=-committerdate
 	br-mv = !sh -c 'git branch -m $2 $3 && git push $1 :$2 && git push $1 -u $3' -
 	br-rm = !sh -c 'git branch -D $2 && git push $1 :$2' -
@@ -32,19 +34,17 @@
 	br-clean = "!git branch -vv | grep ': gone]' | grep -v '*' | awk '{print $1}' | xargs -r git branch -D"
 	lg = log --color --graph --pretty=better-oneline --abbrev-commit --decorate
 	la = "!git config -l | grep alias | cut -c 7-"
-	sm-init = submodule update --init --recursive 
-	sm-up = submodule update --rebase --recursive --remote
-	sm-pull = push --recurse-submodules
-	sm-push = push --recurse-submodules=on-demand
-	sm-st = submodule status --recursive
-	sm-ls = "!git config --file .gitmodules --get-regexp path | awk '{ print $2 }'"
-	set-url = remote set-url
-	untrack = rm --cache --
-	rv = remote -v
-	cp = cherry-pick
-	sl = stash list
-	sp = stash pop
-	ss = stash save
+	submod-init = submodule update --init --recursive 
+	submod-up = submodule update --rebase --recursive --remote
+	submod-pull = push --recurse-submodules
+	submod-push = push --recurse-submodules=on-demand
+	submod-st = submodule status --recursive
+	submod-ls = "!git config --file .gitmodules --get-regexp path | awk '{ print $2 }'"
+	remote-set-url = remote set-url
+	remote-v = remote -v
+	stash-ls = stash list
+	stash-pop = stash pop
+	stash-save = stash save
 	di = diff --ignore-submodules=untracked --src-prefix='before/' --dst-prefix='after/'
 	di-v = difftool -t vimdiff
 	di-meld = difftool -t meld
@@ -73,8 +73,8 @@
 	new = !sh -c 'git log --pretty=full $1@{1}..$1@{0} "$@"'
 	who = shortlog -sne --
 	whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
-	assume = update-index --assume-unchanged
-	unassume = update-index --no-assume-unchanged
+	mk-unchanged= update-index --assume-unchanged
+	mk-no-unchanged = update-index --no-assume-unchanged
 [credential]
 	helper = store
 [push]

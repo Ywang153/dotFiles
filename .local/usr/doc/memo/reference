@@ -48,3 +48,6 @@ Server = https://mirrors.sjtug.sjtu.edu.cn/archlinux-cn/$arch
 # https://stackoverflow.com/questions/1494658/how-can-i-change-my-cygwin-home-folder-after-installation
 cd ~;echo "db_home: `pwd`" >> /etc/nsswitch.conf
 
+# Test github.com via ssh
+ssh -T git@github.com
+

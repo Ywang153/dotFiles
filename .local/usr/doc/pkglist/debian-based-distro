@@ -4,6 +4,7 @@ autojump
 automake
 aview
 axel
+bat
 bison
 boxes
 build-essential
@@ -19,6 +20,7 @@ default-jdk
 dstat
 erlang
 exuberant-ctags
+fzf
 g++
 gcc
 gdb
@@ -50,9 +52,11 @@ mmv
 moc
 moc-ffmpeg-plugin
 mono-complete
+moreutils
 mpg123
 multitail
 ncdu
+net-tools
 nethogs
 nload
 nmap
@@ -63,11 +67,15 @@ open-vm-tools
 open-vm-tools-desktop
 p7zip-full
 p7zip-rar
+parallel
 pi
 pv
 pylint
 python3-pip
+ripgrep
 rustc
+samba
+samba-common
 shellcheck
 silversearcher-ag
 sl
@@ -86,5 +94,6 @@ upx-ucl
 uuid-runtime
 valgrind
 vim
+vim-gtk3
 xdg-user-dirs-gtk
 zip

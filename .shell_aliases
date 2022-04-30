@@ -46,8 +46,8 @@ alias hs='history'
 alias mkpath='mkdir -pv'										# prevents accidentally clobbering files
 alias less='less -R'                                            # raw control characters
 
-alias g='grep -a --color=auto'                                  
-alias eg='egrep -a --color=auto'                                
+alias g='grep -ia --color=auto'                                  
+alias eg='egrep -ia --color=auto'                                
 
 alias ag='ag -U --silent --workers 32 --stats --depth=1000'                                
 alias rg='rg -Sp -j 32 --color always --stats'

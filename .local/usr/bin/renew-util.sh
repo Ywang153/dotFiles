@@ -12,7 +12,7 @@ DIRPLUGIN=$MYPREFIX/usr/plugin
 DIRORIG=$(pwd)
 
 case "$1" in
-    "init")
+    "init-env")
         echo -e "\033[33mBegain to initialize personal setting..\n\033[0m"
 
         chmod 700 ~/.ssh/ && chmod -R 600 ~/.ssh/*
@@ -20,7 +20,7 @@ case "$1" in
         echo -e "\033[32m\nDone\033[0m"
         ;;
         
-    "init-dir")
+    "init-working-tree")
         echo -e "\033[33mBegain to create directory tree..\n\033[0m"
 
         sudo mkdir -p /data/{Apps,Temp,CodeZone/{3rdparty,GITROOT},Packages,VMs}
@@ -72,7 +72,6 @@ case "$1" in
             
             [ -d "Partime"   ] || git clone https://e.coding.net/glenn/Partime.git Partime
             [ -d "Sample"   ] || git clone https://github.com/Ywang153/Sample.git Sample
-            [ -d "Doc"   ] || git clone https://github.com/Ywang153/Doc.git Doc
 
             cd $HOME/data/CodeZone/3rdparty/
             
@@ -85,7 +84,7 @@ case "$1" in
         ;;
 
     *)       
-        echo -e "\033[37mUsage: \n\t$(basename -- $0) <init|init-dir|install-tools|install-debain-based-pkg|install-arch-with-kde-pkg|git-workflow>\n\033[0m"
+        echo -e "\033[37mUsage: \n\t$(basename -- $0) <init-env|init-working-tree|install-tools|install-debain-based-pkg|install-arch-with-kde-pkg|git-workflow>\n\033[0m"
         ;;
 esac
    
