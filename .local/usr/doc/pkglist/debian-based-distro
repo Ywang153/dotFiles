@@ -1,4 +1,4 @@
-ack-grep
+ack
 astyle
 autojump
 automake
@@ -9,6 +9,7 @@ bison
 boxes
 build-essential
 cargo
+checkinstall
 clang
 cmake
 cmatrix
@@ -17,12 +18,15 @@ cppcheck
 cscope
 curl
 default-jdk
+doxygen
 dstat
 erlang
 exuberant-ctags
 fzf
 g++
+g++-multilib
 gcc
+gcc-multilib
 gdb
 git
 golang
@@ -36,10 +40,15 @@ jq
 libaa-bin
 libappindicator3-1
 libappindicator3-dev
+libblas-dev
 libboost-all-dev
 libclang-dev
 libevent-dev
+liblapack-doc
+liblapacke-dev
 libncurses5-dev
+libncursesw5-dev
+libopenmpi-dev
 linuxlogo
 llvm
 lolcat
@@ -65,6 +74,8 @@ nodejs
 npm
 open-vm-tools
 open-vm-tools-desktop
+openmpi-bin
+openmpi-doc
 p7zip-full
 p7zip-rar
 parallel

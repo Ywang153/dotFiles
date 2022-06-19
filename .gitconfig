@@ -138,4 +138,4 @@
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 [commit]
-	template = .gitconfig.d/.gitmessage.txt
+	template = ~/.gitconfig.d/.gitmessage.txt
