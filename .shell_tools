@@ -68,7 +68,7 @@ function pretty_csv {
 }
 
 # Auto extract every compress type file
-function unpack() {                                                          
+function ex() {                                                          
     if [ -f "$1" ] ; then 
         case "$1" in 
             *.tar.bz2)   tar xjf        "$1"     ;; 
@@ -103,11 +103,11 @@ function fg() {
 
 # Find a file with a pattern in name
 function ff() { 
-    find . \( -type d \( -name .git -o -name .svn -o -name .hg \) -prune \) -o -type f -iname '*'"$*"'*' -exec ls -lhQ --color=auto {} \;
+    find . \( -type d \( -name .git -o -name .svn -o -name .hg -name .repo \) -prune \) -o -type f -iname "$*" -exec ls -lhQ --color=auto {} \;
 }        
 
-function ff-parallel() { 
-    parallel --gnu -k -n `nproc` find {} -iname "$*" ::: ./
+function rf() { 
+    parallel --gnu -k -n `nproc` find {} -type f -mmin -60 -iname "$*" ::: .
 }        
 
 function uq() {
@@ -272,6 +272,13 @@ function print-rt-env() {
     
     echo -e "+++++++++++>> ${BRed}LD_LIBRARY_PATH${Color_Off}"
     echo -e "${LD_LIBRARY_PATH//:/\\n}"
+}
+
+# Refresh runtime environment
+function reload-rt-env() {
+    if [ -f "$HOME/.shell_settings" ]; then
+        source "$HOME/.shell_settings"
+    fi
 }
 
 # Loading fzf

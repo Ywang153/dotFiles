@@ -44,11 +44,14 @@ eval "$(dircolors -p | \
 export EDITOR=vim
 
 # History setting
-export HISTCONTROL=ignoreboth
-export HISTSIZE=8192
-export HISTFILESIZE=8192
+export HISTCONTROL=ignoreboth:erasedups
+export HISTSIZE=1000000
+export HISTFILESIZE=1000000
 export HISTIGNORE='ls:ll:pwd'
 export HISTTIMEFORMAT='%F %T '
+
+# After each command, append to the history file and reread it
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
 # Telling ncurses to always use unicode box drawing characters when a utf-8 locale is selected.
 export NCURSES_NO_UTF8_ACS=1
@@ -68,7 +71,6 @@ stty pass8
 
 # Auto complete insensitive
 shopt -s nocaseglob
-shopt -s histappend
 shopt -s cdspell
 shopt -s cdable_vars
 shopt -s checkhash
