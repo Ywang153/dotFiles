@@ -82,12 +82,13 @@ if  [[ ${OSTYPE:0:6} != 'cygwin' ]] && [[ ${OSTYPE:0:4} != 'msys' ]]; then
     alias restart='sudo reboot'
     alias halt='sudo shutdown -h now'
 
-    alias sysinfo='inxi -Fx'                                        # print all system info
+    alias sysinfo='inxi -Fx'                                    # print all system info
+    alias logo=screenfetch
 
     alias k='kill -s KILL'
     alias ka='killall -s KILL'
 
-    alias 'ps?'='ps aux | grep -v "grep" | grep -i'                                  # find PID by name
+    alias 'ps?'='ps aux | grep -v "grep" | grep -i'             # find PID by name
     alias pa='ps aux'
     alias px='ps x'
     alias pt='ps -hH -p'

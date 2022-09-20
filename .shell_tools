@@ -103,11 +103,19 @@ function fg() {
 
 # Find a file with a pattern in name
 function ff() { 
-    find . \( -type d \( -name .git -o -name .svn -o -name .hg -name .repo \) -prune \) -o -type f -iname "$*" -exec ls -lhQ --color=auto {} \;
+    find ./ \( -type d \( -name .git -o -name .svn -o -name .hg -name .repo \) -prune \) -o -iname "${1:-*}" -exec ls -lhdQ --color=auto {} \;
 }        
 
-function rf() { 
-    parallel --gnu -k -n `nproc` find {} -type f -mmin -60 -iname "$*" ::: .
+function ff-MRUs() { 
+    parallel --gnu -k -n `nproc` find {} -mmin -60 -iname \"${1:-*}\" -ls ::: ./
+}        
+
+function ff-MRUs-1day() { 
+    parallel --gnu -k -n `nproc` find {} -mtime -1 -iname \"${1:-*}\" -ls ::: ./
+}        
+
+function ff-MRUs-7days() { 
+    parallel --gnu -k -n `nproc` find {} -mtime -7 -iname \"${1:-*}\" -ls ::: ./
 }        
 
 function uq() {
