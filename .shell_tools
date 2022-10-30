@@ -103,20 +103,23 @@ function fg() {
 
 # Find a file with a pattern in name
 function ff() { 
-    find ./ \( -type d \( -name .git -o -name .svn -o -name .hg -name .repo \) -prune \) -o -iname "${1:-*}" -exec ls -lhdQ --color=auto {} \;
+    \time -f "time: %E" find ./ \
+        \( -type d \( -name .git -o -name .svn -o -name .hg -o -name .repo -o -name .vscode \) -prune \) -o \
+        -iname "${1:-*}" -mmin "${2:--518400}" -exec ls -lhdQ --color=always {} \;
 }        
 
 function ff-MRUs() { 
-    parallel --gnu -k -n `nproc` find {} -mmin -60 -iname \"${1:-*}\" -ls ::: ./
-}        
+    local timeoffset=
 
-function ff-MRUs-1day() { 
-    parallel --gnu -k -n `nproc` find {} -mtime -1 -iname \"${1:-*}\" -ls ::: ./
-}        
-
-function ff-MRUs-7days() { 
-    parallel --gnu -k -n `nproc` find {} -mtime -7 -iname \"${1:-*}\" -ls ::: ./
-}        
+    case "$2" in 
+        "1day")         timeoffset='-1440'       ;; 
+        "7day")         timeoffset='-10080'      ;; 
+        "30min")        timeoffset='-30'         ;; 
+        *)              timeoffset='-240'        ;; 
+    esac 
+    
+    ff "${1:-*}" "$timeoffset"
+}
 
 function uq() {
     sort -u $1 -o $1
@@ -281,6 +284,7 @@ function print-rt-env() {
     echo -e "+++++++++++>> ${BRed}LD_LIBRARY_PATH${Color_Off}"
     echo -e "${LD_LIBRARY_PATH//:/\\n}"
 }
+
 
 # Refresh runtime environment
 function reload-rt-env() {

@@ -49,8 +49,8 @@ alias less='less -R'                                            # raw control ch
 alias g='grep -ia --color=auto'                                  
 alias eg='egrep -ia --color=auto'                                
 
-alias ag='ag -U --silent --workers 32 --stats --depth=1000'                                
-alias rg='rg -Sp -j 32 --color always --stats'
+alias ag='ag -U --silent --workers 32 --depth=10000 --ignore={.git,.svn,.hg,.repo,.vscode} --stats'
+alias rg='rg -Sp -j 32 --color always -g "!{.git,.svn,.hg,.repo,.vscode}" --stats'
 alias tailf='tail -F -n 200'                                    
 
 alias hstg='history | grep'                                     # search history quickly
