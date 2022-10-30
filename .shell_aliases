@@ -64,8 +64,8 @@ alias apt-update='sudo apt clean;sudo apt update -y;sudo apt upgrade -y;sudo apt
 alias dnf-update='sudo dnf update -y'
 alias pacman-update='sudo pacman -Syyu --noconfirm --overwrite \* && yay -Syu'
 
-alias tree="tree -A -I '.svn' -I '.git' -I '.repo'" 
-alias mt="\tree -actqhfDQCF --dirsfirst --timefmt='%Y-%m-%d %H:%M:%S' -I '.svn' -I '.git' | less -gIJKNW" 
+alias t="tree -A -I '.svn' -I '.git' -I '.repo' -I '.vscode'" 
+alias mt="\tree -atqhfDQCF --dirsfirst --timefmt='%Y-%m-%d %H:%M:%S' -I '.svn' -I '.git' -I '.repo' -I '.vscode' | \less -RgIJKNW" 
 
 # Network
 alias wsget='wget --random-wait -r -p -e robots=off -U mozilla' # download entire website

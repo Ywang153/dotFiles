@@ -105,7 +105,7 @@ function fg() {
 function ff() { 
     \time -f "time: %E" find ./ \
         \( -type d \( -name .git -o -name .svn -o -name .hg -o -name .repo -o -name .vscode \) -prune \) -o \
-        -iname "${1:-*}" -mmin "${2:--518400}" -exec ls -lhdQ --color=always {} \;
+        -iname "${1:-*}" -mmin "${2:-+0}" -exec ls -lhdQ --color=always {} \;
 }        
 
 function ff-MRUs() { 
@@ -172,9 +172,9 @@ function startmux() {
 }
 
 # Register cygwin prompt
-function cyg-context-menus() {   
+function cyg-prompt() {   
     if [ "$OSTYPE" = "cygwin"  ] ; then
-        chere -icf -t mintty -o "-i /Cygwin-Terminal.ico" -s bash -e "Cygwin Prompt Here"
+        chere -icf -t mintty -o "-i /Cygwin-Terminal.ico" -s bash -e "Cygwin Here"
     fi
 }
 
@@ -187,7 +187,7 @@ function cyg-setup() {
 		
         (cd /setup && wget -N -t 8 --show-progress https://cygwin.com/$EXE && chmod +x ./$EXE)
         
-        if [[ "$1" = "update" ]] || [[ "$1" = "up" ]]; then
+        if [[ "$1" = "update" ]] || [[ "$1" = "upgrade" ]]; then
             param="-qvng"
         else
             param="-nM"
