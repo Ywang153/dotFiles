@@ -139,3 +139,5 @@
 	insteadOf = https://github.com/
 [commit]
 	template = ~/.gitconfig.d/.gitmessage.txt
+[credential "https://gitee.com"]
+	provider = generic
