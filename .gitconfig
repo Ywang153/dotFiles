@@ -81,7 +81,7 @@
 	default = current
 	followTags = true
 [global]
-	pager = less -r
+	pager = less -r -q
 [branch]
 	autosetupmerge = always
 	autosetuprebase = always
@@ -96,7 +96,7 @@
 	pruneduringfetch = true
 [i18n]
 	commitencoding = utf-8
-	logoutputencoding = gbk
+	logoutputencoding = utf-8
 [http]
 	sslVerify = false
 	postBuffer = 2000000000
