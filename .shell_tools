@@ -174,7 +174,7 @@ function startmux() {
 # Register cygwin prompt
 function cyg-prompt() {   
     if [ "$OSTYPE" = "cygwin"  ] ; then
-        chere -icf -t mintty -o "-i /Cygwin-Terminal.ico" -s bash -e "Cygwin Here"
+        chere -icf -t mintty -o "-i /Cygwin-Terminal.ico" -s bash -e "Cygwin Prompt Here"
     fi
 }
 

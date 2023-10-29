@@ -35,11 +35,11 @@
 	lg = log --color --graph --pretty=better-oneline --abbrev-commit --decorate
 	submod-init = submodule update --init --recursive 
 	submod-up = submodule update --rebase --recursive --remote
-	submod-pull = push --recurse-submodules
-	submod-push = push --recurse-submodules=on-demand
+	submod-push = push --recurse-submodules
 	submod-st = submodule status --recursive
 	submod-ls = "!git config --file .gitmodules --get-regexp path | awk '{ print $2 }'"
-	remote-set-url = remote set-url
+	submod-ls = "!git config --file .gitmodules --get-regexp path | awk '{ print $2 }'"
+	remote-co = "git submodule foreach -q --recursive 'branch=\"$(git config -f $toplevel/.gitmodules submodule.$name.branch)\"; [ \"$branch\" = \"\" ] && git checkout master || git switch $branch' –"
 	remote-v = remote -v
 	stash-ls = stash list
 	stash-pop = stash pop
@@ -129,8 +129,8 @@
 [rerere]
 	enabled = true
 	autoupdate = true
-[url "git@github.com:"]
-	insteadOf = https://github.com/
+[url "https://"]
+    insteadOf = git://
 [commit]
 	template = ~/.gitconfig.d/.gitmessage.txt
 [credential "https://gitee.com"]

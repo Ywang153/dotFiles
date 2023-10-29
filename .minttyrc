@@ -12,3 +12,5 @@ FontHeight=10
 CopyTab=yes
 CopyAsRTF=no
 PgUpDnScroll=yes
+MiddleClickAction=void
+RightClickAction=paste
