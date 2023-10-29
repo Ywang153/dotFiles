@@ -33,7 +33,6 @@
 	br-has = !sh -c 'git branch --all --contains $1'
 	br-clean = "!git branch -vv | grep ': gone]' | grep -v '*' | awk '{print $1}' | xargs -r git branch -D"
 	lg = log --color --graph --pretty=better-oneline --abbrev-commit --decorate
-	la = "!git config -l | grep alias | cut -c 7-"
 	submod-init = submodule update --init --recursive 
 	submod-up = submodule update --rebase --recursive --remote
 	submod-pull = push --recurse-submodules
@@ -49,6 +48,7 @@
 	dv = difftool -t vimdiff
 	di-meld = difftool -t meld
 	clean-up = clean -f -d -x
+	undo = reset --soft HEAD^
 	rh = reset --hard
 	rh2 = reset HEAD^^ --hard
 	clo = clone -v --progress --recursive
@@ -63,13 +63,7 @@
 	tag-down = fetch --tags
 	fetch = fetch --all
 	pr = pull --rebase
-	rb = rebase
-	rb-a = rebase --abort
-	rb-c = rebase --continue
-	rb-root = rebase -i --root
 	fixup = !sh -c 'git commit -a --fixup $1 && GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash --no-fork-point $1~' -
-	lc = log --pretty=full ORIG_HEAD.. --stat --no-merges
-	undo = reset --soft HEAD^
 	new = !sh -c 'git log --pretty=full $1@{1}..$1@{0} "$@"'
 	who = shortlog -sne --
 	whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
