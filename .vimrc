@@ -21,8 +21,8 @@
 let $VIMHOME = $HOME
 let $VIMFILES = $VIMHOME.'/.vim'
 
-if filereadable(expand("$VIMHOME/.vimrc_base"))
-    source $VIMHOME/.vimrc_base
+if filereadable(expand("$VIMHOME/.vimrc_basic"))
+    source $VIMHOME/.vimrc_basic
 endif
 
 if filereadable(expand("$VIMHOME/.vimrc_util"))

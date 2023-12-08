@@ -1,5 +1,5 @@
 [include]
-	path = ~/.gitconfig.d/.local_setting
+	path = ~/.gitconfig_local
 [core]
 	autocrlf = input
 	safecrlf = false
@@ -8,7 +8,8 @@
 	filemode = false
 	whitespace = trailing-space,space-before-tab,indent-with-non-tab
 	trustctime = false
-	compression = 0
+	compression = -1
+	excludesfile = ~/.gitignore_global
 [color]
 	ui = always
 	branch = always
@@ -63,7 +64,7 @@
 	tag-down = fetch --tags
 	fetch = fetch --all
 	pr = pull --rebase
-	fixup = !sh -c 'git commit -a --fixup $1 && GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash --no-fork-point $1~' -
+	fix = !sh -c 'git commit -a --fixup $1 && GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash --no-fork-point $1~' -
 	new = !sh -c 'git log --pretty=full $1@{1}..$1@{0} "$@"'
 	who = shortlog -sne --
 	whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
@@ -93,7 +94,9 @@
 	logoutputencoding = utf-8
 [http]
 	sslVerify = false
-	postBuffer = 2000000000
+	postBuffer = 1048576000
+	lowSpeedLimit = 0
+	lowSpeedTime = 999999
 [diff]
 	algorithm = patience
 	tool = vimdiff
@@ -129,9 +132,12 @@
 [rerere]
 	enabled = true
 	autoupdate = true
-[url "https://"]
-    insteadOf = git://
+[ssh]
+	variant = ssh
 [commit]
-	template = ~/.gitconfig.d/.gitmessage.txt
+	template = ~/.gitmessage.txt
 [credential "https://gitee.com"]
 	provider = generic
+[url "https://github.com/"]
+	insteadOf = git://github.com/
+

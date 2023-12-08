@@ -81,8 +81,3 @@ export LD_LIBRARY_PATH=$NEW_LD_LIBRARY_PATH
 export GDBHISTFILE="$HOME/.gdb_history"
 export PYTHONIOENCODING="utf8"
 
-# Load .custom_build
-if [ -f "$HOME/.custom_build" ]; then
-  source "$HOME/.custom_build"
-fi
-

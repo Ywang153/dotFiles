@@ -13,9 +13,19 @@ if [ -f "$HOME/.shell_tools" ]; then
       source "$HOME/.shell_tools"
 fi
 
+# Load .local_setting
+if [ -f "$HOME/.local_setting" ]; then
+  source "$HOME/.local_setting"
+fi
+
 # Load .shell_build
 if [ -f "$HOME/.shell_build" ]; then
       source "$HOME/.shell_build"
+fi
+
+# Load .local_setting
+if [ -f "$HOME/.local_setting" ]; then
+  source "$HOME/.local_setting"
 fi
 
 # Try setting 256 colors explicitly

@@ -65,6 +65,7 @@ mono-complete
 moreutils
 mpg123
 multitail
+meld
 ncdu
 net-tools
 nethogs
@@ -95,6 +96,7 @@ snapd
 ssh
 subversion
 sysbench
+screenfetch
 terminator
 tidy
 tig

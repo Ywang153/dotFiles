@@ -1,7 +1,3 @@
-# Global parameters
-CORES=$(nproc)
-MAX_JOBS=$(($CORES * 2))
-
 # Creates an archive (*.tar.gz) from given directory
 function mktar() {
     tar pcvzf "${2%}${1%%/}.tar.gz"  "${1%%/}/";
@@ -103,9 +99,9 @@ function fg() {
 
 # Find a file with a pattern in name
 function ff() { 
-    \time -f "time: %E" find ./ \
+    time find ./ \
         \( -type d \( -name .git -o -name .svn -o -name .hg -o -name .repo -o -name .vscode \) -prune \) -o \
-        -iname "${1:-*}" -mmin "${2:-+0}" -exec ls -lhdQ --color=always {} \;
+        -iname "${1:-*}" -mmin "${2:-+0}" -print0 | xargs -0 -n 10 -P $MAX_JOBS ls -lhdQ --color=always
 }        
 
 function ff-MRUs() { 
@@ -285,6 +281,20 @@ function print-rt-env() {
     echo -e "${LD_LIBRARY_PATH//:/\\n}"
 }
 
+# grep complie errror from file
+function print-error() {
+    grep -aE --color=always ": error: |: fatal error:|undefined reference to" $1 -C 2
+}
+
+# Combine rg and less together
+function rg-cpp() {
+    \rg -Sp -j $MAX_JOBS --color always -g "!{.git,.svn,.hg,.repo,.vscode}" --stats -tc -tcpp -txml -ttxt -twebidl -g "!{dump,log,obj}" -C 2 "$@" | \less -R
+}
+
+# rename file
+function time-prefix() {
+    cp -fu "$1" `date "+%s"`_"$1"
+}
 
 # Refresh runtime environment
 function reload-rt-env() {
@@ -292,6 +302,11 @@ function reload-rt-env() {
         source "$HOME/.shell_settings"
     fi
 }
+
+# Load .custom_build
+if [ -f "$HOME/.repo-wrapper" ]; then
+  source "$HOME/.repo-wrapper"
+fi
 
 # Loading fzf
 [ -f /usr/share/doc/fzf/examples/completion.bash ] && . /usr/share/doc/fzf/examples/completion.bash

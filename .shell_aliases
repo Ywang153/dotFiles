@@ -1,21 +1,21 @@
 # Productivity
 if  [ ${OSTYPE:0:7} = 'freebsd' ] || [ ${OSTYPE:0:6} = 'darwin' ] ; then
-    alias ls='ls -hFBG'                                         # classify files in colour
-    alias l='ls -CF'                                            #
+    alias ls='ls -hFBG'                                                                                            
+    alias l='ls -CF'                                            
 else
-    alias ls='ls -hvF --show-control-chars --color=always'      # classify files in colour
-    alias l='ls -CF --group-directories-first'                  #
+    alias ls='ls -hvF --show-control-chars --color=always'                                                         
+    alias l='ls -CF --group-directories-first'                  
 fi
 
-alias ll='ls -l'                                                # long list
-alias la='ll -A'                                                # all but . and ..
-alias lm='ll | more'       										# pipe through 'more'
-alias lr='ll -R | more'    										# recursive ls.
-alias lx='ls -lXB'         										# sort by extension.
-alias lk='ls -lSr'         										# sort by size, biggest last.
-alias lt='ls -ltr'         										# sort by date, most recent last.
-alias lc='ls -ltcr'        										# sort by/show change time,most recent last.
-alias lu='ls -ltur'        										# sort by/show access time,most recent last.
+alias ll='ls -l'                                                                                                   
+alias la='ll -A'                                                                                                   
+alias lm='ll | more'       										                                                   
+alias lr='ll -R | more'    										                                                   
+alias lx='ls -lXB'         										                                                   
+alias lk='ls -lSr'         										                                                   
+alias lt='ls -ltr'         										                                                   
+alias lc='ls -ltcr'        										                                                   
+alias lu='ls -ltur'        										                                                   
 
 alias J='jobs -l'
 
@@ -43,34 +43,34 @@ alias svi='sudo vim'
 alias rs='rsync -acyhuvizP --delete-excluded --delete --delete-after --force --stats'
 alias hs='history'
 
-alias mkpath='mkdir -pv'										# prevents accidentally clobbering files
-alias less='less -R'                                            # raw control characters
+alias mkpath='mkdir -pv'										                                            # prevents accidentally clobbering files
+alias less='less -R'                                                                                        # raw control characters
 
 alias g='grep -ia --color=auto'                                  
 alias eg='egrep -ia --color=auto'                                
 
-alias ag='ag -U --silent --workers 32 --depth=10000 --ignore={.git,.svn,.hg,.repo,.vscode} --stats'
-alias rg='rg -Sp -j 32 --color always -g "!{.git,.svn,.hg,.repo,.vscode}" --stats'
+alias ag='ag -U --silent --workers $MAX_JOBS --depth=10000 --ignore={.git,.svn,.hg,.repo,.vscode} --stats'
+alias rg='rg -Sp -j $MAX_JOBS --color always -g "!{.git,.svn,.hg,.repo,.vscode}" --stats'
 alias tailf='tail -F -n 200'                                    
 
-alias hstg='history | grep'                                     # search history quickly
+alias hstg='history | grep'                                                                                 # search history quickly
 
 # System info
 alias mount='mount | column -t'
-alias freem='free -mlth -s 2'                                   # show momory info
+alias free='free -mlth -s 2'                                                                               # show momory info
 
 # Package management
 alias apt-update='sudo apt clean;sudo apt update -y;sudo apt upgrade -y;sudo apt-get autoremove -y'
 alias dnf-update='sudo dnf update -y'
 alias pacman-update='sudo pacman -Syyu --noconfirm --overwrite \* && yay -Syu'
 
-alias t="tree -A -I '.svn' -I '.git' -I '.repo' -I '.vscode'" 
+alias t="\tree -A -I '.svn' -I '.git' -I '.repo' -I '.vscode'" 
 alias mt="\tree -atqhfDQCF --dirsfirst --timefmt='%Y-%m-%d %H:%M:%S' -I '.svn' -I '.git' -I '.repo' -I '.vscode' | \less -RgIJKNW" 
 
 # Network
-alias wsget='wget --random-wait -r -p -e robots=off -U mozilla' # download entire website
-alias ipinfo='curl ipinfo.io/json'                              # show public ip address
-alias a2c='aria2c -c --log-level=warn'                          # downloader
+alias wsget='wget --random-wait -r -p -e robots=off -U mozilla'                                             # download entire website
+alias ipinfo='curl ipinfo.io/json'                                                                          # show public ip address
+alias a2c='aria2c -c --log-level=warn'                                                                      # downloader
 
 # Special alias by OS type
 if  [[ ${OSTYPE:0:6} != 'cygwin' ]] && [[ ${OSTYPE:0:4} != 'msys' ]]; then
@@ -82,13 +82,13 @@ if  [[ ${OSTYPE:0:6} != 'cygwin' ]] && [[ ${OSTYPE:0:4} != 'msys' ]]; then
     alias restart='sudo reboot'
     alias halt='sudo shutdown -h now'
 
-    alias sysinfo='inxi -Fx'                                    # print all system info
+    alias sysinfo='inxi -Fx'                                                                                # print all system info
     alias logo=screenfetch
 
     alias k='kill -s KILL'
     alias ka='killall -s KILL'
 
-    alias 'ps?'='ps aux | grep -v "grep" | grep -i'             # find PID by name
+    alias 'ps?'='ps aux | grep -v "grep" | grep -i'                                                         # find PID by name
     alias pa='ps aux'
     alias px='ps x'
     alias pt='ps -hH -p'
@@ -110,7 +110,7 @@ else
     alias k='/bin/kill -f -s KILL'
     alias ka='/bin/killall -I -s KILL'
 
-    alias 'ps?'='ps aux -W | grep -v "grep" | grep -i'                               # find PID by name
+    alias 'ps?'='ps aux -W | grep -v "grep" | grep -i'                                                      # find PID by name
     alias pa='ps aux -W'
     alias px='ps x -W'
     alias pt='ps -hH -p -W'

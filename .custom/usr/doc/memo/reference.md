@@ -51,3 +51,18 @@ cd ~;echo "db_home: `pwd`" >> /etc/nsswitch.conf
 # Test github.com via ssh
 ssh -T git@github.com
 
+# How to build YouCompleteMe in Cygwin? 
+    Ensure node, go, mono and typescript API are installed and in your PATH, I assume you entered the <YouCompleteme> installed directory firstly, 
+  and please follow below guide. Thanks.
+  
+  1), at begin, you need to check out all submodules, type the below command:
+    git submodule update --init --recursive 
+
+  2), to resolve the LONG_BIT issue, override the file wrap_python.hpp with cygwin's version, type the below command;
+    cp /usr/include/boost/python/detail/wrap_python.hpp third_party/ycmd/cpp/BoostParts/boost/python/detail/wrap_python.hpp
+
+  3), make sure the clang library could be found, you need to add the flag DEXTERNAL_LIBCLANG_PATH to the CMake, open the file third_party/ycmd/build.py, and search for cmake_args, and change it to like below:
+    cmake_args = ['-DEXTERNAL_LIBCLANG_PATH=/usr/lib/libclang.dll.a']
+
+  4), now, you could type the below command to build it, everything should be fine. 
+    ./install.py --clang-completer --omnisharp-completer --gocode-completer --tern-completer

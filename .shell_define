@@ -4,7 +4,7 @@ OS=$(uname -s)
 VER=$(uname -r)
 
 # For personal 
-export MYPREFIX=$HOME/.local
+export MYPREFIX=$HOME/.custom
 
 # Reset
 Color_Off='\e[0m'       # Text Reset
@@ -78,4 +78,8 @@ On_IBlue='\e[0;104m'    # Blue
 On_IPurple='\e[0;105m'  # Purple
 On_ICyan='\e[0;106m'    # Cyan
 On_IWhite='\e[0;107m'   # White
+
+# Global parameters
+CORES=$(nproc)
+MAX_JOBS=$(($CORES * 2))
 
