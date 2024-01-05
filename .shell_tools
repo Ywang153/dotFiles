@@ -309,11 +309,12 @@ if [ -f "$HOME/.repo-wrapper" ]; then
 fi
 
 # Loading fzf
-[ -f /usr/share/doc/fzf/examples/completion.bash ] && . /usr/share/doc/fzf/examples/completion.bash
 [ -f /usr/share/doc/fzf/examples/key-bindings.bash ] && . /usr/share/doc/fzf/examples/key-bindings.bash
-[ -f ~/.fzf.bash ] && . ~/.fzf.bash
+[ -f /usr/share/fzf/shell/key-bindings.bash ] && . /usr/share/fzf/shell/key-bindings.bash
+[ -f ~$HOME/.fzf.bash ] && . $HOME/.fzf.bash
 
 # Loading autojump
 [ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
-[ -s ~/.autojump/etc/profile.d/autojump.sh ] && . ~/.autojump/etc/profile.d/autojump.sh
+[ -f /etc/profile.d/autojump.sh ] && . /etc/profile.d/autojump.sh
+[ -s $HOME/.autojump/etc/profile.d/autojump.sh ] && . $HOME/.autojump/etc/profile.d/autojump.sh
 
