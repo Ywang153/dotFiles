@@ -170,7 +170,14 @@ function startmux() {
 # Register cygwin prompt
 function cyg-prompt() {   
     if [ "$OSTYPE" = "cygwin"  ] ; then
-        chere -icf -t mintty -o "-i /Cygwin-Terminal.ico" -s bash -e "Cygwin Prompt Here"
+        local WPATH=$(cygpath -w /Cygwin-Terminal.ico)
+        
+        chere -icf -t mintty -s bash -e "Bash Here"
+
+        regtool -w -s set /HKCU/Software/Classes/Drive/Shell/cygwin64_bash/Icon ${WPATH}
+        regtool -w -s set /HKCU/Software/Classes/Drive/Background/Shell/cygwin64_bash/Icon ${WPATH}
+        regtool -w -s set /HKCU/Software/Classes/Directory/Shell/cygwin64_bash/Icon ${WPATH}
+        regtool -w -s set /HKCU/Software/Classes/Directory/Background/Shell/cygwin64_bash/Icon ${WPATH}
     fi
 }
 
@@ -204,7 +211,7 @@ function cyg-launch-xserver() {
 function puts_sshkey() {
     for var in "$@"
     do  
-        ssh-copy-id -i "$HOME/.ssh/id_rsa.pub" "$var" 
+        ssh-copy-id -i "$HOME/.ssh/id_ed25519.pub" "$var" 
     done
 }
 

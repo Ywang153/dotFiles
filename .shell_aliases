@@ -1,11 +1,6 @@
 # Productivity
-if  [ ${OSTYPE:0:7} = 'freebsd' ] || [ ${OSTYPE:0:6} = 'darwin' ] ; then
-    alias ls='ls -hFBG'                                                                                            
-    alias l='ls -CF'                                            
-else
-    alias ls='ls -hvF --show-control-chars --color=always'                                                         
-    alias l='ls -CF --group-directories-first'                  
-fi
+alias ls='ls -hvF --show-control-chars --color=always'                                                         
+alias l='ls -CF --group-directories-first'                  
 
 alias ll='ls -l'                                                                                                   
 alias la='ll -A'                                                                                                   
@@ -22,6 +17,14 @@ alias J='jobs -l'
 alias c='clear'
 alias y='yes'
 alias d='echo */'
+
+alias 'ps?'='ps aux | grep -v "grep" | grep -i'                                                         # find PID by name
+alias pa='ps aux'
+alias px='ps x'
+alias pt='ps -hH -p'
+
+alias k='kill -s KILL'
+alias ka='killall -s KILL'
 
 alias debug='set -o nounset; set -o xtrace'
 
@@ -43,7 +46,7 @@ alias svi='sudo vim'
 alias rs='rsync -acyhuvizP --delete-excluded --delete --delete-after --force --stats'
 alias hs='history'
 
-alias mkpath='mkdir -pv'										                                            # prevents accidentally clobbering files
+alias mkdir='mkdir -pv'										                                            # prevents accidentally clobbering files
 alias less='less -R'                                                                                        # raw control characters
 
 alias g='grep -ia --color=auto'                                  
@@ -55,66 +58,63 @@ alias tailf='tail -F -n 200'
 
 alias hstg='history | grep'                                                                                 # search history quickly
 
-# System info
-alias mount='mount | column -t'
-alias free='free -mlth -s 2'                                                                               # show momory info
-
-# Package management
-alias apt-update='sudo apt clean;sudo apt update -y;sudo apt upgrade -y;sudo apt-get autoremove -y'
-alias dnf-update='sudo dnf update -y'
-alias pacman-update='sudo pacman -Syyu --noconfirm --overwrite \* && yay -Syu'
-
 alias t="\tree -A -I '.svn' -I '.git' -I '.repo' -I '.vscode'" 
 alias mt="\tree -atqhfDQCF --dirsfirst --timefmt='%Y-%m-%d %H:%M:%S' -I '.svn' -I '.git' -I '.repo' -I '.vscode' | \less -RgIJKNW" 
 
 # Network
 alias wsget='wget --random-wait -r -p -e robots=off -U mozilla'                                             # download entire website
 alias ipinfo='curl ipinfo.io/json'                                                                          # show public ip address
-alias a2c='aria2c -c --log-level=warn'                                                                      # downloader
+    
+alias logo=neofetch
 
 # Special alias by OS type
-if  [[ ${OSTYPE:0:6} != 'cygwin' ]] && [[ ${OSTYPE:0:4} != 'msys' ]]; then
-    # Enable fzf
-    export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
-
-    alias ping='ping -c 4'
-    
-    alias restart='sudo reboot'
-    alias halt='sudo shutdown -h now'
-
-    alias sysinfo='inxi -Fx'                                                                                # print all system info
-    alias logo=screenfetch
-
-    alias k='kill -s KILL'
-    alias ka='killall -s KILL'
-
-    alias 'ps?'='ps aux | grep -v "grep" | grep -i'                                                         # find PID by name
-    alias pa='ps aux'
-    alias px='ps x'
-    alias pt='ps -hH -p'
-    alias m='mocp'
-
-    alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 sudo pip install -U --no-cache-dir"
-
-    # Anaconda
-    alias enable-conda='source /opt/anaconda/bin/activate root'
-
-else
-    # Enable fzf
-    export FZF_DEFAULT_OPTS='-x -m --sort 10000'
-
+case ${OSTYPE} in
+  'cygwin')
     alias tcpdump='windump'
     alias open='cygstart'
     alias e.='explorer.exe .'
+    alias battery-status='powercfg /batteryreport'
     
-    alias k='/bin/kill -f -s KILL'
-    alias ka='/bin/killall -I -s KILL'
+    alias k='kill -f -s KILL'
+    alias ka='killall -I -s KILL'
 
-    alias 'ps?'='ps aux -W | grep -v "grep" | grep -i'                                                      # find PID by name
     alias pa='ps aux -W'
     alias px='ps x -W'
     alias pt='ps -hH -p -W'
+    alias 'ps?'='ps aux -W | grep -v "grep" | grep -i'                                                      # find PID by name
+
+    ;;
+
+  'msys')
+    alias pacman-update='pacman -Syyu --noconfirm --overwrite \*'
     
-    alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U --no-cache-dir"
-fi
+    ;;
+
+  'freebsd')
+    alias ls='ls -hFBG'                                                                                            
+    alias l='ls -CF'                                            
+    
+    ;;
+
+  'darwin')
+    alias ls='ls -hFBG'                                                                                            
+    alias l='ls -CF'                                            
+    
+    ;;
+
+  *)
+    alias apt-update='sudo apt clean;sudo apt update -y;sudo apt upgrade -y;sudo apt-get autoremove -y'
+    alias dnf-update='sudo dnf update -y'
+    alias pacman-update='sudo pacman -Syyu --noconfirm --overwrite \*'
+    
+    alias restart='sudo reboot'
+    alias halt='sudo shutdown -h now'
+    
+    alias mount='mount | column -t'
+    alias free='free -mlth -s 2'                                                                               
+    alias sysinfo='inxi -Fx'                                                                                
+    alias ping='ping -c 4'
+
+    ;;
+esac
 
