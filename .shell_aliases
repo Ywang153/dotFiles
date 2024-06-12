@@ -47,7 +47,7 @@ alias rs='rsync -acyhuvizP --delete-excluded --delete --delete-after --force --s
 alias hs='history'
 
 alias mkdir='mkdir -pv'										                                            # prevents accidentally clobbering files
-alias less='less -R'                                                                                        # raw control characters
+alias less='less -RN'                                                                                        # raw control characters
 
 alias g='grep -ia --color=auto'                                  
 alias eg='egrep -ia --color=auto'                                
@@ -69,7 +69,7 @@ alias logo=neofetch
 
 # Special alias by OS type
 case ${OSTYPE} in
-  'cygwin')
+  'cygwin'*)
     alias tcpdump='windump'
     alias open='cygstart'
     alias e.='explorer.exe .'
@@ -85,20 +85,29 @@ case ${OSTYPE} in
 
     ;;
 
-  'msys')
+  'msys'*)
     alias pacman-update='pacman -Syyu --noconfirm --overwrite \*'
     
     ;;
 
-  'freebsd')
+  'freebsd'*)
     alias ls='ls -hFBG'                                                                                            
     alias l='ls -CF'                                            
     
     ;;
 
-  'darwin')
+  'darwin'*)
+    unalias ls
     alias ls='ls -hFBG'                                                                                            
+    
+    unalias l
     alias l='ls -CF'                                            
+    
+    unalias du
+    alias du='du -kh -d=1'
+
+    unalias rm
+    alias rm='rm -R'
     
     ;;
 

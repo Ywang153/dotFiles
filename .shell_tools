@@ -50,7 +50,7 @@ function lf {
 
 # Custom diff output
 function di {
-    colordiff -bsBHrtTuwZ --tabsize=4 $1 $2 | less -R
+    colordiff -bsBHrtTuw --tabsize=4 $1 $2 | less -RN
 }
 
 # Watch target processes by Top command
@@ -60,7 +60,7 @@ function wt() {
 
 # https://www.stefaanlippens.net/pretty-csv.html
 function pretty_csv {
-    column -t -s, -n "$@" | less -F -S -X -K
+    column -t -s, -n "$@" | less -FSXKN
 }
 
 # Auto extract every compress type file
@@ -99,9 +99,9 @@ function fg() {
 
 # Find a file with a pattern in name
 function ff() { 
-    time find ./ \
+    time find . \
         \( -type d \( -name .git -o -name .svn -o -name .hg -o -name .repo -o -name .vscode \) -prune \) -o \
-        -iname "${1:-*}" -mmin "${2:-+0}" -print0 | xargs -0 -n 10 -P $MAX_JOBS ls -lhdQ --color=always
+        -iname "${1:-*}" -mmin "${2:-+0}" -print0 | xargs -0 -n 10 -P $MAX_JOBS ls -lhdG
 }        
 
 function ff-MRUs() { 
@@ -295,7 +295,7 @@ function print-error() {
 
 # Combine rg and less together
 function rg-cpp() {
-    \rg -Sp -j $MAX_JOBS --color always -g "!{.git,.svn,.hg,.repo,.vscode}" --stats -tc -tcpp -txml -ttxt -twebidl -g "!{dump,log,obj}" -C 2 "$@" | \less -R
+    \rg -Sp -j $MAX_JOBS --color always -g "!{.git,.svn,.hg,.repo,.vscode}" --stats -tc -tcpp -txml -ttxt -twebidl -tobjcpp -g "!{dump,log,obj}" -C 2 "$@" | \less -R
 }
 
 # rename file
@@ -318,10 +318,12 @@ fi
 # Loading fzf
 [ -f /usr/share/doc/fzf/examples/key-bindings.bash ] && . /usr/share/doc/fzf/examples/key-bindings.bash
 [ -f /usr/share/fzf/shell/key-bindings.bash ] && . /usr/share/fzf/shell/key-bindings.bash
+[ -f /opt/local/share/fzf/shell/key-bindings.bash ] && . /opt/local/share/fzf/shell/key-bindings.bash
 [ -f ~$HOME/.fzf.bash ] && . $HOME/.fzf.bash
 
 # Loading autojump
 [ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
 [ -f /etc/profile.d/autojump.sh ] && . /etc/profile.d/autojump.sh
+[ -f /opt/local/etc/profile.d/autojump.sh ] && . /opt/local/etc/profile.d/autojump.sh
 [ -s $HOME/.autojump/etc/profile.d/autojump.sh ] && . $HOME/.autojump/etc/profile.d/autojump.sh
 
