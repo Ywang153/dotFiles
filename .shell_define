@@ -4,7 +4,7 @@ OS=$(uname -s)
 VER=$(uname -r)
 
 # For personal 
-export MYPREFIX=$HOME/.custom
+export MYPREFIX=$HOME/.env
 
 # Reset
 Color_Off='\e[0m'       # Text Reset

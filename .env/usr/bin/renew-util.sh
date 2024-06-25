@@ -23,7 +23,7 @@ case "$1" in
     "init-working-tree")
         echo -e "\033[33mBegain to create directory tree..\n\033[0m"
 
-        sudo mkdir -p /data/{Apps,Temp,CodeZone/{3rdparty,GITROOT},Packages,VMs}
+        sudo mkdir -p /data/{Apps,Temp,DevZone/{3rdparty,GITROOT},Packages,VMs}
         sudo chown -R "$(whoami)": /data/*
         
         cd

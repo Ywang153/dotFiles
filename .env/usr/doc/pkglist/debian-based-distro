@@ -1,5 +1,4 @@
 ack
-rig
 astyle
 autojump
 automake
@@ -13,7 +12,6 @@ cargo
 checkinstall
 clang
 cmake
-cmatrix
 colordiff
 cppcheck
 cscope
@@ -34,7 +32,6 @@ golang
 htop
 httpie
 iftop
-imagemagick
 inxi
 iotop
 jq
@@ -47,8 +44,7 @@ libclang-dev
 libevent-dev
 liblapack-doc
 liblapacke-dev
-libncurses5-dev
-libncursesw5-dev
+libncurses-dev
 libopenmpi-dev
 linuxlogo
 llvm
@@ -57,16 +53,16 @@ lrzsz
 lynx
 manpages-dev
 mc
-mlocate
+meld
 mmv
 moc
+neofetch
 moc-ffmpeg-plugin
-mono-complete
 moreutils
 mpg123
 multitail
-meld
 ncdu
+neofetch
 net-tools
 nethogs
 nload
@@ -85,10 +81,12 @@ pi
 pv
 pylint
 python3-pip
+rig
 ripgrep
 rustc
 samba
 samba-common
+screenfetch
 shellcheck
 silversearcher-ag
 sl
@@ -96,7 +94,6 @@ snapd
 ssh
 subversion
 sysbench
-screenfetch
 terminator
 tidy
 tig

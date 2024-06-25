@@ -285,7 +285,10 @@ function print-rt-env() {
     echo -e "${LIBRARY_PATH//:/\\n}\n"
     
     echo -e "+++++++++++>> ${BRed}LD_LIBRARY_PATH${Color_Off}"
-    echo -e "${LD_LIBRARY_PATH//:/\\n}"
+    echo -e "${LD_LIBRARY_PATH//:/\\n}\n"
+    
+    echo -e "+++++++++++>> ${BRed}Qt5_DIR${Color_Off}"
+    echo -e "${Qt5_DIR//:/\\n}"
 }
 
 # grep complie errror from file
@@ -310,7 +313,7 @@ function reload-rt-env() {
     fi
 }
 
-# Load .custom_build
+# Load .repo-wrapper
 if [ -f "$HOME/.repo-wrapper" ]; then
   source "$HOME/.repo-wrapper"
 fi

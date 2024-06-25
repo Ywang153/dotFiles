@@ -11,7 +11,7 @@ You should clone this repository into you unik-like environment **HOME** directo
   4. git checkout -t -f origin/main
 
 ###### Quick Command
-    git init -b main; git remote add -f -t main -m main origin https://gitee.com/wangyuhuai/dotFiles.git; git checkout main
+    git init; git remote add -f -t main -m main origin https://gitee.com/wangyuhuai/dotFiles.git; git checkout -f main
 
 -------- 
 ### B), Add the below scripts into your shell config file, Such as .bashrc;

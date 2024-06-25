@@ -112,7 +112,7 @@ case ${OSTYPE} in
     ;;
 
   *)
-    alias apt-update='sudo apt clean;sudo apt update -y;sudo apt upgrade -y;sudo apt-get autoremove -y'
+    alias apt-update='sudo apt clean;sudo apt update -y;sudo apt upgrade -y;sudo apt autoremove -y'
     alias dnf-update='sudo dnf update -y'
     alias pacman-update='sudo pacman -Syyu --noconfirm --overwrite \*'
     
