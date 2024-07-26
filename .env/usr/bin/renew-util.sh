@@ -1,6 +1,7 @@
 #!/usr/bin/env bash 
 clear
 
+DIRPRIVATE=/private/data
 DIRTEMP=$MYPREFIX/tmp
 DIRBIN=$MYPREFIX/bin
 DIRPLUGIN=$MYPREFIX/usr/plugin
@@ -23,13 +24,13 @@ case "$1" in
     "init-working-tree")
         echo -e "\033[33mBegain to create directory tree..\n\033[0m"
 
-        sudo mkdir -p /data/{Apps,Temp,DevZone/{3rdparty,GITROOT},Packages,VMs}
-        sudo chown -R "$(whoami)": /data/*
+        sudo mkdir -p $DIRPRIVATE/{Apps,Temp,DevZone/{3rdparty,GITROOT},Packages,VMs}
+        sudo chown -R "$(whoami)": $DIRPRIVATE/*
         
         cd
         
-        [ -L "tmp" ] || ln -s /data/Temp tmp
-        [ -L "data" ] || ln -s /data data
+        [ -L "tmp" ] || ln -s $DIRPRIVATE/Temp tmp
+        [ -L "dev" ] || ln -s $DIRPRIVATE/DevZone dev
         
         echo -e "\033[32m\nDone\033[0m"
         ;;
@@ -51,6 +52,19 @@ case "$1" in
         echo -e "\033[32m\nDone\033[0m"
         ;;            
     
+    "install-rhel-based-pkg")
+        ## install common packages on rhel base destro
+        echo -e "\033[33m\nStart to install packages...\n\033[0m"
+                    
+        if [ -f "$MYPREFIX/usr/doc/pkglist/rhel-based-distro" ]; then
+            sudo dnf update -y 
+            sudo dnf group install -y "C Development Tools and Libraries" "Development Tools" "Development Libraries"
+            xargs sudo dnf install -y < $MYPREFIX/usr/doc/pkglist/rhel-based-distro
+        fi
+        
+        echo -e "\033[32m\nDone\033[0m"
+        ;;            
+    
     "install-arch-with-kde-pkg")
         ## install common packages on arch linux base destro
         echo -e "\033[33m\nStart to install packages...\n\033[0m"
@@ -67,24 +81,24 @@ case "$1" in
         ;;
 
     "git-workflow")
-        if [ -L "data" ]; then
-            cd $HOME/data/CodeZone/GITROOT/
+        if [ -d "$HOME/dev/GITROOT" ]; then
+            cd $HOME/dev/GITROOT/
             
-            [ -d "Partime"   ] || git clone https://e.coding.net/glenn/Partime.git Partime
+            [ -d "myTrader"   ] || git clone https://gitee.com/wangyuhuai/myTrader.git myTrader
             [ -d "Sample"   ] || git clone https://github.com/Ywang153/Sample.git Sample
 
-            cd $HOME/data/CodeZone/3rdparty/
+            cd $HOME/dev/3rdparty/
             
             [ -d "putty-color-themes"   ] || git clone https://github.com/AlexAkulov/putty-color-themes.git putty-color-themes
             [ -d "test_db"   ] || git clone https://github.com/datacharmer/test_db.git test_db
         else
-            echo -e "\033[35mNot found the target directory, Please try <$(basename -- $0) init> first!\n\033[0m"
+            echo -e "\033[35mNot found the target directory, Please try <$(basename -- $0) init-working-tree> first!\n\033[0m"
         fi
         
         ;;
 
     *)       
-        echo -e "\033[37mUsage: \n\t$(basename -- $0) <init-env|init-working-tree|install-tools|install-debain-based-pkg|install-arch-with-kde-pkg|git-workflow>\n\033[0m"
+        echo -e "\033[37mUsage: \n\t$(basename -- $0) <init-env|init-working-tree|install-tools|install-debain-based-pkg|install-rdhl-based-pkg|install-arch-with-kde-pkg|git-workflow>\n\033[0m"
         ;;
 esac
    

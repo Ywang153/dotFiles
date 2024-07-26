@@ -226,7 +226,7 @@ function scp2hosts() {
     if [ -f $HOSTS ] ; then
         while IFS=';' read -ra HOST; do
             for h in "${HOST[@]}"; do
-                printf "\n${Green}Starting transfer to host [$h]..\n${Color_Off}"
+                printf "\n\033[32mStarting transfer to host [$h]..\n\033[0m"
                 scp -prC $SRC ${h}:$DEST
             done
         done <<< "$HOSTS"
@@ -234,7 +234,7 @@ function scp2hosts() {
         IFS=';' read -ra HOST <<< "$HOSTS"
         
         for h in "${HOST[@]}"; do
-            printf "\n${Green}Starting transfer to host [$h]..\n${Color_Off}"
+            printf "\n\033[32mStarting transfer to host [$h]..\n\033[0m"
             scp -prC $SRC $h:$DEST
         done
     fi
@@ -269,25 +269,25 @@ function gen-passwd() {
 
 # Pretty print runtime environment
 function print-rt-env() {
-    echo -e "+++++++++++>> ${BRed}PATH${Color_Off}"
+    echo -e "+++++++++++>> \033[35mPATH\033[0m"
     echo -e "${PATH//:/\\n}\n"
 
-    echo -e "+++++++++++>> ${BRed}PYTHONPATH${Color_Off}"
+    echo -e "+++++++++++>> \033[35mPYTHONPATH\033[0m"
     echo -e "${PYTHONPATH//:/\\n}\n"
     
-    echo -e "+++++++++++>> ${BRed}C_INCLUDE_PATH${Color_Off}"
+    echo -e "+++++++++++>> \033[35mC_INCLUDE_PATH\033[0m"
     echo -e "${C_INCLUDE_PATH//:/\\n}\n"
     
-    echo -e "+++++++++++>> ${BRed}CPLUS_INCLUDE_PATH${Color_Off}"
+    echo -e "+++++++++++>> \033[35mCPLUS_INCLUDE_PATH\033[0m"
     echo -e "${CPLUS_INCLUDE_PATH//:/\\n}\n"
     
-    echo -e "+++++++++++>> ${BRed}LIBRARY_PATH${Color_Off}"
+    echo -e "+++++++++++>> \033[35mLIBRARY_PATH$\033[0m"
     echo -e "${LIBRARY_PATH//:/\\n}\n"
     
-    echo -e "+++++++++++>> ${BRed}LD_LIBRARY_PATH${Color_Off}"
+    echo -e "+++++++++++>> \033[35mLD_LIBRARY_PATH\033[0m"
     echo -e "${LD_LIBRARY_PATH//:/\\n}\n"
     
-    echo -e "+++++++++++>> ${BRed}Qt5_DIR${Color_Off}"
+    echo -e "+++++++++++>> \033[35mQt5_DIR\033[0m"
     echo -e "${Qt5_DIR//:/\\n}"
 }
 
@@ -311,6 +311,11 @@ function reload-rt-env() {
     if [ -f "$HOME/.shell_settings" ]; then
         source "$HOME/.shell_settings"
     fi
+}
+
+# Refresh runtime environment
+function mt() {
+    \tree -atqhfDQCF --dirsfirst --timefmt='%Y-%m-%d %H:%M:%S' -I '.svn' -I '.git' -I '.repo' -I '.vscode' "${1:-.}" | \less -RgIJKNW 
 }
 
 # Load .repo-wrapper

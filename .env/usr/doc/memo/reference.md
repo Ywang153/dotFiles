@@ -20,11 +20,6 @@ https://wiki.archlinux.org/index.php/Pacman/Tips_and_tricks
 # https://unix.stackexchange.com/questions/153862/remove-all-files-directories-except-for-one-file
 rm -- !(file.txt)
 
-# To remove all backgroud colors
-eval "$(dircolors -p | \
-    sed 's/ 4[0-9];/ 01;/; s/;4[0-9];/;01;/g; s/;4[0-9] /;01 /' | \
-    dircolors /dev/stdin)"
-
 # lantern
 https://raw.githubusercontent.com/getlantern/lantern-binaries/master/lantern-installer-64-bit.deb
 
@@ -51,18 +46,9 @@ cd ~;echo "db_home: `pwd`" >> /etc/nsswitch.conf
 # Test github.com via ssh
 ssh -T git@github.com
 
-# How to build YouCompleteMe in Cygwin? 
-    Ensure node, go, mono and typescript API are installed and in your PATH, I assume you entered the <YouCompleteme> installed directory firstly, 
-  and please follow below guide. Thanks.
-  
-  1), at begin, you need to check out all submodules, type the below command:
-    git submodule update --init --recursive 
+# 生成英文字符集
+#export LC_ALL=en_US.UTF-8
+#export LANG=en_US.UTF-8
 
-  2), to resolve the LONG_BIT issue, override the file wrap_python.hpp with cygwin's version, type the below command;
-    cp /usr/include/boost/python/detail/wrap_python.hpp third_party/ycmd/cpp/BoostParts/boost/python/detail/wrap_python.hpp
+sudo localedef -i en_US -f UTF-8 en_US.UTF-8
 
-  3), make sure the clang library could be found, you need to add the flag DEXTERNAL_LIBCLANG_PATH to the CMake, open the file third_party/ycmd/build.py, and search for cmake_args, and change it to like below:
-    cmake_args = ['-DEXTERNAL_LIBCLANG_PATH=/usr/lib/libclang.dll.a']
-
-  4), now, you could type the below command to build it, everything should be fine. 
-    ./install.py --clang-completer --omnisharp-completer --gocode-completer --tern-completer

@@ -44,15 +44,9 @@ case "$TERM" in
         ;;
 esac
 
-# To remove all backgroud colors
-#eval "$(dircolors -p | \
-    #sed 's/ 4[0-9];/ 01;/; s/;4[0-9];/;01;/g; s/;4[0-9] /;01 /' | \
-    #dircolors /dev/stdin)"
-
-
 # Set the default editor to vim
 export EDITOR=vim
-
+ 
 # History setting
 export HISTCONTROL=ignoreboth:erasedups
 export HISTSIZE=1000000
@@ -66,9 +60,13 @@ export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; histor
 # Telling ncurses to always use unicode box drawing characters when a utf-8 locale is selected.
 export NCURSES_NO_UTF8_ACS=1
 
+# Other
+export LESSCHARSET=UTF-8
+export LS_COLORS=$LS_COLORS:'ow=1;34:'
+
 # Set bash prompt
 if [[ ${TERM} != 'fbterm' ]]; then
-    export PS1="\[\e]0;\a\]\n\[$White\][[\[$Purple\]\j\[$White\]]] \[$Cyan\]\h \[$Blue\]{ \[$Red\]\W \[$Blue\]} \[$Yellow\]\$ \[$Color_Off\]"
+    export PS1="\[\e]0;\a\]\n\[\033[37m\][[\[\033[35m\]\j\[\033[37m\]]] \[\033[36m\]\h \[\033[34m\]{ \[\033[31m\]\W \[\033[34m\]} \[\033[33m\]\$ \[\033[0m\]"
 fi
 
 # Bash safe settings   
