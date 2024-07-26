@@ -45,8 +45,9 @@ alias svi='sudo vim'
 alias rs='rsync -acyhuvizP --delete-excluded --delete --delete-after --force --stats'
 alias hs='history'
 
-alias mkdir='mkdir -pv'										                                            # prevents accidentally clobbering files
-alias less='less -RN'                                                                                        # raw control characters
+alias mkdir='mkdir -pv'	
+alias less='less -RN'   
+alias make="make -j $MAX_JOBS"
 
 alias g='grep -ia --color=auto'                                  
 alias eg='egrep -ia --color=auto'                                

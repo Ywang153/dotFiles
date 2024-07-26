@@ -1,11 +1,11 @@
 # Creates an archive (*.tar.gz) from given directory
 function mktar() {
-    tar pcvzf "${2%}${1%%/}.tar.gz"  "${1%%/}/";
+    tar pcvzf "${2%}${1%%/}.tar.gz"  "${1%%/}/" --checkpoint=10000 --checkpoint-action="ttyout='%{%Y-%m-%d %H:%M:%S}t (%d sec): #%u, %T%*\r'";
 }
 
 # Create a ZIP archive of a file or folder.
 function mkzip() {
-    zip -9 -r "${2%}${1%%/}.zip" "$1" ;
+    zip -9 -dd -r "${2%}${1%%/}.zip" "$1" ;
 }
 
 # Create a 7z archive of a file or folder.
@@ -67,18 +67,18 @@ function pretty_csv {
 function ex() {                                                          
     if [ -f "$1" ] ; then 
         case "$1" in 
-            *.tar.bz2)   tar xjf        "$1"     ;; 
-            *.tar.gz)    tar xzf        "$1"     ;; 
+            *.tar.bz2)   tar xvjf       "$1"     ;;
+            *.tar.gz)    tar xvzf       "$1" --checkpoint=10000 --checkpoint-action="ttyout='%{%Y-%m-%d %H:%M:%S}t (%d sec): #%u, %T%*\r'";; 
             *.bz2)       bunzip2        "$1"     ;; 
             *.rar)       unrar e        "$1"     ;; 
             *.gz)        gunzip         "$1"     ;; 
-            *.tar)       tar xf         "$1"     ;; 
-            *.tbz2)      tar xjf        "$1"     ;; 
-            *.tgz)       tar xzf        "$1"     ;; 
+            *.tar)       tar xvf        "$1"     ;; 
+            *.tbz2)      tar xvjf       "$1"     ;; 
+            *.tgz)       tar xvzf       "$1"     ;; 
             *.zip)       unzip          "$1"     ;; 
             *.Z)         uncompress     "$1"     ;; 
             *.7z)        7za x          "$1"     ;; 
-            *.xz)        xz -d          "$1"     ;; 
+            *.xz)        xz -ld         "$1"     ;; 
             *.lzma)      lzma -d        "$1"     ;; 
             *.lz)        lzip -d        "$1"     ;; 
             *)     echo "'$1' cannot be extracted via aex command!" ;; 
