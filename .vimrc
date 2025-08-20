@@ -304,8 +304,8 @@ function! VimdiffMode()
     hi DiffText     cterm=bold      ctermfg=193   ctermbg=160       gui=bold     guifg=#dfffaf       guibg=#df0000
     hi DiffDelete   cterm=italic    ctermfg=48    ctermbg=95        gui=italic   guifg=#00ff87       guibg=#875f5f
 
-    hi statusline   cterm=NONE      ctermfg=96    ctermbg=DarkCyan  gui=bold     guifg=LightMagenta  guibg=DarkCyan
-    hi statuslinenc cterm=italic    ctermfg=96    ctermbg=DarkCyan  gui=italic   guifg=LightMagenta  guibg=DarkCyan
+    "hi statusline   cterm=NONE      ctermfg=96    ctermbg=DarkCyan  gui=bold     guifg=LightMagenta  guibg=DarkCyan
+    "hi statuslinenc cterm=italic    ctermfg=96    ctermbg=DarkCyan  gui=italic   guifg=LightMagenta  guibg=DarkCyan
 endfunction
 
 if &diff | call VimdiffMode() | endif
@@ -316,16 +316,16 @@ au FilterWritePre * if &diff | call VimdiffMode() | endif
 set laststatus=2
 
 " format the status line
-set statusline=%{HasPaste()}[File:\ %t%m%r%h%w][CWD:\ %<%{getcwd()}%h]%=[%{&ff}][%{''!=&fenc?&fenc:&enc}][Ln:\ %l/%L,\ Col:\ %v,\ %p%%]
+"set statusline=%{HasPaste()}[File:\ %t%m%r%h%w][CWD:\ %<%{getcwd()}%h]%=[%{&ff}][%{''!=&fenc?&fenc:&enc}][Ln:\ %l/%L,\ Col:\ %v,\ %p%%]
 
 if has("gui_running")
     hi search gui=bold,italic guibg=#5fff5f guifg=#5f5f5f  
-    hi statusline gui=NONE guifg=LightMagenta guibg=DarkCyan
-    hi statuslinenc gui=italic guifg=LightMagenta guibg=DarkCyan
+    "hi statusline gui=NONE guifg=LightMagenta guibg=DarkCyan
+    "hi statuslinenc gui=italic guifg=LightMagenta guibg=DarkCyan
 else
     hi search cterm=bold,italic ctermfg=59 ctermbg=216 
-    hi statusline cterm=NONE ctermfg=96 ctermbg=DarkCyan
-    hi statuslinenc cterm=italic ctermfg=96 ctermbg=DarkCyan
+    "hi statusline cterm=NONE ctermfg=96 ctermbg=DarkCyan
+    "hi statuslinenc cterm=italic ctermfg=96 ctermbg=DarkCyan
 endif
 
 

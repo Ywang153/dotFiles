@@ -1,0 +1,39 @@
+[submodule ".vim/pack/default/start/vim-airline"]
+	path = .vim/pack/default/start/vim-airline
+	url = https://github.com/vim-airline/vim-airline.git
+[submodule ".vim/pack/default/opt/vim-autoformat"]
+	path = .vim/pack/default/opt/vim-autoformat
+	url = https://github.com/vim-autoformat/vim-autoformat.git
+[submodule ".vim/pack/default/start/tagbar"]
+	path = .vim/pack/default/start/tagbar
+	url = https://github.com/preservim/tagbar.git
+[submodule ".vim/pack/default/start/nerdcommenter"]
+	path = .vim/pack/default/start/nerdcommenter
+	url = git://github.com/preservim/nerdcommenter.git
+[submodule ".vim/pack/default/start/bufexplorer"]
+	path = .vim/pack/default/start/bufexplorer
+	url = git://github.com/jlanzarotta/bufexplorer.git
+[submodule ".vim/pack/default/opt/a"]
+	path = .vim/pack/default/opt/a
+	url = git://github.com/vim-scripts/a.vim.git
+[submodule ".vim/pack/default/start/AutoFenc"]
+	path = .vim/pack/default/start/AutoFenc
+	url = git://github.com/s3rvac/AutoFenc.git
+[submodule ".vim/pack/default/start/vim-indent-guides"]
+	path = .vim/pack/default/start/vim-indent-guides
+	url = git://github.com/nathanaelkane/vim-indent-guides.git
+[submodule ".vim/pack/default/start/supertab"]
+	path = .vim/pack/default/start/supertab
+	url = git://github.com/ervandew/supertab.git
+[submodule ".vim/pack/default/start/vim-startify"]
+	path = .vim/pack/default/start/vim-startify
+	url = git://github.com/mhinz/vim-startify.git
+[submodule ".vim/pack/default/start/nerdtree"]
+	path = .vim/pack/default/start/nerdtree
+	url = git://github.com/preservim/nerdtree.git
+[submodule ".vim/pack/default/start/vim-mark"]
+	path = .vim/pack/default/start/vim-mark
+	url = git://github.com/inkarkat/vim-mark.git
+[submodule ".vim/pack/default/start/vim-ingo-library"]
+	path = .vim/pack/default/start/vim-ingo-library
+	url = git://github.com/inkarkat/vim-ingo-library.git

@@ -75,7 +75,9 @@ open-vm-tools
 open-vm-tools-desktop
 openmpi-bin
 openmpi-doc
+p7zip
 p7zip-full
+p7zip-rar
 parallel
 pi
 pv

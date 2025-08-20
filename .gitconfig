@@ -102,6 +102,7 @@
 	algorithm = patience
 	tool = vimdiff
 	guitool = meld
+	submodule = log
 [difftool]
 	prompt = false
 	trustexitcode = true
@@ -142,3 +143,5 @@
 [url "https://github.com/"]
 	insteadOf = git://github.com/
 
+[status]
+	submoduleSummary = true

@@ -10,26 +10,6 @@ if has("gui_running")
 endif
 
 
-" **  vim-plug configure
-call plug#begin('~/.vim/plugged')
-Plug 'Chiel92/vim-autoformat', { 'for': ['cpp', 'c', 'go', 'cs', 'python', 'javascript', 'java', 'xhtml', 'html', 'sql'] }
-Plug 'preservim/Tagbar', { 'on':  'TagbarToggle' }
-Plug 'preservim/nerdcommenter', { 'for': '*' }
-Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'vim-scripts/a.vim', { 'for': ['cpp', 'c'] }
-Plug 's3rvac/AutoFenc'
-Plug 'mhinz/vim-startify'
-Plug 'jkeylu/mark2666'
-Plug 'jlanzarotta/bufexplorer'
-Plug 'ervandew/Supertab'
-Plug 'tpope/vim-surround'
-Plug 'kien/ctrlp.vim'
-Plug 'iamcco/markdown-preview.vim'
-Plug 'vim-scripts/Align'
-Plug 'nathanaelkane/vim-indent-guides'
-call plug#end()
-
-
 " ** ctags configure
 if executable('ctags')
     set tags=./tags,tags;
@@ -249,51 +229,6 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
 
 
-" **  Ctrlp configure
-let g:ctrlp_map = '<C-p>'
-let g:ctrlp_cmd = 'CtrlPMixed'
-
-let g:ctrlp_max_height = 16
-let g:ctrlp_mruf_max = 512
-
-let g:ctrlp_follow_symlinks = 1
-let g:ctrlp_by_filename = 1
-let g:ctrlp_show_hidden = 1
-let g:ctrlp_lazy_update = 1
-let g:ctrlp_clear_cache_on_exit = 1
-  
-let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:16,results:16'
-  
-let g:ctrlp_switch_buffer = 'Et'
-let g:ctrlp_working_path_mode = 'ra'
-
-let g:ctrlp_custom_ignore = {
-            \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-            \ 'file': '\v\.(cc|obj|exe|o|a|so|dll|d)$',
-            \ 'link': 'some_bad_symbolic_links',
-            \ }
-
-if WINDOWS() " Windows
-    set wildignore+=*\\tmp\\*,*\\vendor\\*
-endif
-
-if ( CYGWIN() || LINUX() || OSX() ) " MacOSX/Linux
-    set wildignore+=*/tmp/*,*/.DS_Store,*/vendor
-endif
-
-
-" **  Mark configure
-let g:mwDefaultHighlightingPalette = 'maximum' 
-let g:mwHistAdd = '/@'
-let g:mwAutoLoadMarks = 1
-let g:mwAutoSaveMarks = 1
-let g:mwIgnoreCase = 0
-let g:mwDirectGroupJumpMappingNum = 20 
-
-nmap <silent> <leader>M :MarkClear<CR>
-
-
-
 " **  netrw configure
 let g:netrw_silent = 1
 let g:netrw_liststyle = 3
@@ -414,7 +349,6 @@ let g:startify_custom_footer = [
             \]
 
 let g:startify_custom_indices = map(range(1,128), 'string(v:val)')
-
 
 
 " **  pylint
