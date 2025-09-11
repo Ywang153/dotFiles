@@ -16,8 +16,8 @@ item0_pos=0,-1,-1,204,383
 item_count=1
 
 [pipewire]
-volume_left=17
-volume_right=14
+volume_left=41
+volume_right=38
 
 [qtui]
 column_widths=25,65,397,175,50,175,175,25,100,25,75,275,275,275,75,275,175
