@@ -290,9 +290,6 @@ function print-rt-env() {
     
     echo -e "+++++++++++>> \033[35mLD_LIBRARY_PATH\033[0m"
     echo -e "${LD_LIBRARY_PATH//:/\\n}\n"
-    
-    echo -e "+++++++++++>> \033[35mQt5_DIR\033[0m"
-    echo -e "${Qt5_DIR//:/\\n}"
 }
 
 # grep complie errror from file
