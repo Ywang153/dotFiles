@@ -1,6 +1,6 @@
 ### Set up user personal environment
 # PATH
-NEW_PATH=$MYPREFIX/bin:$MYPREFIX/usr/bin:$PATH
+NEW_PATH=$HOME/.local/bin:$MYPREFIX/bin:$MYPREFIX/usr/bin:$PATH
 export PATH=$(echo -n "$NEW_PATH" | awk -v RS=: '!($0 in a) {a[$0]; printf("%s%s", length(a) > 1 ? ":" : "", $0)}')
 
 # C_INCLUDE_PATH

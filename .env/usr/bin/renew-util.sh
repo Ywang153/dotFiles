@@ -1,4 +1,9 @@
 #!/usr/bin/env bash 
+
+if [ -z ${MYPREFIX+x} ]; then
+    echo -e "\033[91mThe variable MYPREFIX is not defined.\033[0m"
+fi
+
 clear
 
 DIRPRIVATE=/private/data
@@ -52,6 +57,18 @@ case "$1" in
         echo -e "\033[32m\nDone\033[0m"
         ;;            
     
+    "install-debain-based-gui-pkg")
+        ## install gui packages on debian base destro
+        echo -e "\033[33m\nStart to install gui packages...\n\033[0m"
+                    
+        if [ -f "$MYPREFIX/usr/doc/pkglist/debian-based-distro-desktop" ]; then
+            sudo apt update -y 
+            xargs sudo apt install -y < $MYPREFIX/usr/doc/pkglist/debian-based-distro-desktop
+        fi
+        
+        echo -e "\033[32m\nDone\033[0m"
+        ;;            
+    
     "install-rhel-based-pkg")
         ## install common packages on rhel base destro
         echo -e "\033[33m\nStart to install packages...\n\033[0m"
@@ -98,7 +115,7 @@ case "$1" in
         ;;
 
     *)       
-        echo -e "\033[37mUsage: \n\t$(basename -- $0) <init-env|init-working-tree|install-tools|install-debain-based-pkg|install-rdhl-based-pkg|install-arch-with-kde-pkg|git-workflow>\n\033[0m"
+        echo -e "\033[37mUsage: \n\t$(basename -- $0) <init-env|init-working-tree|install-tools|install-debain-based-pkg|install-debain-based-gui-pkg|install-rdhl-based-pkg|install-arch-with-kde-pkg|git-workflow>\n\033[0m"
         ;;
 esac
    

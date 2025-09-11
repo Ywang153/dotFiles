@@ -65,7 +65,7 @@ alias halt='sudo shutdown -h now'
     
 alias wsget='wget --random-wait -r -p -e robots=off -U mozilla'                                             # download entire website
 alias ipinfo='curl -s ipinfo.io/json | jq'                                                                          # show public ip address
-alias logo='neofetch'
+alias logo='fastfetch'
 
 # Special alias by OS type
 case ${OSTYPE} in
@@ -97,8 +97,13 @@ case ${OSTYPE} in
     ;;
 
   'darwin'*)
+    alias nproc='sysctl -n hw.logicalcpu'
+
     unalias l
     alias l='ls -CF'                                            
+    
+    unalias ll
+    alias ll='ls -lhvF --color=always'                                                         
     
     unalias du
     alias du='du -kh -d=1'
@@ -131,8 +136,14 @@ case ${OSTYPE} in
       alias pacman-update='sudo pacman -Syyu --noconfirm --overwrite \*'
     fi
     
-    if [ -x "$(command -v nautilus)" ]; then
+    if [ -x "$(command -v files)" ]; then
+      alias e.='files . &'
+    elif [ -x "$(command -v nautilus)" ]; then
       alias e.='dolphin . &'
+    elif [ -x "$(command -v pcmanfm-qt)" ]; then
+      alias e.='pcmanfm-qt . &'
+    else
+      alias e.="mc ."
     fi
     
     alias mount='mount | column -t'
