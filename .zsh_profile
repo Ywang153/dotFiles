@@ -1,0 +1,5 @@
+# User dependent .zrc file
+if [ -f "$HOME/.zshrc" ] ; then
+  source "$HOME/.zshrc"
+fi
+
